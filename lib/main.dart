@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'BDD.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  BDD.initializeDatabase(); // Pas besoin d'utiliser 'await' ici
   runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  const MainApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
