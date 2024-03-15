@@ -10,7 +10,7 @@ class BDD {
         onCreate: (Database db, int version) async {
           // Créer les tables
           await db.execute(
-              'CREATE TABLE User (id INTEGER PRIMARY KEY, nom TEXT, prenom TEXT, mail TEXT, num_telephone TEXT, mdp TEXT)');
+              'CREATE TABLE User (nom TEXT, prenom TEXT,id INTEGER PRIMARY KEY, mail TEXT, num_telephone TEXT, mdp TEXT)');
           await db.execute(
               'CREATE TABLE Notes (id INTEGER PRIMARY KEY, date TEXT, humeur TEXT, image TEXT, vocal TEXT, texte TEXT)');
           await db.execute(
