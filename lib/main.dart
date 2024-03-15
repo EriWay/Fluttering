@@ -1,18 +1,35 @@
+// main.dart
 import 'package:flutter/material.dart';
+import 'accueil.dart'; // Assurez-vous que ce fichier existe et est correctement placé dans votre répertoire de projet.
 
-void main() {
-  runApp(const MainApp());
-}
+void main() => runApp(MonApp());
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MonApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return MaterialApp(
+      title: 'Exemple',
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Page Principale'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AccueilPage()),
+            );
+          },
+          child: Text('Aller à la page Accueil'),
         ),
       ),
     );
