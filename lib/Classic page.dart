@@ -27,37 +27,10 @@ class MyApp extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Contenu principal de la page'),
-              ElevatedButton(
-                onPressed: () {
-                  _executeCode();
-                },
-                child: Text('Exécuter le code'),
-              ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Future<void> _executeCode() async {
-    final database = openDatabase(
-      join(await getDatabasesPath(), 'my_database.db'),
-      onCreate: (db, version) {
-        return db.execute(
-          'CREATE TABLE my_table(id INTEGER PRIMARY KEY, name TEXT, value INTEGER)',
-        );
-      },
-      version: 1,
-    );
-
-    final db = await database;
-    await db.insert(
-      'my_table',
-      {'name': 'Product', 'value': 42},
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-
-    print('Données insérées avec succès.');
   }
 }
