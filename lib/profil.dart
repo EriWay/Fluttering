@@ -11,6 +11,7 @@ class Profile extends StatelessWidget{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Back !")),
             const Text("Ceci est le profil"),
             RadialMenu()
           ],
