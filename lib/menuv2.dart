@@ -198,7 +198,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                         toggle = !toggle;
                         _controller.reverse();
                       });
-                      //Navigator.push(context, MaterialPageRoute(builder: (context)=> const Home()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const Home()));
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
