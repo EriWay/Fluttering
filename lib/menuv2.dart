@@ -11,19 +11,19 @@ import 'package:journal_intime/parametres.dart';
 import 'package:journal_intime/profil.dart';
 
 void main() {
-  runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
+  runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Menu()));
 }
 
 bool toggle = true;
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class Menu extends StatefulWidget {
+  const Menu({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<Menu> createState() => _MenuState();
 }
 
-class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation _animation;
 

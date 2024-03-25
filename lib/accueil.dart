@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:journal_intime/menu.dart';
+import 'package:journal_intime/menuv2.dart';
 
 class Home extends StatelessWidget{
   const Home({super.key});
@@ -13,7 +13,7 @@ class Home extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             const Text("Ceci est l'accueil"),
-            SizedBox(child: RadialMenu())
+            SizedBox(child: const Menu())
           ],
         ),
         
