@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:journal_intime/menuv2.dart';
+import 'package:journal_intime/menu.dart';
 
-class Home extends StatelessWidget{
-  const Home({super.key});
+class Parametres extends StatelessWidget{
+  const Parametres({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold (
+    return  Scaffold (
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Text("Ceci est l'accueil"),
-            SizedBox(child: const Menu())
+            const Text("Ceci sont les parametres"),
+            RadialMenu()
           ],
         ),
         

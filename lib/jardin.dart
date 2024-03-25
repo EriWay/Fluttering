@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:journal_intime/menuv2.dart';
+import 'package:journal_intime/menu.dart';
 
-class Home extends StatelessWidget{
-  const Home({super.key});
+class Jardin extends StatelessWidget{
+  const Jardin({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold (
+    return  Scaffold (
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Text("Ceci est l'accueil"),
-            SizedBox(child: const Menu())
+            const Text("Ceci est le jardin"),
+            RadialMenu()
           ],
         ),
         

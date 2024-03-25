@@ -1,5 +1,18 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import "dart:math";
+import "package:vector_math/vector_math.dart" show radians;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'accueil.dart';
+import 'bienetre.dart';
+import 'calendar.dart';
+import 'jardin.dart';
+import 'menu.dart';
+import 'parametres.dart';
+import 'profil.dart';
 import 'accueil.dart';
 import 'calendrier.dart';
 
@@ -51,3 +64,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
