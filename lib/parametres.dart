@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:journal_intime/menu.dart';
+import 'menuv2.dart';
 
 class Parametres extends StatelessWidget{
   const Parametres({super.key});
@@ -12,7 +12,7 @@ class Parametres extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             const Text("Ceci sont les parametres"),
-            RadialMenu()
+            Menu()
           ],
         ),
         

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:helloworld/calendrier.dart';
 
-import 'package:journal_intime/accueil.dart';
-import 'package:journal_intime/bienetre.dart';
-import 'package:journal_intime/calendar.dart';
-import 'package:journal_intime/jardin.dart';
-import 'package:journal_intime/parametres.dart';
-import 'package:journal_intime/profil.dart';
+import 'accueil.dart';
+import 'bienetre.dart';
+import 'jardin.dart';
+import 'parametres.dart';
+import 'profil.dart';
 
 import "dart:math";
 import "package:vector_math/vector_math.dart" show radians;
@@ -72,7 +72,7 @@ class RadialAnimation extends StatelessWidget {
                 backgroundColor: Colors.green,
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Home()));
+                      MaterialPageRoute(builder: (context) => AccueilPage()));
                 },
                 child: const Icon(FontAwesomeIcons.airbnb, color: Colors.white),
               ),
@@ -128,7 +128,7 @@ class RadialAnimation extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const Calendrier()));
+                          builder: (context) =>  CalendrierPage()));
                 },
                 child:
                     const Icon(FontAwesomeIcons.calendar, color: Colors.white),
@@ -181,7 +181,7 @@ class RadialAnimation extends StatelessWidget {
                 heroTag: 'Home',
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Home()));
+                      MaterialPageRoute(builder: (context) => AccueilPage()));
                 },
                 backgroundColor: Colors.green,
                 child: Transform.flip(

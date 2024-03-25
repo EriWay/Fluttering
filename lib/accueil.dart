@@ -1,5 +1,6 @@
 // accueil.dart
 import 'package:flutter/material.dart';
+import 'package:helloworld/menuv2.dart';
 
 class AccueilPage extends StatelessWidget {
   @override
@@ -78,19 +79,7 @@ class AccueilPage extends StatelessWidget {
                 ),
               ),
             ),
-            Spacer(),
-            BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Accueil',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.menu),
-                  label: 'Menu',
-                ),
-              ],
-            ),
+            Menu()
           ],
         ),
       ),

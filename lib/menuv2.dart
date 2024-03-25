@@ -3,12 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:journal_intime/accueil.dart';
-import 'package:journal_intime/bienetre.dart';
-import 'package:journal_intime/calendar.dart';
-import 'package:journal_intime/jardin.dart';
-import 'package:journal_intime/parametres.dart';
-import 'package:journal_intime/profil.dart';
+import 'accueil.dart';
+import 'bienetre.dart';
+import 'calendrier.dart';
+import 'jardin.dart';
+import 'parametres.dart';
+import 'profil.dart';
 
 void main() {
   runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Menu()));
@@ -131,7 +131,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Calendar',
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const Calendrier()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> CalendrierPage()));
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
@@ -198,7 +198,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                         toggle = !toggle;
                         _controller.reverse();
                       });
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const Home()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> AccueilPage()));
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,

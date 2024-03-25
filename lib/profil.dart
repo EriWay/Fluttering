@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:journal_intime/menu.dart';
+import 'menuv2.dart';
 
 class Profile extends StatelessWidget{
   const Profile({super.key});
@@ -13,7 +13,7 @@ class Profile extends StatelessWidget{
           children: [
             TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Back !")),
             const Text("Ceci est le profil"),
-            RadialMenu()
+            Menu()
           ],
         ),
         

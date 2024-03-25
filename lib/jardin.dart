@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:journal_intime/menu.dart';
+import 'menuv2.dart';
 
 class Jardin extends StatelessWidget{
   const Jardin({super.key});
@@ -12,7 +12,7 @@ class Jardin extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             const Text("Ceci est le jardin"),
-            RadialMenu()
+            Menu()
           ],
         ),
         
