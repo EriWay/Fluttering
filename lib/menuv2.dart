@@ -255,8 +255,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                               }
                             });
                           },
-                          icon: Image.network(
-                            'https://cdn.discordapp.com/attachments/785497621732655145/1218502097931206676/image.png?ex=6607e582&is=65f57082&hm=9d98151a167ef2a532bf75ad487a9beb5556f5cf83e47de9fffbc9f693a76133&',
+                          icon: Image.asset(
+                            'bars.png',
                             height: 27.0,
                           ),
                         ),
