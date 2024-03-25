@@ -10,7 +10,7 @@ class AccueilPage extends StatelessWidget {
           'Accueil',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFFF8B4F24),
+        backgroundColor: Color(0xFFF755846),
         centerTitle: true,
       ),
       body: Container(

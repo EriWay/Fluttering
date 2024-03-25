@@ -1,6 +1,7 @@
 // main.dart
 import 'package:flutter/material.dart';
-import 'accueil.dart'; // Assurez-vous que ce fichier existe et est correctement placé dans votre répertoire de projet.
+import 'accueil.dart';
+import 'calendrier.dart';
 
 void main() => runApp(MonApp());
 
@@ -22,14 +23,29 @@ class HomePage extends StatelessWidget {
         title: Text('Page Principale'),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AccueilPage()),
-            );
-          },
-          child: Text('Aller à la page Accueil'),
+        child: Column(
+          mainAxisSize:
+              MainAxisSize.min, // Pour centrer les boutons verticalement
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AccueilPage()),
+                );
+              },
+              child: Text('Aller à la page Accueil'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CalendrierPage()),
+                );
+              },
+              child: Text('Aller à la page Calendrier'),
+            ),
+          ],
         ),
       ),
     );
