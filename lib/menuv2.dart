@@ -3,13 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'accueil.dart';
-import 'bienetre.dart';
-import 'calendrier.dart';
-import 'jardin.dart';
-import 'parametres.dart';
-import 'profil.dart';
-
 void main() {
   runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Menu()));
 }
