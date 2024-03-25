@@ -1,6 +1,8 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+
+
 class BDD {
   static Future<void> initializeDatabase() async {
     // Code pour initialiser la base de données
@@ -10,7 +12,7 @@ class BDD {
         onCreate: (Database db, int version) async {
           // Créer les tables
           await db.execute(
-              'CREATE TABLE User (num_utilisateur INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, prenom TEXT, id INTEGER, mail TEXT, num_telephone TEXT, mdp TEXT)');
+              'CREATE TABLE User (num_utilisateur INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, prenom TEXT, Identifiant INTEGER, mail TEXT, num_telephone TEXT, mdp TEXT, PIN INTEGER )');
           await db.execute(
               'CREATE TABLE Notes (num_utilisateur INTEGER, date TEXT PRIMARY KEY, humeur TEXT, image TEXT, vocal TEXT, texte TEXT)');
           await db.execute(
