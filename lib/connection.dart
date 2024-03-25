@@ -19,14 +19,16 @@ class Connection extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Spacer(),
               Image.asset(
                 'img.png',
                 width: MediaQuery.of(context).size.width/3,
                 alignment: Alignment.center,
               ),
               const Text("CalmLeaf Diary"),
-              const Spacer(),
+              const Spacer(flex: 3,),
               const LoginForm(),
+              const Spacer(),
             ], 
           ),
         )

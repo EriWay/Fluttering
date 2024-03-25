@@ -19,6 +19,7 @@ class ConnInscr extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Spacer(),
               Image.asset(
                 'img.png',
                 width: MediaQuery.of(context).size.width/3,
@@ -28,18 +29,26 @@ class ConnInscr extends StatelessWidget {
               const Spacer(),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF755846), // Couleur mocha (marron clair)
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-              ),
+                  backgroundColor: const Color(0xFF755846), // Couleur mocha (marron clair)
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                ),
                 onPressed: (){
                   Navigator.pushReplacementNamed(context, '/register');
                 }, 
-                child: const Text("Inscription"),
+                child: const Text("Inscription", style: TextStyle(color: Colors.white)),
                 
               ),
-              TextButton(onPressed: (){
-                Navigator.pushReplacementNamed(context, '/login');
-              }, child: const Text("Connection")),
+              const Spacer(flex: 1,),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF755846), // Couleur mocha (marron clair)
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                ),
+                onPressed: (){
+                  Navigator.pushReplacementNamed(context, '/login');
+                }, child: const Text("Connection", style: TextStyle(color: Colors.white))
+              ),
+              const Spacer(flex: 5)
             ], 
           ),
         )
