@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'accueil.dart';
@@ -74,31 +75,63 @@ class _SignUpFormState extends State<SignUpForm> {
             _buildTextFieldWithTitle(
               'Nom',
               _nomController,
-              keyboardType: TextInputType.text
+              keyboardType: TextInputType.text,
+
             ),
 
             _buildTextFieldWithTitle(
               'Prénom',
               _prenomController,
-              keyboardType: TextInputType.text
+              keyboardType: TextInputType.text,
+
             ),
 
             _buildTextFieldWithTitle(
               'Identifiant',
               _idController,
-              keyboardType: TextInputType.text
+              keyboardType: TextInputType.text,
+
             ),
 
             _buildTextFieldWithTitle(
               'Mail',
               _mailController,
               keyboardType: TextInputType.emailAddress,
+
             ),
 
-            _buildTextFieldWithTitle(
-                'Téléphone',
-              _phoneController,
-              keyboardType: TextInputType.text
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 12.0, bottom: 8.0), // Ajustement du padding
+                  child: Text(
+                    'N° de téléphone', // Ajout du titre ici
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF706F45),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 0.0), // Ajustement du padding
+                  child: TextField(
+                    keyboardType: TextInputType.phone,
+                    controller: _phoneController, // Lier à la variable _pinController
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFF755846),
+                      hintText: 'N° de téléphone',
+                      hintStyle: TextStyle(color: Colors.white),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+              ],
             ),
 
             _buildTextFieldWithTitle(
@@ -106,16 +139,42 @@ class _SignUpFormState extends State<SignUpForm> {
                 _mdpController,
                 obscureText: true,
                 keyboardType: TextInputType.text,
+
             ),
-            _buildTextFieldWithTitle( // Champ pour le PIN
-              'Code PIN (4 chiffres)',
-              _pinController,
-              obscureText: true,
-              validator: _validatePIN,
-              keyboardType: TextInputType.number,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 12.0, bottom: 8.0), // Ajustement du padding
+                  child: Text(
+                    'Code PIN (4 chiffres)', // Ajout du titre ici
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF706F45),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 0.0), // Ajustement du padding
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    controller: _pinController, // Lier à la variable _pinController
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xFF755846),
+                      hintText: 'Entrez votre PIN',
+                      hintStyle: TextStyle(color: Colors.white),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+              ],
             ),
 
-            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
@@ -139,7 +198,7 @@ class _SignUpFormState extends State<SignUpForm> {
     if (value == null || value.isEmpty) {
       return 'Veuillez entrer un code PIN';
     }
-    if (value.length != 3 || !RegExp(r'^[0-9]{4}$').hasMatch(value)) {
+    if (value.length != 4 || !RegExp(r'^[0-9]{4}$').hasMatch(value)) {
       return 'Le code PIN doit être composé de 4 chiffres';
     }
     return null;
