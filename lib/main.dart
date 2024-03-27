@@ -19,7 +19,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) { 
     return MaterialApp(
-      initialRoute: '/jardin',
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/splash',
       routes: {
         '/splash' : (BuildContext context) => const SplashScreen(),
         '/choose' : (BuildContext context) => const ConnInscr(),
