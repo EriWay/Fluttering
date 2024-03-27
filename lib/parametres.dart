@@ -462,7 +462,7 @@ class _CodePinScreenState extends State<CodePinScreen> {
             ElevatedButton(
               onPressed: _verifyAndNavigate,
               style: ElevatedButton.styleFrom(
-                primary: Color(0xFF606134), // Couleur de fond du bouton
+                backgroundColor: Color(0xFF606134), // Couleur de fond du bouton
               ),
               child: Text('Vérifier'),
             ),

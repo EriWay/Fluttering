@@ -165,7 +165,7 @@ class RadialAnimation extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const Parametres()));
+                          builder: (context) => ParametresPage()));
                 },
                 child: const Icon(FontAwesomeIcons.gear, color: Colors.white),
               ),
