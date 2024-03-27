@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:helloworld/calendrier.dart';
+import 'connection.dart';
+import 'calendrier.dart';
+import 'connect_inscr.dart';
+import 'splashscreen.dart';
 import 'accueil.dart';
 import 'bienetre.dart';
 import 'jardin.dart';
 import 'parametres.dart';
 import 'profil.dart';
+import 'inscription.dart';
+
 void main() {
   runApp(const MainApp());
 }
@@ -12,10 +17,15 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
   
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return MaterialApp(
-      initialRoute: '/',
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/splash',
       routes: {
+        '/splash' : (BuildContext context) => const SplashScreen(),
+        '/choose' : (BuildContext context) => const ConnInscr(),
+        '/register' : (BuildContext context) => Inscription(),
+        '/login' : (BuildContext context)=> const Connection(),
         '/' : (BuildContext context)=> AccueilPage(),
         '/wellness' : (BuildContext context)=>const Wellness(),
         '/calendar' : (BuildContext context)=> CalendrierPage(),

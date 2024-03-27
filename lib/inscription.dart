@@ -5,12 +5,7 @@ import 'package:path/path.dart';
 import 'accueil.dart';
 import 'BDD.dart';
 
-void main() {
-  runApp(Inscritpion());
-}
-
-
-class Inscritpion extends StatelessWidget {
+class Inscription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
