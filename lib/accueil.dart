@@ -22,6 +22,7 @@ class AccueilPage extends StatelessWidget {
                 title: Text(
                   'Accueil',
                   style: TextStyle(color: Colors.white),
+
                 ),
                 backgroundColor: Color(0xFFF755846),
                 centerTitle: true,
@@ -99,6 +100,7 @@ class AccueilPage extends StatelessWidget {
           }
         }
       },
+
     );
   }
 
