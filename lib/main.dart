@@ -20,7 +20,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) { 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/splash',
+      initialRoute: '/jardin',
       routes: {
         '/splash' : (BuildContext context) => const SplashScreen(),
         '/choose' : (BuildContext context) => const ConnInscr(),

@@ -13,7 +13,6 @@ class Profile extends StatelessWidget{
           children: [
             Text("Ceci est le profil"),
             Menu(),
-            Spacer()
           ],
         ),
         
