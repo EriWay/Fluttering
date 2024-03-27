@@ -263,7 +263,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                             });
                           },
                           icon: Image.asset(
-                            'bars.png',
+                            'assets/bars.png',
                             height: 27.0,
                           ),
                         ),

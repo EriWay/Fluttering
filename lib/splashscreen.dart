@@ -35,7 +35,7 @@ class SplashState extends State<SplashScreen> {
     body: Stack(
       children: <Widget>[
         SvgPicture.asset(
-          '/Splashscreen.svg',
+          'assets/Splashscreen.svg',
           alignment: Alignment.center,
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
@@ -45,7 +45,7 @@ class SplashState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'img.png',
+                'assrts/img.png',
                 width: MediaQuery.of(context).size.width/3,
                 alignment: Alignment.center,
               ),
