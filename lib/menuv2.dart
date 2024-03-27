@@ -3,13 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'accueil.dart';
-import 'bienetre.dart';
-import 'calendrier.dart';
-import 'jardin.dart';
-import 'parametres.dart';
-import 'profil.dart';
-
 void main() {
   runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Menu()));
 }
@@ -78,7 +71,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
           child: Stack(
             children: [
               AnimatedAlign(
-                duration: toggle ? const Duration(milliseconds: 275): const Duration(milliseconds: 800),
+                duration: toggle ? const Duration(milliseconds: 100): const Duration(milliseconds: 800),
                 alignment: alignment1,
                 curve: toggle ? Curves.easeIn : Curves.elasticOut,
                 child: AnimatedContainer(
@@ -89,7 +82,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Profile',
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const Profile()));
+                      toggle = !toggle;
+                      Navigator.pushReplacementNamed(context, '/profile');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
@@ -99,7 +93,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
               ),
 
               AnimatedAlign(
-                duration: toggle ? const Duration(milliseconds: 275): const Duration(milliseconds: 800),
+                duration: toggle ? const Duration(milliseconds: 100): const Duration(milliseconds: 800),
                 alignment: alignment2,
                 curve: toggle ? Curves.easeIn : Curves.elasticOut,
                 child: AnimatedContainer(
@@ -110,7 +104,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Wellness',
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const Wellness()));
+                      toggle = !toggle;
+                      Navigator.pushReplacementNamed(context, '/wellness');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
@@ -120,7 +115,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
               ),
 
               AnimatedAlign(
-                duration: toggle ? const Duration(milliseconds: 275): const Duration(milliseconds: 800),
+                duration: toggle ? const Duration(milliseconds: 100): const Duration(milliseconds: 800),
                 alignment: alignment3,
                 curve: toggle ? Curves.easeIn : Curves.elasticOut,
                 child: AnimatedContainer(
@@ -131,7 +126,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Calendar',
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> CalendrierPage()));
+                      toggle = !toggle;
+                      Navigator.pushReplacementNamed(context, '/calendar');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
@@ -141,7 +137,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
               ),
 
               AnimatedAlign(
-                duration: toggle ? const Duration(milliseconds: 275): const Duration(milliseconds: 800),
+                duration: toggle ? const Duration(milliseconds: 100): const Duration(milliseconds: 800),
                 alignment: alignment4,
                 curve: toggle ? Curves.easeIn : Curves.elasticOut,
                 child: AnimatedContainer(
@@ -152,7 +148,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Jardin',
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const Jardin()));
+                      toggle = !toggle;
+                      Navigator.pushReplacementNamed(context, '/jardin');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
@@ -162,7 +159,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
               ),
 
               AnimatedAlign(
-                duration: toggle ? const Duration(milliseconds: 275): const Duration(milliseconds: 800),
+                duration: toggle ? const Duration(milliseconds: 100): const Duration(milliseconds: 800),
                 alignment: alignment5,
                 curve: toggle ? Curves.easeIn : Curves.elasticOut,
                 child: AnimatedContainer(
@@ -173,7 +170,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Param',
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const Parametres()));
+                      toggle = !toggle;
+                      Navigator.pushReplacementNamed(context, '/param');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
@@ -183,7 +181,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
               ),
 
               AnimatedAlign(
-                duration: toggle ? const Duration(milliseconds: 275): const Duration(milliseconds: 800),
+                duration: toggle ? const Duration(milliseconds: 100): const Duration(milliseconds: 800),
                 alignment: const Alignment(0.0, 0.0),
                 curve: Curves.easeOut,
                 child: AnimatedContainer(
@@ -198,7 +196,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                         toggle = !toggle;
                         _controller.reverse();
                       });
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> AccueilPage()));
+                      Navigator.pushReplacementNamed(context, '/');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
@@ -208,14 +206,14 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
               ),
 
               Align(
-                  alignment: toggle ? Alignment.center : const Alignment(0.0, 0.5),
+                  alignment: Alignment.center,
                   child: Transform.rotate(
                     angle: _animation.value * pi * (3 / 4),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       curve: Curves.easeOut,
-                      height: toggle ? 70.0 : 10.0,
-                      width: toggle ? 70.0 : 10.0,
+                      height: toggle ? 70.0 : 0.0,
+                      width: toggle ? 70.0 : 0.0,
                       decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(60.0)),
@@ -244,6 +242,15 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                                 Future.delayed(const Duration(milliseconds: 120), (){
                                   alignment5 = const Alignment(1.0, 0.0);
                                 });
+                                Future.delayed(const Duration(seconds: 8), (){
+                                  toggle = !toggle;
+                                  _controller.reverse();
+                                  alignment1 = const Alignment(0.0, 0.0);
+                                  alignment2 = const Alignment(0.0, 0.0);
+                                  alignment3 = const Alignment(0.0, 0.0); 
+                                  alignment4 = const Alignment(0.0, 0.0); 
+                                  alignment5 = const Alignment(0.0, 0.0); 
+                                });
                               }else{
                                 toggle = !toggle;
                                 _controller.reverse();
@@ -255,8 +262,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                               }
                             });
                           },
-                          icon: Image.network(
-                            'https://cdn.discordapp.com/attachments/785497621732655145/1218502097931206676/image.png?ex=6607e582&is=65f57082&hm=9d98151a167ef2a532bf75ad487a9beb5556f5cf83e47de9fffbc9f693a76133&',
+                          icon: Image.asset(
+                            'bars.png',
                             height: 27.0,
                           ),
                         ),
