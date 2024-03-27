@@ -10,7 +10,7 @@ class Connection extends StatelessWidget {
     body: Stack(
       children: <Widget>[
         SvgPicture.asset(
-          '/background.svg',
+          'assets/background.svg',
           alignment: Alignment.center,
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
@@ -21,7 +21,7 @@ class Connection extends StatelessWidget {
             children: [
               const Spacer(),
               Image.asset(
-                'img.png',
+                'assets/img.png',
                 width: MediaQuery.of(context).size.width/3,
                 alignment: Alignment.center,
               ),

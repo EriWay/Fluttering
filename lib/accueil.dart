@@ -7,20 +7,20 @@ class AccueilPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Accueil',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFFF755846),
+        backgroundColor: const Color(0xFF755846),
         centerTitle: true,
       ),
       body: Container(
-        color: Color(0xFFFCEBE2),
+        color: const Color(0xFFFCEBE2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Text(
                 'Bonjour Christelle',
                 style: TextStyle(
@@ -30,9 +30,9 @@ class AccueilPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 32.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            const SizedBox(height: 32.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -44,11 +44,11 @@ class AccueilPage extends StatelessWidget {
                 ),
               ),
             ),
-            Card(
-              color: Color(0xFFFFFDCC7),
-              margin: const EdgeInsets.all(16.0),
+            const Card(
+              color: Color(0xFFFFDCC7),
+              margin: EdgeInsets.all(16.0),
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(16.0),
                 child: Text(
                   '"Il ne savait pas que c\'était impossible, alors il l\'a fait"',
                   style: TextStyle(
@@ -66,12 +66,12 @@ class AccueilPage extends StatelessWidget {
                 child: Container(
                   width: 32,
                   height: 32,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Color(0xFF6D4C41),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.add,
                     color: Colors.white,
                     size: 20,
@@ -79,7 +79,8 @@ class AccueilPage extends StatelessWidget {
                 ),
               ),
             ),
-            Menu()
+            const Spacer(),
+            const Menu(),
           ],
         ),
       ),
