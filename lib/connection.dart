@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'accueil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Connection extends StatelessWidget {
   const Connection({Key? key}) : super(key: key);
@@ -105,11 +106,19 @@ class _LoginFormState extends State<LoginForm> {
         [identifiant, motDePasse]);
 
     if (users.isNotEmpty) {
+      // Récupérer les données de l'utilisateur
+      final user = users.first;
+      final String prenom = user['prenom'];
+      final int numUtilisateur = user['num_utilisateur'] as int; // Modifier le type de la variable
+
+      // Stocker les informations localement
+      await saveUserData(prenom, numUtilisateur.toString()); // Convertir en String si nécessaire
+
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('connection réussie'),
+            title: Text('Connection réussie'),
             content: Text('Vous êtes maintenant connecté !'),
             actions: [
               TextButton(
@@ -131,6 +140,15 @@ class _LoginFormState extends State<LoginForm> {
       print('Identifiants incorrects');
     }
   }
+
+// Fonction pour stocker les données de l'utilisateur localement
+  Future<void> saveUserData(String prenom, String nomUtilisateur) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('prenom', prenom);
+    await prefs.setString('nomUtilisateur', nomUtilisateur);
+
+  }
+
 
   Widget _buildTextFieldWithTitle(String title, TextEditingController controller,
       {bool obscureText = false}) {
