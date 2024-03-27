@@ -61,11 +61,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Center(
-        child: Container(
+    return Center(
+        child: SizedBox(
           height: 250.0,
           width: 250.0,
           child: Stack(
@@ -273,7 +270,6 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
