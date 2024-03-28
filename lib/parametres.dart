@@ -667,3 +667,95 @@ class _PhoneScreenState extends State<PhoneScreen> {
     super.dispose();
   }
 }
+
+
+class PhoneScreen extends StatefulWidget {
+  @override
+  _PhoneScreenState createState() => _PhoneScreenState();
+}
+
+class _PhoneScreenState extends State<PhoneScreen> {
+  final TextEditingController _phoneController = TextEditingController();
+
+  Future<void> _changePhone(BuildContext context) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String userId = prefs.getString('num_utilisateur') ?? '0';
+      String databasesPath = await getDatabasesPath();
+      String path = join(databasesPath, 'my_database.db');
+      Database database = await openDatabase(path);
+
+      await database.rawUpdate(
+          'UPDATE User SET num_telephone = ? WHERE num_utilisateur = ?',
+          [_phoneController.text, userId]);
+
+      await database.close();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Numéro de téléphone mis à jour avec succès')),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de la mise à jour du numéro de téléphone')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Téléphone'),
+        backgroundColor: Color(0xFF755846),
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          SvgPicture.asset(
+            'assets/background.svg',
+            fit: BoxFit.cover, // Assurez-vous que l'image SVG couvre tout l'écran
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                TextField(
+                  controller: _phoneController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF606134),
+                        width: 2.0 * 2.0,
+                      ),
+                    ),
+                    labelText: 'Nouveau numéro de téléphone',
+                    labelStyle: TextStyle(
+                      color: Color(0xFF606134),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () => _changePhone(context),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Color(0xFF755846)),
+                  ),
+                  child: Text('Changer le numéro de téléphone', style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    super.dispose();
+  }
+}

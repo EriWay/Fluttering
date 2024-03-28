@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 
 class BDD {
   static Future<void> initializeDatabase() async {
+    try{
     // Code pour initialiser la base de données
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'my_database.db');
@@ -27,10 +28,13 @@ class BDD {
                 ['Pain', 'Anthonin', 'Antho', 'anthoninpain@hotmail.fr', '0623908480', 'Antho', 1234]);
         });
 
-    // Fermer la connexion à la base de données
-    await database.close();
+      // Fermer la connexion à la base de données
+      await database.close();
 
-    // Afficher un message de confirmation
-    print('Votre base de données a bien été créée à l\'adresse : $path');
+      // Afficher un message de confirmation
+      print('Votre base de données a bien été créée à l\'adresse : $path');
+    } catch (e) {
+      print('Erreur lors de l\'initialisation de la base de données : $e');
+    }
   }
 }
