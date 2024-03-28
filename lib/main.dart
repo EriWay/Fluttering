@@ -11,6 +11,7 @@ import 'profil.dart';
 import 'package:flutter/services.dart';
 import 'inscription.dart';
 import 'majournee.dart';
+import 'moodjournee.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +41,8 @@ class MainApp extends StatelessWidget {
         '/jardin' : (BuildContext context)=> Jardin(),
         '/param' : (BuildContext context)=> ParametresPage(),
         '/profile' : (BuildContext context)=> const Profile(),
-        '/majournee' : (BuildContext context)=> NotebookBackgroundPage(),
+        '/majournee' : (BuildContext context)=> NotebookPage(),
+        '/moodjournee' : (BuildContext context)=> DailyMoodPage(),
       },
     );
   }

@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class NotebookBackgroundPage extends StatefulWidget {
+class NotebookPage extends StatefulWidget {
   @override
-  _NotebookBackgroundPageState createState() => _NotebookBackgroundPageState();
+  NotebookPageState createState() => NotebookPageState();
 }
 
-class _NotebookBackgroundPageState extends State<NotebookBackgroundPage> {
+class NotebookPageState extends State<NotebookPage> {
+
   final TextEditingController _textEditingController = TextEditingController();
   XFile? _image;
 
@@ -39,7 +40,7 @@ class _NotebookBackgroundPageState extends State<NotebookBackgroundPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Page avec Fond de Cahier'),
+        title: Text('Journal Intime'),
         backgroundColor: Color(0xFF755846),
       ),
       body: Stack(
