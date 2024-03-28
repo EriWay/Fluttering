@@ -40,6 +40,7 @@ class _NotebookBackgroundPageState extends State<NotebookBackgroundPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Page avec Fond de Cahier'),
+        backgroundColor: Color(0xFF755846),
       ),
       body: Stack(
         children: [
@@ -65,7 +66,7 @@ class _NotebookBackgroundPageState extends State<NotebookBackgroundPage> {
                     controller: _textEditingController,
                     maxLines: null,
                     style: TextStyle(
-                      fontSize: 21,
+                      fontSize: 18,
                       color: Colors.black,
                     ),
                     decoration: InputDecoration(
@@ -81,18 +82,38 @@ class _NotebookBackgroundPageState extends State<NotebookBackgroundPage> {
               ),
             ),
           ),
-          // Positionnement de l'icône de la galerie en bas à droite
           Align(
             alignment: Alignment.bottomRight,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
-              child: FloatingActionButton(
-                onPressed: () async {
-                  await requestPermission();
-                  await pickImage();
-                },
-                backgroundColor: Color(0xFF606134), // Couleur du bouton
-                child: Icon(Icons.photo_library, color: Colors.white),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FloatingActionButton(
+                    onPressed: () async {
+                      // Action pour enregistrer
+                    },
+                    backgroundColor: Color(0xFF606134),
+                    child: Icon(Icons.save, color: Colors.white),
+                  ),
+                  SizedBox(height: 16),
+                  FloatingActionButton(
+                    onPressed: () {
+                      // Action pour éditer
+                    },
+                    backgroundColor: Color(0xFF606134),
+                    child: Icon(Icons.edit, color: Colors.white),
+                  ),
+                  SizedBox(height: 16),
+                  FloatingActionButton(
+                    onPressed: () async {
+                      await requestPermission();
+                      await pickImage();
+                    },
+                    backgroundColor: Color(0xFF606134),
+                    child: Icon(Icons.photo_library, color: Colors.white),
+                  ),
+                ],
               ),
             ),
           ),
