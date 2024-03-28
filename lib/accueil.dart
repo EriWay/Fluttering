@@ -109,3 +109,4 @@ class AccueilPage extends StatelessWidget {
     return prefs.getString('prenom') ?? ''; // Retourner une chaîne vide si le prénom n'est pas trouvé
   }
 }
+
