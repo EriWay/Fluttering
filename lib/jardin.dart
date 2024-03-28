@@ -40,7 +40,6 @@ class Jardin extends StatelessWidget{
                           foregroundColor: const Color(0x00000000),
                         ),
                         onPressed: (){}, 
-                        
                         child: Image.asset('assets/Fleur${0}${0}.png')
                         ),
                         ElevatedButton(
