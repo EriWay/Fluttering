@@ -11,13 +11,7 @@ import 'connect_inscr.dart';
 class Inscription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Page d\'Inscription',
-      theme: ThemeData(
-        primaryColor: Color(0xFF755846), // Couleur mocha (marron clair)
-        scaffoldBackgroundColor: Color(0xFFFCEBE2), // Fond beige
-      ),
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Center(
             child: Text('Inscription', style: TextStyle(color: Colors.white)), // Texte en blanc
@@ -51,8 +45,7 @@ class Inscription extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }
 

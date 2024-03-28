@@ -16,13 +16,7 @@ class Wellness extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Page de bien être',
-      theme: ThemeData(
-        primaryColor: const Color(0xFF755846), // Couleur mocha (marron clair) // Fond beige
-      ),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         body: GestureDetector(
           onTap: () {
             // Cela va retirer le focus du TextField actuel si l'utilisateur tapote en dehors du TextField
@@ -101,8 +95,7 @@ class Wellness extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
