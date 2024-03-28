@@ -82,8 +82,9 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
+                      Navigator.pushNamedAndRemoveUntil(context, '/profile', (Route<dynamic> route) => route.isFirst);
                       //Navigator.pushReplacementNamed(context, '/profile');
-                      Navigator.pushNamed(context, '/profile');
+                      //Navigator.pushNamed(context, '/profile');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: const Color(0xFF606134),
@@ -107,7 +108,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                       clicked = true;
                       toggle = !toggle;
                       //Navigator.pushReplacementNamed(context, '/wellness');
-                      Navigator.pushNamed(context, '/wellness');
+                      Navigator.pushNamedAndRemoveUntil(context, '/wellness', (Route<dynamic> route) => route.isFirst);
+                      //Navigator.pushNamed(context, '/wellness');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: const Color(0xFF606134),
@@ -130,8 +132,9 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
+                      Navigator.pushNamedAndRemoveUntil(context, '/calendar', (Route<dynamic> route) => route.isFirst);
                       //Navigator.pushReplacementNamed(context, '/calendar');
-                      Navigator.pushNamed(context, '/calendar');
+                      //Navigator.pushNamed(context, '/calendar');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: const Color(0xFF606134),
@@ -154,8 +157,9 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
+                      Navigator.pushNamedAndRemoveUntil(context, '/jardin', (Route<dynamic> route) => route.isFirst);
                       //Navigator.pushReplacementNamed(context, '/jardin');
-                      Navigator.pushNamed(context, '/jardin');
+                      //Navigator.pushNamed(context, '/jardin');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: const Color(0xFF606134),
@@ -178,7 +182,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      Navigator.pushReplacementNamed(context, '/param');
+                      Navigator.pushNamedAndRemoveUntil(context, '/param', (Route<dynamic> route) => route.isFirst);
+                      //Navigator.pushReplacementNamed(context, '/param');
                       //Navigator.pushNamed(context, '/param');
                     },
                     shape: const CircleBorder(),
@@ -205,7 +210,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                         toggle = !toggle;
                         _controller.reverse();
                       });
-                      Navigator.pushReplacementNamed(context, '/');
+                      //Navigator.pushReplacementNamed(context, '/');
+                      Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route) => route.isFirst);
                     },
                     shape: const CircleBorder(),
                     backgroundColor: const Color(0xFF606134),

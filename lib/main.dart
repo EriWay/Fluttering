@@ -28,7 +28,7 @@ class MainApp extends StatelessWidget {
       statusBarIconBrightness: Brightness.dark,// Status bar color
     ));
     return MaterialApp(
-      initialRoute: '/splash',
+      initialRoute: '/',
       debugShowCheckedModeBanner: false,
       routes: {
         '/splash' : (BuildContext context) => const SplashScreen(),
