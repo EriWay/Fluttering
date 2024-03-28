@@ -1,7 +1,10 @@
-
-import 'menuv2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+
 
 class ParametresPage extends StatefulWidget {
   @override
@@ -18,52 +21,31 @@ class _ParametresPageState extends State<ParametresPage> {
 
   void _showMessage(String message) {
     final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context as BuildContext).showSnackBar(snackBar);
   }
 
   void _navigateToChangePassword(BuildContext context) {
-    Navigator.of(context).push(PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          ChangePasswordScreen(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(1.0, 0.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-        var offsetAnimation = animation.drive(tween);
-
-        return SlideTransition(
-          position: offsetAnimation,
-          child: child,
-        );
-      },
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ChangePasswordScreen(),
     ));
   }
 
   void _navigateToMail(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => MailScreen(),
-      ),
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => MailScreen(),
+    ));
   }
 
   void _navigateToCodePin(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => CodePinScreen(),
-      ),
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => CodePinScreen(),
+    ));
   }
 
   void _navigateToPhone(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => PhoneScreen(),
-      ),
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => PhoneScreen(),
+    ));
   }
 
   @override
@@ -73,114 +55,125 @@ class _ParametresPageState extends State<ParametresPage> {
         title: Text('Paramètres'),
         backgroundColor: Color(0xFF755846),
       ),
-      body: ListView(
-        children: ListTile.divideTiles(
-          color: Colors.grey,
-          context: context,
-          tiles: [
-            SwitchListTile(
-              title: Text('Volume'),
-              value: isVolumeOn,
-              onChanged: (bool value) {
-                setState(() {
-                  isVolumeOn = value;
-                });
-              },
-              secondary: Icon(
-                  isVolumeOn
-                      ? FontAwesomeIcons.volumeUp
-                      : FontAwesomeIcons.volumeMute,
-                  color: iconColor),
-              activeColor: iconColor,
-              activeTrackColor: iconColor.withOpacity(0.5),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: SvgPicture.asset(
+              'assets/background.svg',
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover,
             ),
-            ListTile(
-              title: Text('Téléphone'),
-              leading: Icon(FontAwesomeIcons.phone, color: iconColor),
-              onTap: () => _navigateToPhone(context),
-            ),
-            ListTile(
-              title: Text('Mail'),
-              leading: Icon(FontAwesomeIcons.envelope, color: iconColor),
-              onTap: () => _navigateToMail(context),
-            ),
-            ListTile(
-              title: Text('Mot de passe'),
-              leading: Icon(FontAwesomeIcons.lock, color: iconColor),
-              onTap: () => _navigateToChangePassword(context),
-            ),
-            ListTile(
-              title: Text('Code PIN'),
-              leading: Icon(FontAwesomeIcons.key, color: iconColor),
-              onTap: () => _navigateToCodePin(context),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Autorisations',
-                      style: Theme.of(context).textTheme.headline6),
-                  SwitchListTile(
-                    title: Text('Notifications'),
-                    value: isNotificationsOn,
-                    onChanged: (bool value) {
-                      setState(() {
-                        isNotificationsOn = value;
-                      });
-                    },
-                    secondary: Icon(FontAwesomeIcons.bell, color: iconColor),
-                    activeColor: iconColor,
-                    activeTrackColor: iconColor.withOpacity(0.5),
+          ),
+          ListView(
+            children: ListTile.divideTiles(
+              color: Colors.grey,
+              context: context,
+              tiles: [
+                SwitchListTile(
+                  title: Text('Volume'),
+                  value: isVolumeOn,
+                  onChanged: (bool value) {
+                    setState(() {
+                      isVolumeOn = value;
+                    });
+                  },
+                  secondary: Icon(
+                    isVolumeOn
+                        ? FontAwesomeIcons.volumeUp
+                        : FontAwesomeIcons.volumeMute,
+                    color: iconColor,
                   ),
-                  SwitchListTile(
-                    title: Text('Galerie'),
-                    value: isGalleryOn,
-                    onChanged: (bool value) {
-                      setState(() {
-                        isGalleryOn = value;
-                      });
-                    },
-                    secondary: Icon(FontAwesomeIcons.images, color: iconColor),
-                    activeColor: iconColor,
-                    activeTrackColor: iconColor.withOpacity(0.5),
+                  activeColor: iconColor,
+                  activeTrackColor: iconColor.withOpacity(0.5),
+                ),
+                ListTile(
+                  title: Text('Téléphone'),
+                  leading: Icon(FontAwesomeIcons.phone, color: iconColor),
+                  onTap: () => _navigateToPhone(context),
+                ),
+                ListTile(
+                  title: Text('Mail'),
+                  leading: Icon(FontAwesomeIcons.envelope, color: iconColor),
+                  onTap: () => _navigateToMail(context),
+                ),
+                ListTile(
+                  title: Text('Mot de passe'),
+                  leading: Icon(FontAwesomeIcons.lock, color: iconColor),
+                  onTap: () => _navigateToChangePassword(context),
+                ),
+                ListTile(
+                  title: Text('Code PIN'),
+                  leading: Icon(FontAwesomeIcons.key, color: iconColor),
+                  onTap: () => _navigateToCodePin(context),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Autorisations',
+                          style: Theme.of(context).textTheme.headline6),
+                      SwitchListTile(
+                        title: Text('Notifications'),
+                        value: isNotificationsOn,
+                        onChanged: (bool value) {
+                          setState(() {
+                            isNotificationsOn = value;
+                          });
+                        },
+                        secondary: Icon(FontAwesomeIcons.bell, color: iconColor),
+                        activeColor: iconColor,
+                        activeTrackColor: iconColor.withOpacity(0.5),
+                      ),
+                      SwitchListTile(
+                        title: Text('Galerie'),
+                        value: isGalleryOn,
+                        onChanged: (bool value) {
+                          setState(() {
+                            isGalleryOn = value;
+                          });
+                        },
+                        secondary: Icon(FontAwesomeIcons.images, color: iconColor),
+                        activeColor: iconColor,
+                        activeTrackColor: iconColor.withOpacity(0.5),
+                      ),
+                      SwitchListTile(
+                        title: Text('Micro'),
+                        value: isMicroOn,
+                        onChanged: (bool value) {
+                          setState(() {
+                            isMicroOn = value;
+                          });
+                        },
+                        secondary: Icon(FontAwesomeIcons.microphone, color: iconColor),
+                        activeColor: iconColor,
+                        activeTrackColor: iconColor.withOpacity(0.5),
+                      ),
+                      SwitchListTile(
+                        title: Text('Caméra'),
+                        value: isCameraOn,
+                        onChanged: (bool value) {
+                          setState(() {
+                            isCameraOn = value;
+                          });
+                        },
+                        secondary: Icon(FontAwesomeIcons.cameraRetro, color: iconColor),
+                        activeColor: iconColor,
+                        activeTrackColor: iconColor.withOpacity(0.5),
+                      ),
+                    ],
                   ),
-                  SwitchListTile(
-                    title: Text('Micro'),
-                    value: isMicroOn,
-                    onChanged: (bool value) {
-                      setState(() {
-                        isMicroOn = value;
-                      });
-                    },
-                    secondary:
-                        Icon(FontAwesomeIcons.microphone, color: iconColor),
-                    activeColor: iconColor,
-                    activeTrackColor: iconColor.withOpacity(0.5),
-                  ),
-                  SwitchListTile(
-                    title: Text('Caméra'),
-                    value: isCameraOn,
-                    onChanged: (bool value) {
-                      setState(() {
-                        isCameraOn = value;
-                      });
-                    },
-                    secondary:
-                        Icon(FontAwesomeIcons.cameraRetro, color: iconColor),
-                    activeColor: iconColor,
-                    activeTrackColor: iconColor.withOpacity(0.5),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              title: Text('Déconnexion'),
-              leading: Icon(FontAwesomeIcons.powerOff, color: iconColor),
-              onTap: () => _showMessage('Déconnexion cliquée'),
-            ),
-          ],
-        ).toList(),
+                ),
+                ListTile(
+                  title: Text('Déconnexion'),
+                  leading: Icon(FontAwesomeIcons.powerOff, color: iconColor),
+                  onTap: () => _showMessage('Déconnexion cliquée'),
+                ),
+              ],
+            ).toList(),
+          ),
+        ],
       ),
       backgroundColor: Color(0xFFFCEBE2),
     );
@@ -199,10 +192,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Changer le mot de passe'),
-        backgroundColor: Color(0xFF755846), // Couleur de l'appBar inchangée
+        title: Text('Changer le mot de passe',
+            style: TextStyle(color: Colors.white)),
+        backgroundColor: Color(0xFF755846),
       ),
-      backgroundColor: Color(0xFFFCEBE2), // Couleur de fond changée ici
+      backgroundColor: Color(0xFFFCEBE2),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -214,86 +208,72 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
-              Theme(
-                data: Theme.of(context).copyWith(
-                  primaryColor: Colors.green, // Couleur du curseur
-                ),
-                child: TextField(
-                  obscureText: _obscureText,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF606134), // Bordure par défaut
-                        width: 1.25, // Épaisseur de la bordure
-                      ),
+              TextField(
+                obscureText: _obscureText,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF606134),
+                      width: 1.25,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF606134), // Couleur lorsqu'on écrit
-                        width: 2.0 *
-                            2.0, // Épaisseur de la bordure multipliée par 3
-                      ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF606134),
+                      width: 2.0 * 2.0,
                     ),
-                    labelText: 'Nouveau mot de passe',
-                    labelStyle: TextStyle(
-                      color: Color(
-                          0xFF606134), // Couleur du texte de la bordure changée ici
+                  ),
+                  labelText: 'Nouveau mot de passe',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF606134),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText
+                          ? FontAwesomeIcons.eyeSlash
+                          : FontAwesomeIcons.eye,
+                      color: Color(0xFF606134),
                     ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText
-                            ? FontAwesomeIcons.eyeSlash
-                            : FontAwesomeIcons.eye,
-                        color: Color(0xFF606134),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
                   ),
                 ),
               ),
               SizedBox(height: 20),
-              Theme(
-                data: Theme.of(context).copyWith(
-                  primaryColor: Color(0xFF606134), // Couleur du curseur
-                ),
-                child: TextField(
-                  obscureText: _obscureText,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF606134), // Bordure par défaut
-                        width: 1.25, // Épaisseur de la bordure
-                      ),
+              TextField(
+                obscureText: _obscureText,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF606134),
+                      width: 1.25,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF606134), // Couleur lorsqu'on écrit
-                        width: 2.0 *
-                            2.0, // Épaisseur de la bordure multipliée par 3
-                      ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF606134),
+                      width: 2.0 * 2.0,
                     ),
-                    labelText: 'Confirmez le mot de passe',
-                    labelStyle: TextStyle(
-                      color: Color(
-                          0xFF606134), // Couleur du texte de la bordure changée ici
+                  ),
+                  labelText: 'Confirmez le mot de passe',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF606134),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText
+                          ? FontAwesomeIcons.eyeSlash
+                          : FontAwesomeIcons.eye,
+                      color: Color(0xFF606134),
                     ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText
-                            ? FontAwesomeIcons.eyeSlash
-                            : FontAwesomeIcons.eye,
-                        color: Color(0xFF606134),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
                   ),
                 ),
               ),
@@ -303,10 +283,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   // Logique de changement de mot de passe
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(
-                      0xFF606134)), // Couleur du fond du bouton changée ici
+                  backgroundColor: MaterialStateProperty.all(Color(0xFF606134)),
                 ),
-                child: Text('Changer le mot de passe'),
+                child: Text('Changer le mot de passe', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
@@ -325,25 +304,7 @@ class _MailScreenState extends State<MailScreen> {
   final TextEditingController _mailController = TextEditingController();
 
   void _changeMail() {
-    // Logique de changement d'adresse mail (simulation)
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Changement d\'adresse mail'),
-          content: Text(
-              'Votre adresse mail serait changée en: ${_mailController.text}'),
-          actions: [
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+
   }
 
   @override
@@ -358,37 +319,31 @@ class _MailScreenState extends State<MailScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Theme(
-              data: Theme.of(context).copyWith(
-                primaryColor: Color(0xFF606134), // Couleur du curseur
-              ),
-              child: TextField(
-                controller: _mailController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color(0xFF606134), // Bordure par défaut
-                      width: 1.25, // Épaisseur de la bordure multipliée par 3
-                    ),
+            TextField(
+              controller: _mailController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xFF606134),
+                    width: 1.25,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color(0xFF606134), // Couleur lorsqu'on écrit
-                      width: 2.0 *
-                          2.0, // Épaisseur de la bordure lors de la saisie
-                    ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xFF606134),
+                    width: 2.0 * 2.0,
                   ),
-                  labelText: 'Nouvelle adresse mail',
-                  labelStyle: TextStyle(
-                    color: Color(0xFF606134), // Couleur du texte du label
-                  ),
+                ),
+                labelText: 'Nouvelle adresse mail',
+                labelStyle: TextStyle(
+                  color: Color(0xFF606134),
                 ),
               ),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _changeMail,
-              child: Text('Changer l\'adresse mail'),
+              child: Text('Changer l\'adresse mail', style: TextStyle(color: Colors.white)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Color(0xFF755846)),
               ),
@@ -415,13 +370,7 @@ class _CodePinScreenState extends State<CodePinScreen> {
   final TextEditingController pinController = TextEditingController();
 
   void _verifyAndNavigate() {
-    if (pinController.text == PinService.currentPin) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => ChangePinScreen()));
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Code PIN incorrect")));
-    }
+    // Logique de vérification du code PIN
   }
 
   @override
@@ -438,12 +387,7 @@ class _CodePinScreenState extends State<CodePinScreen> {
             TextField(
               controller: pinController,
               decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xFF606134),
-                    width: 1.25,
-                  ),
-                ),
+                border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Color(0xFF606134),
@@ -462,7 +406,7 @@ class _CodePinScreenState extends State<CodePinScreen> {
             ElevatedButton(
               onPressed: _verifyAndNavigate,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF606134), // Couleur de fond du bouton
+                backgroundColor: Color(0xFF606134),
               ),
               child: Text('Vérifier'),
             ),
@@ -473,71 +417,6 @@ class _CodePinScreenState extends State<CodePinScreen> {
   }
 }
 
-class ChangePinScreen extends StatefulWidget {
-  @override
-  _ChangePinScreenState createState() => _ChangePinScreenState();
-}
-
-class _ChangePinScreenState extends State<ChangePinScreen> {
-  final TextEditingController newPinController = TextEditingController();
-
-  void _changePin() {
-    PinService.currentPin = newPinController.text;
-    Navigator.popUntil(context, ModalRoute.withName('/'));
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("Code PIN changé avec succès")));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Changer le Code PIN'),
-        backgroundColor: Color(0xFF755846),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: newPinController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xFF606134),
-                    width: 1.25,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xFF606134),
-                    width: 2.0 * 2.0,
-                  ),
-                ),
-                labelText: 'Nouveau code PIN',
-                labelStyle: TextStyle(
-                  color: Color(0xFF606134),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _changePin,
-              child: Text('Changer'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PinService {
-  static String currentPin = "0000"; // Code PIN par défaut
-}
-
 class PhoneScreen extends StatefulWidget {
   @override
   _PhoneScreenState createState() => _PhoneScreenState();
@@ -546,26 +425,34 @@ class PhoneScreen extends StatefulWidget {
 class _PhoneScreenState extends State<PhoneScreen> {
   final TextEditingController _phoneController = TextEditingController();
 
-  void _changePhone() {
-    // Logique pour changer le numéro de téléphone
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Changement de numéro de téléphone'),
-          content: Text(
-              'Votre numéro de téléphone sera changé en : ${_phoneController.text}.'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  Future<void> _changePhone(BuildContext context) async {
+    try {
+      // Récupérer l'identifiant de l'utilisateur à partir de SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int userId = prefs.getInt('num_utilisateur') ?? 0; // Remplacez 'user_id' par la clé correcte
+      print('$userId');
+      // Ouvrir la connexion à la base de données
+      String databasesPath = await getDatabasesPath();
+      String path = join(databasesPath, 'my_database.db');
+      Database database = await openDatabase(path);
 
+      // Mettre à jour le numéro de téléphone de l'utilisateur dans la base de données
+      await database.rawUpdate(
+          'UPDATE User SET num_telephone = ? WHERE num_utilisateur = ?',
+          [_phoneController.text, userId]);
+
+      // Fermer la connexion à la base de données
+      await database.close();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Numéro de téléphone mis à jour avec succès $userId')),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de la mise à jour du numéro de téléphone')),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -580,13 +467,12 @@ class _PhoneScreenState extends State<PhoneScreen> {
           children: <Widget>[
             TextField(
               controller: _phoneController,
-              keyboardType: TextInputType.number, // Clavier numérique
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
-                  // Bordure en état de saisie
                   borderSide: BorderSide(
-                    color: Color(0xFF606134), // Couleur spécifique
+                    color: Color(0xFF606134),
                     width: 2.0 * 2.0,
                   ),
                 ),
@@ -598,12 +484,11 @@ class _PhoneScreenState extends State<PhoneScreen> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _changePhone,
+              onPressed: () => _changePhone(context),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                    Color(0xFF606134)), // Couleur du bouton
+                backgroundColor: MaterialStateProperty.all(Color(0xFF755846)),
               ),
-              child: Text('Changer le numéro de téléphone'),
+              child: Text('Changer le numéro de téléphone', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -617,4 +502,3 @@ class _PhoneScreenState extends State<PhoneScreen> {
     super.dispose();
   }
 }
-

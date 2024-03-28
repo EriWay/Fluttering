@@ -154,7 +154,7 @@ class _LoginFormState extends State<LoginForm> {
   Future<void> saveUserData(String prenom, String nomUtilisateur) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('prenom', prenom);
-    await prefs.setString('nomUtilisateur', nomUtilisateur);
+    await prefs.setString('num_utilisateur', nomUtilisateur);
 
   }
 
