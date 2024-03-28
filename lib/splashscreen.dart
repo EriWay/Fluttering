@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'BDD.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
@@ -31,6 +31,7 @@ class SplashState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    BDD.initializeDatabase();
   return Scaffold(
     body: Stack(
       children: <Widget>[
@@ -45,7 +46,6 @@ class SplashState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-
                 'assets/img.png',
                 width: MediaQuery.of(context).size.width/3,
                 alignment: Alignment.center,

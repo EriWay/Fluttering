@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'accueil.dart';
@@ -21,20 +23,32 @@ class Inscription extends StatelessWidget {
           ),
           backgroundColor: Color(0xFF755846), // Couleur mocha (marron clair)
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Image.asset(
-                  'assets/img.png',
-                  height: 300,
-                  width: 300,
-                ),
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: SvgPicture.asset(
+                'assets/background.svg',
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
               ),
-              SignUpForm(),
-            ],
-          ),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Image.asset(
+                      'assets/img.png',
+                      height: 300,
+                      width: 300,
+                    ),
+                  ),
+                  SignUpForm(),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -59,6 +73,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    removeUserId();
     BDD.initializeDatabase();
     return Padding(
       padding: EdgeInsets.all(16.0),
@@ -246,7 +261,7 @@ class _SignUpFormState extends State<SignUpForm> {
     }
 
     await addUserToDatabase(nom, prenom, id, mail, mdp, phone);
-
+    await findID(id,mdp);
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -324,5 +339,49 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       conflictAlgorithm: ConflictAlgorithm.ignore,
     );
+  }
+
+  Future<void> saveUserData(String prenom, String nomUtilisateur) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('prenom', prenom);
+    await prefs.setString('nomUtilisateur', nomUtilisateur);
+
+  }
+
+  Future<void> findID(identifiant,motDePasse) async {
+
+
+      final Future<Database> database = openDatabase(
+        join(await getDatabasesPath(), 'my_database.db'),
+        version: 1,
+      );
+
+      final Database db = await database;
+
+    final List<Map<String, dynamic>> users = await db.rawQuery(
+        'SELECT * FROM User WHERE Identifiant = ? AND mdp = ?',
+        [identifiant, motDePasse]);
+
+    if (users.isNotEmpty) {
+      // Récupérer les données de l'utilisateur
+      final user = users.first;
+      final String prenom = user['prenom'];
+      final int numUtilisateur = user['num_utilisateur'] as int; // Modifier le type de la variable
+
+      // Stocker les informations localement
+      await saveUserData(prenom, numUtilisateur.toString()); // Convertir en String si nécessaire
+
+
+    } else {
+      // L'utilisateur n'est pas trouvé ou les identifiants sont incorrects
+      print('Identifiants incorrects');
+    }
+  }
+
+  Future<void> removeUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('prenom');
+    await prefs.remove('num_utilisateur');
+
   }
 }

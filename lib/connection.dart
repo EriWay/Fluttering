@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'accueil.dart';
@@ -12,7 +13,14 @@ class Connection extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          // Ajoutez votre image de fond ou autre élément en arrière-plan ici
+          Positioned.fill(
+            child: SvgPicture.asset(
+              'assets/background.svg',
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover,
+            ),
+          ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
