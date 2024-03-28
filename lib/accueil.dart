@@ -91,21 +91,7 @@ class AccueilPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF755846),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/splash');
-                      },
-                      child: Text(
-                        'Aller à la SplashScreen',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+
                     Menu()
                   ],
                 ),
