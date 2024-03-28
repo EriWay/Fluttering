@@ -21,6 +21,7 @@ class Wellness extends StatelessWidget {
       theme: ThemeData(
         primaryColor: const Color(0xFF755846), // Couleur mocha (marron clair) // Fond beige
       ),
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: GestureDetector(
           onTap: () {
@@ -48,7 +49,7 @@ class Wellness extends StatelessWidget {
                     Column(
                       children: [
                         SommeilText(),
-                         ButtonRow(),
+                        ButtonRow(),
                       ],
                     ),
                     const Padding(
@@ -197,12 +198,12 @@ class ButtonRow extends StatefulWidget {
 class _ButtonRowState extends State<ButtonRow> {
   int _activeButtonIndex = -1;
   List<ButtonInfo> buttons = [
-    ButtonInfo(text: " moins de 2h", color: Color(0xFFFFDCC7) ),
-    ButtonInfo(text: "2h à 4h", color: Color(0xFFFFDCC7)),
-    ButtonInfo(text: "4h à 6h", color: Color(0xFFFFDCC7)),
-    ButtonInfo(text: "6h à 8h", color: Color(0xFFFFDCC7)),
-    ButtonInfo(text: "8h à 10h", color: Color(0xFFFFDCC7)),
-    ButtonInfo(text: "plus de 10h", color: Color(0xFFFFDCC7)),
+    ButtonInfo(text: " moins de 2h", color: const Color(0xFFFFDCC7) ),
+    ButtonInfo(text: "2h à 4h", color: const Color(0xFFFFDCC7)),
+    ButtonInfo(text: "4h à 6h", color: const Color(0xFFFFDCC7)),
+    ButtonInfo(text: "6h à 8h", color: const Color(0xFFFFDCC7)),
+    ButtonInfo(text: "8h à 10h", color: const Color(0xFFFFDCC7)),
+    ButtonInfo(text: "plus de 10h", color: const Color(0xFFFFDCC7)),
   ];
 
   @override
@@ -414,7 +415,7 @@ class ActivityTextField extends StatelessWidget {
                 fontSize: 14.0, // Taille de la police
                 fontStyle: FontStyle.italic, // Style de la police
               ),
-              fillColor: Color(0xFFFFDCC7),
+              fillColor: const Color(0xFFFFDCC7),
               filled: true,
 
               border: OutlineInputBorder( // Bordure appliquée en tous temps

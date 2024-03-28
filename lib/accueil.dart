@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helloworld/menuv2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AccueilPage extends StatelessWidget {
   @override
@@ -11,7 +10,7 @@ class AccueilPage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Afficher un indicateur de chargement tant que le prénom est en cours de récupération
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
@@ -25,7 +24,7 @@ class AccueilPage extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
                 automaticallyImplyLeading: false,
-                backgroundColor: const Color(0xFFF755846),
+                backgroundColor: const Color(0xFF755846),
                 centerTitle: true,
               ),
               body: Container(

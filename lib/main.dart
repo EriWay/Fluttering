@@ -13,7 +13,7 @@ import 'inscription.dart';
 import 'majournee.dart';
 
 void main() {
-
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   runApp(const MainApp());
 }
@@ -27,7 +27,7 @@ class MainApp extends StatelessWidget {
       statusBarIconBrightness: Brightness.dark,// Status bar color
     ));
     return MaterialApp(
-      initialRoute: '/wellness',
+      initialRoute: '/splash',
       debugShowCheckedModeBanner: false,
       routes: {
         '/splash' : (BuildContext context) => const SplashScreen(),

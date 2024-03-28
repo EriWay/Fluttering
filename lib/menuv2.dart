@@ -178,8 +178,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      //Navigator.pushReplacementNamed(context, '/param');
-                      Navigator.pushNamed(context, '/param');
+                      Navigator.pushReplacementNamed(context, '/param');
+                      //Navigator.pushNamed(context, '/param');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: const Color(0xFF606134),
