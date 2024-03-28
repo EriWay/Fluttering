@@ -5,7 +5,10 @@ import 'bienetre.dart';
 import 'jardin.dart';
 import 'parametres.dart';
 import 'profil.dart';
+import 'package:flutter/services.dart';
 void main() {
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   runApp(const MainApp());
 }
 class MainApp extends StatelessWidget {
@@ -13,8 +16,12 @@ class MainApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,// Status bar color
+    ));
     return MaterialApp(
-      initialRoute: '/',
+      initialRoute: '/wellness',
       routes: {
         '/' : (BuildContext context)=> AccueilPage(),
         '/wellness' : (BuildContext context)=>const Wellness(),

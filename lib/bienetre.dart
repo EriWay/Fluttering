@@ -3,76 +3,110 @@ import 'menuv2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 
-class Wellness extends StatelessWidget {
+/*TODO : mettre une variable sur le nombre de verre, sommeil, productivité et
+        activité (string), + back date
+        visuel ok
+*/
 
+class Wellness extends StatelessWidget {
   const Wellness({super.key});
-  @override
 
   final String date = '16.07.2024';
+
+  @override
+
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Page de bien être',
+      theme: ThemeData(
+        primaryColor: const Color(0xFF755846), // Couleur mocha (marron clair) // Fond beige
+      ),
+      home: Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            // Cela va retirer le focus du TextField actuel si l'utilisateur tapote en dehors du TextField
+            // et ainsi fermer le clavier
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: SvgPicture.asset(
+                  'assets/background.svg',
+                  fit: BoxFit.cover, // Assure que l'SVG couvre tout l'écran
+                ),
+              ),
+              SingleChildScrollView(
+                padding: const EdgeInsets.only(top: 80.0), // Ajustez cette valeur en fonction de la hauteur de votre header
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: DayDate(),
+                    ),
+                    Column(
+                      children: [
+                        SommeilText(),
+                         ButtonRow(),
+                      ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(20),
+                    ),
+                    Column(
+                      children: [
+                        HydratationText(),
+                        HydratationSwitcher(),
+                      ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(20),
+                    ),
 
-        title: 'Page de bien être',
-        theme: ThemeData(
-          primaryColor: Color(
-              0xFF755846), // Couleur mocha (marron clair)// Fond beige
-        ),
-        home: Scaffold(
-            body: Stack(
+                    Column(
+                      children: [
+                      ActivityText(),
+                      const ActivityTextField(),
+                  ]
+                ),
+                    const Padding(
+                      padding: EdgeInsets.all(20),
+                    ),
 
-                children: [
-                  Positioned.fill(
-                      child: SvgPicture.asset(
-                        'background.svg',
-                        fit: BoxFit
-                            .cover, // Assure que l'SVG couvre tout l'écran
-                      )
+                    Column(
+                        children: [
+                          ProductiviteText(),
+                          StarSwitcher(),
+                        ]
+                    ),
+                    const Menu(),
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  width: double.infinity,
+                  color: const Color(0xFF755846),
+                  padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                  child: const Text(
+                    'Bien-être',
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                    textAlign: TextAlign.center,
                   ),
-                  Column(
-
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Container(
-                          color: Color(0xFF755846),
-                          padding: EdgeInsets.all(20.0),
-                          child: Text('Bien-être',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 24),
-                              textAlign: TextAlign.center),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0),
-                          child: DayDate(),
-                        ),
-                        Container(
-                          child: Column(
-                            children: [
-                              SommeilText(),
-                              ButtonTimeContainer(),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Column(
-                            children: [
-                              HydratationText(),
-                              HydratationSwitcher(),
-                            ],
-                          ),
-                        ),
-                        Menu(),
-                      ]
-                  )
-                ]
-            )
-        )
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
 
 class ButtonTimeContainer extends StatefulWidget {
-  @override
+  const ButtonTimeContainer({super.key});
   _ButtonTimeContainerState createState() => _ButtonTimeContainerState();
 }
 
@@ -84,10 +118,10 @@ class _ButtonTimeContainerState extends State<ButtonTimeContainer> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0), // Décalage des bords gauche et droit
             child: Container(
               decoration: BoxDecoration(
-                color: Color (0xFFFFDCC7),
+                color: const Color (0xFFFFDCC7),
                 borderRadius: BorderRadius.circular(10.0), // Bords arrondis du conteneur
               ),
-              padding: EdgeInsets.all(10.0), // Espacement intérieur du conteneur
+              padding: const EdgeInsets.all(10.0), // Espacement intérieur du conteneur
               child: ButtonRow(), // Inclure ButtonRow à l'intérieur du conteneur
             )
         )
@@ -96,16 +130,32 @@ class _ButtonTimeContainerState extends State<ButtonTimeContainer> {
 }
 
 class DayDate extends StatelessWidget {
+  final date = "16.07.2024";
   @override
-  String date = '16.07.2024';
   Widget build(BuildContext context) {
     return Center(
-      child: Text('journée du $date',
-          style : TextStyle (
-              fontSize: 16.0,
-              color : Color (0xFF606134)
-          )
-      ),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            const TextSpan(
+              text: "Journée du ",
+              style: TextStyle(
+                  color: Color(0xFF606134),
+                  fontSize: 17,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w300),
+            ),
+            TextSpan(
+              text: date,
+              style: const TextStyle(
+                  color: Color(0xFF606134),
+                  fontSize: 18,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w500),
+            )
+          ],
+        ),
+      )
     );
   }
 }
@@ -113,10 +163,10 @@ class DayDate extends StatelessWidget {
 class SommeilText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return const Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: Text(
           'Sommeil',
           style: TextStyle(
@@ -147,7 +197,7 @@ class ButtonRow extends StatefulWidget {
 class _ButtonRowState extends State<ButtonRow> {
   int _activeButtonIndex = -1;
   List<ButtonInfo> buttons = [
-    ButtonInfo(text: " moins de 2h", color: Color(0xFFFFDCC7)),
+    ButtonInfo(text: " moins de 2h", color: Color(0xFFFFDCC7) ),
     ButtonInfo(text: "2h à 4h", color: Color(0xFFFFDCC7)),
     ButtonInfo(text: "4h à 6h", color: Color(0xFFFFDCC7)),
     ButtonInfo(text: "6h à 8h", color: Color(0xFFFFDCC7)),
@@ -164,24 +214,28 @@ class _ButtonRowState extends State<ButtonRow> {
         alignment: WrapAlignment.center, // Alignement des boutons au centre
         children: List.generate(buttons.length, (index) {
           return ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: buttons[index].color),
             onPressed: () {
               setState(() {
                 // Vérifie si le bouton actif est le même que celui sur lequel on vient d'appuyer
                 if (_activeButtonIndex == index) {
                   // Restaure la couleur d'origine
-                  buttons[index].color = Color(0xFFFFDCC7);
+                  buttons[index].color = const Color(0xFFFFDCC7);
                   _activeButtonIndex = -1; // Aucun bouton actif
                 } else {
                   // Met à jour la couleur du bouton actif en VERT
                   for (var i = 0; i < buttons.length; i++) {
-                    buttons[i].color = Color(0xFFFFDCC7);
+                    buttons[i].color = const Color(0xFFFFDCC7);
                   }
-                  buttons[index].color = Color(0xFF606134);
+                  buttons[index].color = const Color(0xFF606134);
                   _activeButtonIndex = index;
                 }
               });
             },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: buttons[index].color,
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.w400, // Gras pour le texte du bouton
+            )),
             child: Text(
               buttons[index].text,
               style: TextStyle(
@@ -200,10 +254,10 @@ class _ButtonRowState extends State<ButtonRow> {
 class HydratationText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return const Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: Text(
           'Hydratation',
           style: TextStyle(
@@ -238,12 +292,30 @@ class VerreInfo {
 
 class _HydratationSwitcherState extends State<HydratationSwitcher> {
   List<VerreInfo> verres = [
-    VerreInfo(imagePlein: 'verre_plein.svg', imageVide: 'verre_vide.svg'),
-    VerreInfo(imagePlein: 'verre_plein.png', imageVide: 'verre_vide.png', estPlein: true),
-    VerreInfo(imagePlein: 'verre_plein.png', imageVide: 'verre_vide.png'),
+    VerreInfo(imagePlein: 'assets/verre_plein.png', imageVide: 'assets/verre_vide.png'),
+    VerreInfo(imagePlein: 'assets/verre_plein.png', imageVide: 'assets/verre_vide.png'),
+    VerreInfo(imagePlein: 'assets/verre_plein.png', imageVide: 'assets/verre_vide.png'),
+    VerreInfo(imagePlein: 'assets/verre_plein.png', imageVide: 'assets/verre_vide.png'),
+    VerreInfo(imagePlein: 'assets/verre_plein.png', imageVide: 'assets/verre_vide.png'),
+    VerreInfo(imagePlein: 'assets/verre_plein.png', imageVide: 'assets/verre_vide.png'),
+    VerreInfo(imagePlein: 'assets/verre_plein.png', imageVide: 'assets/verre_vide.png'),
+    VerreInfo(imagePlein: 'assets/verre_plein.png', imageVide: 'assets/verre_vide.png'),
     // Ajoutez autant de verres que nécessaire
   ];
 
+  void _handleTap(int tappedIndex) {
+    setState(() {
+      for (int i = 0; i < verres.length; i++) {
+        // Si l'index de l'étoile est inférieur ou égal à l'index tapé, marquez-le comme plein
+        if (i <= tappedIndex) {
+          verres[i].estPlein = true;
+        } else {
+          // Sinon, marquez-le comme vide
+          verres[i].estPlein = false;
+        }
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -255,16 +327,204 @@ class _HydratationSwitcherState extends State<HydratationSwitcher> {
           VerreInfo verre = verres[index];
           return ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: verre.estPlein ? Colors.green : Color(0xFFFFDCC7), // Vert si plein, sinon couleur d'origine
-              minimumSize: Size(100, 100), // Taille minimum du bouton
+              backgroundColor: const Color(0xffFFDCC7), // Vert si plein, sinon couleur d'origine
+              minimumSize: const Size(20, 40), // Taille minimum du bouton
             ),
-            onPressed: () {
-              setState(() {
-                verres[index].estPlein = !verres[index].estPlein;
-              });
-            },
+            onPressed: () => _handleTap(index),
             child: Image.asset(
               verre.estPlein ? verre.imagePlein : verre.imageVide,
+              fit: BoxFit.cover, // Pour que l'image prenne toute la place du bouton
+            ),
+          );
+        }),
+      ),
+    );
+  }
+}
+
+class ButtonHydratationContainer extends StatefulWidget {
+  @override
+  _ButtonHydratationContainerState createState() => _ButtonHydratationContainerState();
+}
+
+class _ButtonHydratationContainerState extends State<ButtonHydratationContainer> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0), // Décalage des bords gauche et droit
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color (0xFFFFDCC7),
+                borderRadius: BorderRadius.circular(10.0), // Bords arrondis du conteneur
+              ),
+              padding: const EdgeInsets.all(10.0), // Espacement intérieur du conteneur
+              child: HydratationSwitcher(), // Inclure ButtonRow à l'intérieur du conteneur
+            )
+        )
+    );
+  }
+}
+
+class ActivityText extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Text(
+          'Activité',
+          style: TextStyle(
+            fontSize: 18.0,
+            color: Color(0xFF606134),
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ActivityTextField extends StatelessWidget {
+  const ActivityTextField({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Utilisation d'un GestureDetector pour détecter les touchers en dehors du TextField
+    return GestureDetector(
+      onTap: () {
+        // Enlève le focus du TextField actuellement en focus et ferme le clavier
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      // Utilisation d'un comportement opaque pour s'assurer que le GestureDetector capture le toucher
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.only(left :20.0, right : 20),
+        child: SingleChildScrollView(
+          reverse: true,
+          child: TextField(
+            keyboardType: TextInputType.multiline,
+            maxLines: null, // Permet au TextField de prendre plusieurs lignes
+            decoration: InputDecoration(
+              hintText: 'Quelle activité faite aujourd\'hui vous rend fier?',
+              hintStyle: const TextStyle( // Personnaliser le style du label/hint
+                color: Color(0x7F606134), // Couleur du texte du label
+                fontSize: 14.0, // Taille de la police
+                fontStyle: FontStyle.italic, // Style de la police
+              ),
+              fillColor: Color(0xFFFFDCC7),
+              filled: true,
+
+              border: OutlineInputBorder( // Bordure appliquée en tous temps
+                borderRadius: BorderRadius.circular(8.0), // Bords arrondis
+                borderSide: BorderSide.none, // Aucune ligne/bordure
+              ),
+              enabledBorder: OutlineInputBorder( // Bordure en état normal
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder( // Bordure quand le TextField est en focus
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide.none,
+              ),
+              errorBorder: OutlineInputBorder( // Bordure en cas d'erreur
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide.none,
+              ),
+              focusedErrorBorder: OutlineInputBorder( // Bordure en focus lorsqu'il y a une erreur
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide.none,
+              ),// Active le remplissage
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class StarSwitcher extends StatefulWidget {
+  @override
+  _StarSwitcherState createState() => _StarSwitcherState();
+}
+
+
+class ProductiviteText extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Text(
+          'Productivité',
+          style: TextStyle(
+            fontSize: 18.0,
+            color: Color(0xFF606134),
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class StarInfo {
+  String imagePlein;
+  String imageVide;
+  bool estPlein;
+
+  StarInfo({
+    required this.imagePlein,
+    required this.imageVide,
+    this.estPlein = false,
+  });
+}
+
+
+class _StarSwitcherState extends State<StarSwitcher> {
+  List<StarInfo> stars = [
+    StarInfo(imagePlein: 'assets/Filled_star.png', imageVide: 'assets/empty_star.png'),
+    StarInfo(imagePlein: 'assets/Filled_star.png', imageVide: 'assets/empty_star.png'),
+    StarInfo(imagePlein: 'assets/Filled_star.png', imageVide: 'assets/empty_star.png'),
+    StarInfo(imagePlein: 'assets/Filled_star.png', imageVide: 'assets/empty_star.png'),
+    StarInfo(imagePlein: 'assets/Filled_star.png', imageVide: 'assets/empty_star.png'),
+  ];
+
+  void _handleTap(int tappedIndex) {
+    setState(() {
+      for (int i = 0; i < stars.length; i++) {
+        // Si l'index de l'étoile est inférieur ou égal à l'index tapé, marquez-le comme plein
+        if (i <= tappedIndex) {
+          stars[i].estPlein = true;
+        } else {
+          // Sinon, marquez-le comme vide
+          stars[i].estPlein = false;
+        }
+      }
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Wrap(
+        spacing: 5.0, // Espacement horizontal entre les verres
+        runSpacing: 10.0, // Espacement vertical entre les lignes de verres
+        alignment: WrapAlignment.center, // Alignement des verres au centre
+        children: List.generate(stars.length, (index) {
+          StarInfo star = stars[index];
+          return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xffFFDCC7), // Vert si plein, sinon couleur d'origine
+              minimumSize: const Size(10, 40), // Taille minimum du bouton
+            ),
+            onPressed: () => _handleTap(index),
+            child: Image.asset(
+              star.estPlein ? star.imagePlein : star.imageVide,
               fit: BoxFit.cover, // Pour que l'image prenne toute la place du bouton
             ),
           );
