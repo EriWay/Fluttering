@@ -41,6 +41,7 @@ class _CalendrierPageState extends State<CalendrierPage> {
           'Calendrier',
           style: TextStyle(color: Colors.white),
         ),
+        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF755846),
         centerTitle: true,
       ),

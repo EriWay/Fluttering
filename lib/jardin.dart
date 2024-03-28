@@ -48,6 +48,7 @@ class Jardin extends StatelessWidget{
           'Mon jardin secret',
           style: TextStyle(color: Colors.white),
         ),
+        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF755846),
         centerTitle: true,
       ),

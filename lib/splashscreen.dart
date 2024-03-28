@@ -35,13 +35,13 @@ class SplashState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? prenom = prefs.getString('prenom');
     final String? numUtilisateur = prefs.getString('num_utilisateur');
-    if (prenom != null && numUtilisateur != null) {
+    if (prenom != null && numUtilisateur != null && mounted) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (BuildContext context) => PinPage()),
       );
-    } else {
-       {
+    } else if (mounted){
+      {
         Navigator.pushReplacementNamed(context, '/choose');
       }
     }
