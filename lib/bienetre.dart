@@ -6,12 +6,12 @@ class Wellness extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold (
+    return  const Scaffold (
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Text("Ceci est le bien etre"),
+            Text("Ceci est le bien etre"),
             Menu()
           ],
         ),

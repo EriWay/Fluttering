@@ -9,7 +9,6 @@ import 'jardin.dart';
 import 'parametres.dart';
 import 'profil.dart';
 import 'inscription.dart';
-
 void main() {
   runApp(const MainApp());
 }
@@ -30,7 +29,7 @@ class MainApp extends StatelessWidget {
         '/wellness' : (BuildContext context)=>const Wellness(),
         '/calendar' : (BuildContext context)=> CalendrierPage(),
         '/jardin' : (BuildContext context)=> const Jardin(),
-        '/param' : (BuildContext context)=> const Parametres(),
+        '/param' : (BuildContext context)=> ParametresPage(),
         '/profile' : (BuildContext context)=> const Profile(),
       },
     );

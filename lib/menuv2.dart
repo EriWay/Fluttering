@@ -57,15 +57,13 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
   double size3 = 50.0;
   double size4 = 50.0;
   double size5 = 50.0;
+  bool clicked = false;
 
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Center(
-        child: Container(
+    return Center(
+        child: SizedBox(
           height: 250.0,
           width: 250.0,
           child: Stack(
@@ -82,6 +80,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Profile',
                     onPressed: (){
+                      clicked = true;
                       toggle = !toggle;
                       Navigator.pushReplacementNamed(context, '/profile');
                     },
@@ -104,6 +103,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Wellness',
                     onPressed: (){
+                      clicked = true;
                       toggle = !toggle;
                       Navigator.pushReplacementNamed(context, '/wellness');
                     },
@@ -126,6 +126,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Calendar',
                     onPressed: (){
+                      clicked = true;
                       toggle = !toggle;
                       Navigator.pushReplacementNamed(context, '/calendar');
                     },
@@ -148,6 +149,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Jardin',
                     onPressed: (){
+                      clicked = true;
                       toggle = !toggle;
                       Navigator.pushReplacementNamed(context, '/jardin');
                     },
@@ -170,6 +172,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Param',
                     onPressed: (){
+                      clicked = true;
                       toggle = !toggle;
                       Navigator.pushReplacementNamed(context, '/param');
                     },
@@ -192,6 +195,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   child: FloatingActionButton(
                     heroTag: 'Home',
                     onPressed: (){
+                      clicked = true;
                       setState(() {
                         toggle = !toggle;
                         _controller.reverse();
@@ -243,13 +247,13 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                                   alignment5 = const Alignment(1.0, 0.0);
                                 });
                                 Future.delayed(const Duration(seconds: 8), (){
-                                  toggle = !toggle;
+                                  if (!clicked) {toggle = !toggle;
                                   _controller.reverse();
                                   alignment1 = const Alignment(0.0, 0.0);
                                   alignment2 = const Alignment(0.0, 0.0);
                                   alignment3 = const Alignment(0.0, 0.0); 
                                   alignment4 = const Alignment(0.0, 0.0); 
-                                  alignment5 = const Alignment(0.0, 0.0); 
+                                  alignment5 = const Alignment(0.0, 0.0); }
                                 });
                               }else{
                                 toggle = !toggle;
@@ -273,7 +277,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
             ],
           ),
         ),
-      ),
-    );
+      );
+    
   }
 }
