@@ -8,7 +8,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-import 'bdd.dart'; // Importez la classe BDD
+import 'bdd.dart';
+import 'majournee.dart'; // Importez la classe BDD
 
 class PageHumeur extends StatefulWidget {
   @override
@@ -167,7 +168,14 @@ class _PageHumeur extends State<PageHumeur> {
               style: TextStyle(fontSize: 16),
 
             ),
-            ]), Spacer(flex: 2,)
+            ]), Spacer(flex: 2,),
+        ElevatedButton(
+          onPressed: () async {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => NotebookPage()));
+          },
+          child: Text('Editer'),
+        )
+
           ],
         ),
        ),],),
