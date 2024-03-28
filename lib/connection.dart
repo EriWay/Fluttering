@@ -107,11 +107,14 @@ class _LoginFormState extends State<LoginForm> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (BuildContext context) => ConnInscr()), // Rediriger vers la page de connexion
-                );              },
-              child: const Text('Retour',
-                  style: TextStyle(color: Colors.white)),
+                );
+              },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF755846), // Couleur rouge pour le bouton Retour
+                backgroundColor: const Color(0xFF755846), // Couleur rouge pour le bouton Retour
+              ),
+              child: const Text(
+                'Retour',
+                style: TextStyle(color: Colors.white)
               ),
             ),
           ],
@@ -141,8 +144,8 @@ class _LoginFormState extends State<LoginForm> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Connection réussie'),
-            content: Text('Vous êtes maintenant connecté !'),
+            title: const Text('Connection réussie'),
+            content: const Text('Vous êtes maintenant connecté !'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -152,7 +155,7 @@ class _LoginFormState extends State<LoginForm> {
                     MaterialPageRoute(builder: (BuildContext context) => AccueilPage()), // Remplace la page actuelle par une autre page
                   );
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );

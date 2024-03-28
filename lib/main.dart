@@ -8,20 +8,27 @@ import 'bienetre.dart';
 import 'jardin.dart';
 import 'parametres.dart';
 import 'profil.dart';
+import 'package:flutter/services.dart';
 import 'inscription.dart';
 import 'majournee.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   runApp(const MainApp());
 }
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
   
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,// Status bar color
+    ));
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       initialRoute: '/splash',
+      debugShowCheckedModeBanner: false,
       routes: {
         '/splash' : (BuildContext context) => const SplashScreen(),
         '/choose' : (BuildContext context) => const ConnInscr(),
