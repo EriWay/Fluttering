@@ -30,6 +30,14 @@ class Jardin extends StatelessWidget{
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  Image.asset('Fleur'+1.toString()+".png"),
+                  Image.asset(''),
+                  Image.asset(''),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0x00000000),
