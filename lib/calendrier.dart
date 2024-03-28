@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'menuv2.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class CalendrierPage extends StatefulWidget {
   @override
@@ -35,6 +36,7 @@ class _CalendrierPageState extends State<CalendrierPage> {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -67,6 +69,7 @@ class _CalendrierPageState extends State<CalendrierPage> {
                       lastDay: DateTime.utc(2030, 3, 14),
                       focusedDay: _focusedDay,
                       calendarFormat: _calendarFormat,
+                      locale: 'fr_FR',
                       selectedDayPredicate: (day) {
                         return isSameDay(_selectedDay, day);
                       },
