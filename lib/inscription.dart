@@ -6,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'accueil.dart';
 import 'BDD.dart';
+import 'connect_inscr.dart';
 
 class Inscription extends StatelessWidget {
   @override
@@ -196,6 +197,18 @@ class _SignUpFormState extends State<SignUpForm> {
                 backgroundColor: Color(0xFF755846),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => ConnInscr()), // Rediriger vers la page de connexion
+                );              },
+              child: const Text('Retour',
+                  style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF755846), // Couleur rouge pour le bouton Retour
               ),
             ),
           ],

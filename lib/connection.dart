@@ -5,6 +5,8 @@ import 'package:sqflite/sqflite.dart';
 import 'accueil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'connect_inscr.dart';
+
 class Connection extends StatelessWidget {
   const Connection({Key? key}) : super(key: key);
 
@@ -99,6 +101,18 @@ class _LoginFormState extends State<LoginForm> {
               ),
               child: const Text('Se connecter',
                   style: TextStyle(color: Colors.white)),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => ConnInscr()), // Rediriger vers la page de connexion
+                );              },
+              child: const Text('Retour',
+                  style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF755846), // Couleur rouge pour le bouton Retour
+              ),
             ),
           ],
         ),

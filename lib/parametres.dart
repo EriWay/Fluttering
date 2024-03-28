@@ -5,18 +5,44 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import 'package:permission_handler/permission_handler.dart';
+
+
 class ParametresPage extends StatefulWidget {
   @override
   _ParametresPageState createState() => _ParametresPageState();
 }
 
 class _ParametresPageState extends State<ParametresPage> {
-  bool isVolumeOn = true;
+  bool isVolumeOn =
+      true; // Exemple, cette permission n'est pas gérée par permission_handler
   bool isNotificationsOn = true;
   bool isGalleryOn = true;
   bool isMicroOn = true;
   bool isCameraOn = true;
   final iconColor = Color(0xFF606134);
+
+  @override
+  void initState() {
+    super.initState();
+    _requestPermissions();
+  }
+
+  void _requestPermissions() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.camera,
+      Permission.microphone,
+      Permission.photos,
+      Permission.notification,
+    ].request();
+
+    setState(() {
+      isCameraOn = statuses[Permission.camera]?.isGranted ?? false;
+      isMicroOn = statuses[Permission.microphone]?.isGranted ?? false;
+      isGalleryOn = statuses[Permission.photos]?.isGranted ?? false;
+      isNotificationsOn = statuses[Permission.notification]?.isGranted ?? false;
+    });
+  }
 
   void _showMessage(String message) {
     final snackBar = SnackBar(content: Text(message));
@@ -637,7 +663,3 @@ class _PhoneScreenState extends State<PhoneScreen> {
     super.dispose();
   }
 }
-
-
-
-

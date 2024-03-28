@@ -64,6 +64,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Center(
         child: SizedBox(
+    return Center(
+        child: SizedBox(
           height: 250.0,
           width: 250.0,
           child: Stack(
