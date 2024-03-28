@@ -9,6 +9,8 @@ import 'jardin.dart';
 import 'parametres.dart';
 import 'profil.dart';
 import 'inscription.dart';
+import 'majournee.dart';
+
 void main() {
   runApp(const MainApp());
 }
@@ -19,7 +21,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) { 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/param',
+      initialRoute: '/splash',
       routes: {
         '/splash' : (BuildContext context) => const SplashScreen(),
         '/choose' : (BuildContext context) => const ConnInscr(),
@@ -28,9 +30,10 @@ class MainApp extends StatelessWidget {
         '/' : (BuildContext context)=> AccueilPage(),
         '/wellness' : (BuildContext context)=>const Wellness(),
         '/calendar' : (BuildContext context)=> CalendrierPage(),
-        '/jardin' : (BuildContext context)=> const Jardin(),
+        '/jardin' : (BuildContext context)=> Jardin(),
         '/param' : (BuildContext context)=> ParametresPage(),
         '/profile' : (BuildContext context)=> const Profile(),
+        '/majournee' : (BuildContext context)=> NotebookBackgroundPage(),
       },
     );
   }

@@ -4,9 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-
 import 'package:permission_handler/permission_handler.dart';
-
+import 'menuv2.dart';
 
 class ParametresPage extends StatefulWidget {
   @override
@@ -53,8 +52,13 @@ class _ParametresPageState extends State<ParametresPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Paramètres'),
-        backgroundColor: Color(0xFF755846),
+        title: const Text(
+          'Paramètres',
+          style: TextStyle(color: Colors.white),
+        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color(0xFF755846),
+        centerTitle: true,
       ),
       body: Stack(
         children: [
@@ -72,7 +76,7 @@ class _ParametresPageState extends State<ParametresPage> {
               context: context,
               tiles: [
                 SwitchListTile(
-                  title: Text('Volume'),
+                  title: const Text('Volume'),
                   value: isVolumeOn,
                   onChanged: (bool value) {
                     setState(() {
@@ -81,25 +85,25 @@ class _ParametresPageState extends State<ParametresPage> {
                   },
                   secondary: Icon(
                     isVolumeOn
-                        ? FontAwesomeIcons.volumeUp
-                        : FontAwesomeIcons.volumeMute,
+                        ? FontAwesomeIcons.volumeHigh
+                        : FontAwesomeIcons.volumeXmark,
                     color: iconColor,
                   ),
                   activeColor: iconColor,
                   activeTrackColor: iconColor.withOpacity(0.5),
                 ),
                 ListTile(
-                  title: Text('Téléphone'),
+                  title: const Text('Téléphone'),
                   leading: Icon(FontAwesomeIcons.phone, color: iconColor),
                   onTap: () => _navigateToPhone(context),
                 ),
                 ListTile(
-                  title: Text('Mail'),
+                  title: const Text('Mail'),
                   leading: Icon(FontAwesomeIcons.envelope, color: iconColor),
                   onTap: () => _navigateToMail(context),
                 ),
                 ListTile(
-                  title: Text('Mot de passe'),
+                  title: const Text('Mot de passe'),
                   leading: Icon(FontAwesomeIcons.lock, color: iconColor),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -108,7 +112,7 @@ class _ParametresPageState extends State<ParametresPage> {
                   },
                 ),
                 ListTile(
-                  title: Text('Code PIN'),
+                  title: const Text('Code PIN'),
                   leading: Icon(FontAwesomeIcons.key, color: iconColor),
                   onTap: () => _navigateToCodePin(context),
                 ),
@@ -118,9 +122,9 @@ class _ParametresPageState extends State<ParametresPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Autorisations',
-                          style: Theme.of(context).textTheme.headline6),
+                          style: Theme.of(context).textTheme.titleLarge),
                       SwitchListTile(
-                        title: Text('Notifications'),
+                        title: const Text('Notifications'),
                         value: isNotificationsOn,
                         onChanged: (bool value) {
                           setState(() {
@@ -132,7 +136,7 @@ class _ParametresPageState extends State<ParametresPage> {
                         activeTrackColor: iconColor.withOpacity(0.5),
                       ),
                       SwitchListTile(
-                        title: Text('Galerie'),
+                        title: const Text('Galerie'),
                         value: isGalleryOn,
                         onChanged: (bool value) {
                           setState(() {
@@ -144,7 +148,7 @@ class _ParametresPageState extends State<ParametresPage> {
                         activeTrackColor: iconColor.withOpacity(0.5),
                       ),
                       SwitchListTile(
-                        title: Text('Micro'),
+                        title: const Text('Micro'),
                         value: isMicroOn,
                         onChanged: (bool value) {
                           setState(() {
@@ -156,7 +160,7 @@ class _ParametresPageState extends State<ParametresPage> {
                         activeTrackColor: iconColor.withOpacity(0.5),
                       ),
                       SwitchListTile(
-                        title: Text('Caméra'),
+                        title: const Text('Caméra'),
                         value: isCameraOn,
                         onChanged: (bool value) {
                           setState(() {
@@ -171,17 +175,17 @@ class _ParametresPageState extends State<ParametresPage> {
                   ),
                 ),
                 ListTile(
-                  title: Text('Déconnexion'),
+                  title: const Text('Déconnexion'),
                   leading: Icon(FontAwesomeIcons.powerOff, color: iconColor),
                   onTap: () => _logout(context),
                 ),
-
+                const Menu(),
               ],
             ).toList(),
           ),
         ],
       ),
-      backgroundColor: Color(0xFFFCEBE2),
+      backgroundColor: const Color(0xFFFCEBE2),
     );
   }
 
@@ -243,18 +247,18 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         await database.close();
         // Affiche un message de succès si la mise à jour du mot de passe est réussie
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Mot de passe changé avec succès')),
+          const SnackBar(content: Text('Mot de passe changé avec succès')),
         );
       } catch (error) {
         // Affiche un message d'erreur si la mise à jour du mot de passe échoue
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur lors du changement de mot de passe')),
+          const SnackBar(content: Text('Erreur lors du changement de mot de passe')),
         );
       }
     } else {
       // Affiche un message d'erreur si les mots de passe ne correspondent pas
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Les mots de passe ne correspondent pas')),
+        const SnackBar(content: Text('Les mots de passe ne correspondent pas')),
       );
     }
   }
@@ -263,11 +267,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Changer le mot de passe',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFF755846),
+        backgroundColor: const Color(0xFF755846),
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -282,29 +286,29 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     '',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     controller: _newPasswordController,
                     obscureText: _obscureText,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
+                      border: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0xFF606134),
                           width: 1.25,
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0xFF606134),
                           width: 2.0 * 2.0,
                         ),
                       ),
                       labelText: 'Nouveau mot de passe',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Color(0xFF606134),
                       ),
                       suffixIcon: IconButton(
@@ -312,7 +316,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           _obscureText
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: Color(0xFF606134),
+                          color: const Color(0xFF606134),
                         ),
                         onPressed: () {
                           setState(() {
@@ -322,25 +326,25 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     controller: _confirmPasswordController,
                     obscureText: _obscureText,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
+                      border: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0xFF606134),
                           width: 1.25,
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0xFF606134),
                           width: 2.0 * 2.0,
                         ),
                       ),
                       labelText: 'Confirmez le mot de passe',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Color(0xFF606134),
                       ),
                       suffixIcon: IconButton(
@@ -348,7 +352,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           _obscureText
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: Color(0xFF606134),
+                          color: const Color(0xFF606134),
                         ),
                         onPressed: () {
                           setState(() {
@@ -358,13 +362,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   ElevatedButton(
                     onPressed: () => _changePassword(context),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Color(0xFF755846)),
+                      backgroundColor: MaterialStateProperty.all(const Color(0xFF755846)),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Changer le mot de passe',
                       style: TextStyle(color: Colors.white),
                     ),
@@ -401,11 +405,11 @@ class _MailScreenState extends State<MailScreen> {
       await database.close();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Votre mail a correctement été mis à jour')),
+        const SnackBar(content: Text('Votre mail a correctement été mis à jour')),
       );
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur lors du changement de mail')),
+        const SnackBar(content: Text('Erreur lors du changement de mail')),
       );
     }
   }
@@ -414,8 +418,8 @@ class _MailScreenState extends State<MailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mail'),
-        backgroundColor: Color(0xFF755846),
+        title: const Text('Mail'),
+        backgroundColor: const Color(0xFF755846),
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -425,13 +429,13 @@ class _MailScreenState extends State<MailScreen> {
             fit: BoxFit.cover, // Assurez-vous que l'image SVG couvre tout l'écran
           ),
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 TextField(
                   controller: _mailController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xFF606134),
@@ -450,13 +454,13 @@ class _MailScreenState extends State<MailScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () => _changeMail(context),
-                  child: Text('Changer l\'adresse mail', style: TextStyle(color: Colors.white)),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Color(0xFF755846)),
+                    backgroundColor: MaterialStateProperty.all(const Color(0xFF755846)),
                   ),
+                  child: const Text('Changer l\'adresse mail', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
@@ -480,7 +484,7 @@ class CodePinScreen extends StatefulWidget {
 
 class _CodePinScreenState extends State<CodePinScreen> {
   final TextEditingController newPinController = TextEditingController();
-  bool _obscureText = true;
+  final bool _obscureText = true;
 
   Future<void> _changePin(BuildContext context) async {
     String newPin = newPinController.text;
@@ -488,7 +492,7 @@ class _CodePinScreenState extends State<CodePinScreen> {
     // Vérification des conditions du nouveau code PIN (par exemple, longueur)
     if (newPin.length < 4) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Le code PIN doit contenir au moins 4 chiffres'),
         ),
       );
@@ -507,12 +511,12 @@ class _CodePinScreenState extends State<CodePinScreen> {
 
       await database.close();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Code PIN changé avec succès')),
+        const SnackBar(content: Text('Code PIN changé avec succès')),
       );
     } catch (error) {
       // Affiche un message d'erreur si la mise à jour du mot de passe échoue
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur lors du changement du PIN')),
+        const SnackBar(content: Text('Erreur lors du changement du PIN')),
       );
     }
   }
@@ -521,8 +525,8 @@ class _CodePinScreenState extends State<CodePinScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Code PIN'),
-        backgroundColor: Color(0xFF755846),
+        title: const Text('Code PIN'),
+        backgroundColor: const Color(0xFF755846),
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -533,13 +537,13 @@ class _CodePinScreenState extends State<CodePinScreen> {
             fit: BoxFit.cover,
           ),
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 TextField(
                   controller: newPinController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
@@ -555,13 +559,13 @@ class _CodePinScreenState extends State<CodePinScreen> {
                   keyboardType: TextInputType.number,
                   obscureText: _obscureText,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () => _changePin(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF755846),
+                    backgroundColor: const Color(0xFF755846),
                   ),
-                  child: Text('Changer le code PIN', style: TextStyle(color: Colors.white)),
+                  child: const Text('Changer le code PIN', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
@@ -596,11 +600,11 @@ class _PhoneScreenState extends State<PhoneScreen> {
       await database.close();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Numéro de téléphone mis à jour avec succès')),
+        const SnackBar(content: Text('Numéro de téléphone mis à jour avec succès')),
       );
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur lors de la mise à jour du numéro de téléphone')),
+        const SnackBar(content: Text('Erreur lors de la mise à jour du numéro de téléphone')),
       );
     }
   }
@@ -609,8 +613,8 @@ class _PhoneScreenState extends State<PhoneScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Téléphone'),
-        backgroundColor: Color(0xFF755846),
+        title: const Text('Téléphone'),
+        backgroundColor: const Color(0xFF755846),
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -620,14 +624,14 @@ class _PhoneScreenState extends State<PhoneScreen> {
             fit: BoxFit.cover, // Assurez-vous que l'image SVG couvre tout l'écran
           ),
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 TextField(
                   controller: _phoneController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
@@ -641,13 +645,13 @@ class _PhoneScreenState extends State<PhoneScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () => _changePhone(context),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Color(0xFF755846)),
+                    backgroundColor: MaterialStateProperty.all(const Color(0xFF755846)),
                   ),
-                  child: Text('Changer le numéro de téléphone', style: TextStyle(color: Colors.white)),
+                  child: const Text('Changer le numéro de téléphone', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),

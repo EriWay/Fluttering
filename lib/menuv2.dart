@@ -82,10 +82,11 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      Navigator.pushReplacementNamed(context, '/profile');
+                      //Navigator.pushReplacementNamed(context, '/profile');
+                      Navigator.pushNamed(context, '/profile');
                     },
                     shape: const CircleBorder(),
-                    backgroundColor: Colors.green,
+                    backgroundColor: const Color(0xFF606134),
                     child: const Icon(FontAwesomeIcons.user, color: Colors.white,),
                   ),
                 ),
@@ -105,10 +106,11 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      Navigator.pushReplacementNamed(context, '/wellness');
+                      //Navigator.pushReplacementNamed(context, '/wellness');
+                      Navigator.pushNamed(context, '/wellness');
                     },
                     shape: const CircleBorder(),
-                    backgroundColor: Colors.green,
+                    backgroundColor: const Color(0xFF606134),
                     child: const Icon(FontAwesomeIcons.handsPraying, color: Colors.white,),
                   ),
                 ),
@@ -128,10 +130,11 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      Navigator.pushReplacementNamed(context, '/calendar');
+                      //Navigator.pushReplacementNamed(context, '/calendar');
+                      Navigator.pushNamed(context, '/calendar');
                     },
                     shape: const CircleBorder(),
-                    backgroundColor: Colors.green,
+                    backgroundColor: const Color(0xFF606134),
                     child: const Icon(FontAwesomeIcons.calendar, color: Colors.white,),
                   ),
                 ),
@@ -151,10 +154,11 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      Navigator.pushReplacementNamed(context, '/jardin');
+                      //Navigator.pushReplacementNamed(context, '/jardin');
+                      Navigator.pushNamed(context, '/jardin');
                     },
                     shape: const CircleBorder(),
-                    backgroundColor: Colors.green,
+                    backgroundColor: const Color(0xFF606134),
                     child: const Icon(FontAwesomeIcons.leaf, color: Colors.white,),
                   ),
                 ),
@@ -174,10 +178,11 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      Navigator.pushReplacementNamed(context, '/param');
+                      //Navigator.pushReplacementNamed(context, '/param');
+                      Navigator.pushNamed(context, '/param');
                     },
                     shape: const CircleBorder(),
-                    backgroundColor: Colors.green,
+                    backgroundColor: const Color(0xFF606134),
                     child: const Icon(FontAwesomeIcons.gear, color: Colors.white,),
                   ),
                 ),
@@ -203,7 +208,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                       Navigator.pushReplacementNamed(context, '/');
                     },
                     shape: const CircleBorder(),
-                    backgroundColor: Colors.green,
+                    backgroundColor: const Color(0xFF606134),
                     child: const Icon(FontAwesomeIcons.house, color: Colors.white,),
                   ),
                 ),
@@ -219,7 +224,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                       height: toggle ? 70.0 : 0.0,
                       width: toggle ? 70.0 : 0.0,
                       decoration: BoxDecoration(
-                          color: Colors.green,
+                          color: const Color(0xFF606134),
                           borderRadius: BorderRadius.circular(60.0)),
                       child: Material(
                         color: Colors.transparent,

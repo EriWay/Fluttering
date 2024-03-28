@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'BDD.dart';
-import 'Pin.dart';
+import 'pin.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key});
@@ -35,13 +35,13 @@ class SplashState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? prenom = prefs.getString('prenom');
     final String? numUtilisateur = prefs.getString('num_utilisateur');
-    if (prenom != null && numUtilisateur != null) {
+    if (prenom != null && numUtilisateur != null && mounted) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (BuildContext context) => PinPage()),
       );
-    } else {
-       {
+    } else if (mounted){
+      {
         Navigator.pushReplacementNamed(context, '/choose');
       }
     }
