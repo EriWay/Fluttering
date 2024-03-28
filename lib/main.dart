@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:helloworld/calendrier.dart';
+import 'connection.dart';
+import 'calendrier.dart';
+import 'connect_inscr.dart';
+import 'splashscreen.dart';
 import 'accueil.dart';
 import 'bienetre.dart';
 import 'jardin.dart';
 import 'parametres.dart';
 import 'profil.dart';
 import 'package:flutter/services.dart';
+import 'inscription.dart';
+import 'majournee.dart';
+
 void main() {
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -22,13 +28,19 @@ class MainApp extends StatelessWidget {
     ));
     return MaterialApp(
       initialRoute: '/wellness',
+      debugShowCheckedModeBanner: false,
       routes: {
+        '/splash' : (BuildContext context) => const SplashScreen(),
+        '/choose' : (BuildContext context) => const ConnInscr(),
+        '/register' : (BuildContext context) => Inscription(),
+        '/login' : (BuildContext context)=> const Connection(),
         '/' : (BuildContext context)=> AccueilPage(),
         '/wellness' : (BuildContext context)=>const Wellness(),
         '/calendar' : (BuildContext context)=> CalendrierPage(),
-        '/jardin' : (BuildContext context)=> const Jardin(),
-        '/param' : (BuildContext context)=> const Parametres(),
+        '/jardin' : (BuildContext context)=> Jardin(),
+        '/param' : (BuildContext context)=> ParametresPage(),
         '/profile' : (BuildContext context)=> const Profile(),
+        '/majournee' : (BuildContext context)=> NotebookBackgroundPage(),
       },
     );
   }

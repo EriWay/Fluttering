@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'menuv2.dart';
 
 class CalendrierPage extends StatefulWidget {
   @override
@@ -35,53 +37,70 @@ class _CalendrierPageState extends State<CalendrierPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Calendrier',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFFF755846),
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color(0xFF755846),
         centerTitle: true,
       ),
-      body: Container(
-        color: Color(0xFFFCEBE2),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TableCalendar<dynamic>(
-                firstDay: DateTime.utc(2010, 10, 16),
-                lastDay: DateTime.utc(2030, 3, 14),
-                focusedDay: _focusedDay,
-                calendarFormat: _calendarFormat,
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  if (!isSameDay(_selectedDay, selectedDay)) {
-                    setState(() {
-                      _selectedDay = selectedDay;
-                      _focusedDay = focusedDay;
-                      _selectedEvents.value = _getEventsForDay(selectedDay);
-                    });
-                  }
-                },
-                onFormatChanged: (format) {
-                  if (_calendarFormat != format) {
-                    setState(() {
-                      _calendarFormat = format;
-                    });
-                  }
-                },
-                onPageChanged: (focusedDay) {
-                  _focusedDay = focusedDay;
-                },
-                // Pass other properties according to your requirements
-              ),
-              // Continue with the rest of your UI
-            ],
+      body: Stack(
+        children: <Widget>[
+          SvgPicture.asset(
+            'assets/background.svg',
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.cover,
           ),
+          Column(
+          children: [
+            Container(
+              color: const Color(0x00000000),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    TableCalendar<dynamic>(
+                      firstDay: DateTime.utc(2010, 10, 16),
+                      lastDay: DateTime.utc(2030, 3, 14),
+                      focusedDay: _focusedDay,
+                      calendarFormat: _calendarFormat,
+                      selectedDayPredicate: (day) {
+                        return isSameDay(_selectedDay, day);
+                      },
+                      onDaySelected: (selectedDay, focusedDay) {
+                        if (!isSameDay(_selectedDay, selectedDay)) {
+                          setState(() {
+                            _selectedDay = selectedDay;
+                            _focusedDay = focusedDay;
+                            _selectedEvents.value = _getEventsForDay(selectedDay);
+                          });
+                        }
+                      },
+                      onFormatChanged: (format) {
+                        if (_calendarFormat != format) {
+                          setState(() {
+                            _calendarFormat = format;
+                          });
+                        }
+                      },
+                      onPageChanged: (focusedDay) {
+                        _focusedDay = focusedDay;
+                      },
+                      // Pass other properties according to your requirements
+                    ),
+                    // Continue with the rest of your UI
+                  ],
+                ),
+              ),
+            ),
+            const Spacer(),
+            const Menu(),
+          ],
         ),
+        ],
       ),
     );
   }
