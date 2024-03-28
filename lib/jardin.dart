@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'menuv2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'BDD.dart';
 
 class Jardin extends StatelessWidget{
-  const Jardin({super.key});
+  Jardin({super.key});
+
+  final _popupMenu = GlobalKey<PopupMenuButtonState>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,7 @@ class Jardin extends StatelessWidget{
                           foregroundColor: const Color(0x00000000),
                         ),
                         onPressed: (){}, 
-                        child: Image.asset('assets/Fleur${0}${0}.png')
+                        child: Image.asset('assets/Fleur${1}${1}.png')
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -66,15 +69,27 @@ class Jardin extends StatelessWidget{
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0x00000000),
-                          shadowColor: const Color(0x00000000),
-                          surfaceTintColor: const Color(0x00000000),
+                      PopupMenuButton(
+                        key: _popupMenu,
+                        tooltip: "",
+                        itemBuilder: (context)=>[
+                          const PopupMenuItem(child: Text("1")),
+                          const PopupMenuItem(child: Text("2")),
+                          const PopupMenuItem(child: Text("3")),
+                        ],
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0x00000000),
+                            shadowColor: const Color(0x00000000),
+                            surfaceTintColor: const Color(0x00000000),
+                          ),
+                          onPressed: (){
+                            _popupMenu.currentState?.showButtonMenu();
+                          },
+                          child: Image.asset('assets/Pot.png'),
                         ),
-                        onPressed: (){}, 
-                        child: Image.asset('assets/Pot.png')
-                        ),
+                      ),
+                      
                         ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0x00000000),
@@ -102,7 +117,7 @@ class Jardin extends StatelessWidget{
               Image.asset('assets/etagewe.png'),
               const Spacer(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -136,7 +151,7 @@ class Jardin extends StatelessWidget{
               Image.asset('assets/etagewe.png'),
               const Spacer(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -144,6 +159,7 @@ class Jardin extends StatelessWidget{
                       shadowColor: const Color(0x00000000),
                       surfaceTintColor: const Color(0x00000000),
                     ),
+                    onHover: (value) {},
                     onPressed: (){}, 
                     child: Image.asset('assets/Pot.png')
                     ),
@@ -168,7 +184,7 @@ class Jardin extends StatelessWidget{
                 ],
               ),
               Image.asset('assets/etagewe.png'),
-              const Spacer(),
+              //const Spacer(),
               const Menu(),
             ],
           )

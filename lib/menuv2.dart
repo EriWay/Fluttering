@@ -82,7 +82,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      Navigator.pushReplacementNamed(context, '/profile');
+                      //Navigator.pushReplacementNamed(context, '/profile');
+                      Navigator.pushNamed(context, '/profile');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
@@ -105,7 +106,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      Navigator.pushReplacementNamed(context, '/wellness');
+                      //Navigator.pushReplacementNamed(context, '/wellness');
+                      Navigator.pushNamed(context, '/wellness');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
@@ -128,7 +130,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      Navigator.pushReplacementNamed(context, '/calendar');
+                      //Navigator.pushReplacementNamed(context, '/calendar');
+                      Navigator.pushNamed(context, '/calendar');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
@@ -151,7 +154,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      Navigator.pushReplacementNamed(context, '/jardin');
+                      //Navigator.pushReplacementNamed(context, '/jardin');
+                      Navigator.pushNamed(context, '/jardin');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
@@ -174,7 +178,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                     onPressed: (){
                       clicked = true;
                       toggle = !toggle;
-                      Navigator.pushReplacementNamed(context, '/param');
+                      //Navigator.pushReplacementNamed(context, '/param');
+                      Navigator.pushNamed(context, '/param');
                     },
                     shape: const CircleBorder(),
                     backgroundColor: Colors.green,
