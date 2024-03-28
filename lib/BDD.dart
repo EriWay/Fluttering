@@ -17,6 +17,14 @@ class BDD {
               'CREATE TABLE Notes (num_utilisateur INTEGER, date TEXT PRIMARY KEY, humeur TEXT, image TEXT, vocal TEXT, texte TEXT)');
           await db.execute(
               'CREATE TABLE BienEtre (id INTEGER PRIMARY KEY, num_utilisateur INTEGER, date TEXT, eau INTEGER, dodo INTEGER, activite INTEGER, productivite INTEGER)');
+          await db.execute(
+              'CREATE TABLE Plantes (num_utilisateur INTEGER, num_pot INTEGER, type_fleur INTEGER, pousse INTEGER)');
+          await db.execute(
+              'CREATE TABLE TotalPlantes (num_utilisateur INTEGER, fleur0 INTEGER, fleur1 INTEGER, fleur2 INTEGER)');
+        
+          await db.rawInsert(
+                'INSERT INTO User(nom, prenom, Identifiant, mail, num_telephone, mdp, PIN) VALUES(?, ?, ?, ?, ?, ?, ?)',
+                ['Pain', 'Anthonin', 'Antho', 'anthoninpain@hotmail.fr', '0623908480', 'Antho', 1234]);
         });
 
     // Fermer la connexion à la base de données
