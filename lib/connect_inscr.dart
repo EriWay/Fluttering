@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'connection.dart';
+import 'inscription.dart';
+
 class ConnInscr extends StatelessWidget {
   const ConnInscr({super.key});
 
@@ -34,8 +37,10 @@ class ConnInscr extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                 ),
                 onPressed: (){
-                  Navigator.pushReplacementNamed(context, '/register');
-                }, 
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (BuildContext context) => Inscription()), // Remplace la page actuelle par une autre page
+                  );                },
                 child: const Text("Inscription", style: TextStyle(color: Colors.white)),
                 
               ),
@@ -46,8 +51,10 @@ class ConnInscr extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                 ),
                 onPressed: (){
-                  Navigator.pushReplacementNamed(context, '/login');
-                }, child: const Text("Connection", style: TextStyle(color: Colors.white))
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (BuildContext context) => Connection()), // Remplace la page actuelle par une autre page
+                  );                       }, child: const Text("Connection", style: TextStyle(color: Colors.white))
               ),
               const Spacer(flex: 5)
             ], 
