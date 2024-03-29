@@ -20,6 +20,7 @@ class _PageHumeur extends State<PageHumeur> {
   XFile? _image;
   int selectedSmileyIndex = -1;
   String? _noteText;
+  SharedPreferences? prefs;
 
   @override
   void initState() {
@@ -54,8 +55,8 @@ class _PageHumeur extends State<PageHumeur> {
   }
 
   Future<void> _getNoteText() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? formattedDate = prefs.getString('selectedDate');
+    prefs = await SharedPreferences.getInstance();
+    String? formattedDate = prefs!.getString('selectedDate');
 
     if (formattedDate != null) {
       String databasesPath = await getDatabasesPath();
@@ -88,9 +89,8 @@ class _PageHumeur extends State<PageHumeur> {
         backgroundColor: Color(0xFF755846),
         centerTitle: true, // Centrer le titre
       ),
-      body:Stack (
-
-        children :[
+      body: prefs != null ? Stack(
+        children: [
           SvgPicture.asset(
             'assets/background.svg',
             alignment: Alignment.center,
@@ -98,87 +98,126 @@ class _PageHumeur extends State<PageHumeur> {
             fit: BoxFit.cover,
           ),
           Container(
-
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                _getCurrentDate(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Stack(
-                children: [
-                  if (_image != null)
-                    Positioned(
-                      top: MediaQuery.of(context).size.height * 0.7,
-                      left: 0,
-                      right: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Image.file(File(_image!.path)),
-                      ),
-                    ),
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * 0.010,
-                    left: 0,
-                    right: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-
-                          SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(
-                              5,
-                                  (index) {
-                                return SmileyButton(
-                                  icon: _getSmileyIcon(index),
-                                  isSelected: selectedSmileyIndex == index,
-                                  onTap: () => selectSmiley(index),
-                                  position: index,
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    prefs!.getString('selectedDate') ?? '', // Utiliser prefs pour récupérer la date
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ],
-              ),
-            ),
-            Stack (alignment: Alignment.center,
-              children :[Image.asset(
-                'assets/cahier.png'),
-          if (_noteText != null)
-            Text(
-              _noteText!,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
+                ),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      if (_image != null)
+                        Positioned(
+                          top: MediaQuery.of(context).size.height * 0.7,
+                          left: 0,
+                          right: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Image.file(File(_image!.path)),
+                          ),
+                        ),
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * 0.010,
+                        left: 0,
+                        right: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: List.generate(
+                                  5,
+                                      (index) {
+                                    return SmileyButton(
+                                      icon: _getSmileyIcon(index),
+                                      isSelected: selectedSmileyIndex == index,
+                                      onTap: () => selectSmiley(index),
+                                      position: index,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/cahier.png',
+                    ),
+                    if (_noteText != null)
+                      Text(
+                        _noteText!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                  ],
+                ),
+                Spacer(flex: 2,),
+                ElevatedButton(
+                  onPressed: () async {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => NotebookPage()));
+                  },
+                  child: Text('Editer'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    // Vérifier si une note existe déjà pour la date sélectionnée
+                    String? formattedDate = prefs!.getString('selectedDate');
 
-            ),
-            ]), Spacer(flex: 2,),
-        ElevatedButton(
-          onPressed: () async {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => NotebookPage()));
-          },
-          child: Text('Editer'),
-        )
+                    if (formattedDate != null) {
+                      // Récupérer le chemin de la base de données
+                      String databasesPath = await getDatabasesPath();
+                      String path = join(databasesPath, 'my_database.db');
+                      Database database = await openDatabase(path);
 
-          ],
-        ),
-       ),],),
+                      // Vérifier si une note existe déjà pour la date sélectionnée
+                      List<Map<String, dynamic>> result = await database.rawQuery(
+                        'SELECT * FROM Notes WHERE date = ?',
+                        [formattedDate],
+                      );
+
+                      // Si aucune note n'existe pour cette date, insérer une nouvelle note
+                      if (result.isEmpty) {
+                        await database.rawInsert(
+                          'INSERT INTO Notes(num_utilisateur, date, humeur, image, vocal, texte) VALUES(?, ?, ?, ?, ?, ?)',
+                          [1, formattedDate, 'Humeur', '', '', ''],
+                        );
+                        print('Nouvelle note insérée pour la date : $formattedDate');
+                      } else {
+                        print('Une note existe déjà pour la date : $formattedDate');
+                      }
+
+                      // Fermer la connexion à la base de données
+                      await database.close();
+                    } else {
+                      print('Date non sélectionnée');
+                    }
+                  },
+                  child: Text('Sauvegarder'),
+                )
+              ],
+            ),
+          ),
+        ],
+      ) : Center(child: CircularProgressIndicator()), // Afficher une indication de chargement si prefs est null
     );
   }
 
@@ -199,11 +238,7 @@ class _PageHumeur extends State<PageHumeur> {
     }
   }
 
-  String _getCurrentDate() {
-    DateTime now = DateTime.now();
-    String formattedDate = "${now.day}/${now.month}/${now.year}";
-    return formattedDate;
-  }
+
 }
 
 class SmileyButton extends StatelessWidget {
