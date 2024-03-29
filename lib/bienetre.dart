@@ -102,6 +102,48 @@ class Wellness extends StatelessWidget {
   }
 }
 
+Future<void> saveSleepTime(int sleepHours) async {
+  final dbPath = await getDatabasesPath();
+  final path = join(dbPath, 'my_database.db');
+  final database = await openDatabase(path);
+
+  // Utilisez l'ID réel de l'utilisateur connecté
+  const userId = 1; // Exemple pour un utilisateur avec un ID fixe
+
+  // La date devrait être passée correctement en fonction de la manière dont votre application gère les dates
+  String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  // Vérifiez d'abord si une entrée existe déjà pour la date actuelle
+  final existingData = await database.query(
+    'BienEtre',
+    where: 'num_utilisateur = ? AND date = ?',
+    whereArgs: [userId, currentDate],
+  );
+
+  if (existingData.isNotEmpty) {
+    // Mise à jour de l'entrée existante
+    await database.update(
+      'BienEtre',
+      {'dodo': sleepHours},
+      where: 'num_utilisateur = ? AND date = ?',
+      whereArgs: [userId, currentDate],
+    );
+  } else {
+    // Création d'une nouvelle entrée
+    await database.insert(
+      'BienEtre',
+      {
+        'num_utilisateur': userId,
+        'date': currentDate,
+        'dodo': sleepHours,
+        // Autres champs ici...
+      },
+    );
+  }
+
+  await database.close();
+}
+
 class ButtonTimeContainer extends StatefulWidget {
   const ButtonTimeContainer({super.key});
   _ButtonTimeContainerState createState() => _ButtonTimeContainerState();
@@ -201,6 +243,7 @@ class _ButtonRowState extends State<ButtonRow> {
     ButtonInfo(text: "8h à 10h", color: const Color(0xFFFFDCC7)),
     ButtonInfo(text: "plus de 10h", color: const Color(0xFFFFDCC7)),
   ];
+  List<int> sleepHoursMapping = [2, 4, 6, 8, 10, 12];
 
   @override
   Widget build(BuildContext context) {
@@ -212,6 +255,8 @@ class _ButtonRowState extends State<ButtonRow> {
         children: List.generate(buttons.length, (index) {
           return ElevatedButton(
             onPressed: () {
+              int sleepHours = sleepHoursMapping[index]; // Obtenez les heures de sommeil correspondantes
+              saveSleepTime(sleepHours); // Enregistrez les heures de sommeil
               setState(() {
                 // Vérifie si le bouton actif est le même que celui sur lequel on vient d'appuyer
                 if (_activeButtonIndex == index) {
