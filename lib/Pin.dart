@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+import 'accueil.dart';
 import 'connection.dart'; // Import de la page de connexion
 import 'connect_inscr.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PinPage extends StatefulWidget {
   @override
@@ -34,13 +36,25 @@ class _PinPageState extends State<PinPage> {
         backgroundColor: Color(0xFF755846),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
+        children: [
+      Positioned.fill(
+      child: SvgPicture.asset(
+        'assets/background.svg',
+        fit: BoxFit.cover, // Assure que l'SVG couvre tout l'écran
+      ),
+    ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+          Spacer(),
             Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+              const Padding(
               padding: EdgeInsets.only(left: 12.0, bottom: 8.0),
               child: Text(
                 'Code PIN (4 chiffres)',
@@ -92,6 +106,11 @@ class _PinPageState extends State<PinPage> {
           ],
         ),
       ),
+            Spacer(),
+    ]
+    )
+    ]
+      ),
     );
   }
 
@@ -111,7 +130,7 @@ class _PinPageState extends State<PinPage> {
         if (_pinController.text == storedPin) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (BuildContext context) => ConnInscr()),
+            MaterialPageRoute(builder: (BuildContext context) => AccueilPage()),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
