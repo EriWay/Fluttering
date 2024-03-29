@@ -34,7 +34,7 @@ class BDD {
         String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
         await database.rawInsert(
             'INSERT OR REPLACE INTO Notes(num_utilisateur, date, humeur, image, vocal, texte) VALUES(?, ?, ?, ?, ?, ?)',
-            [1, formattedDate, 'Joyeux', 'image.jpg', 'audio.mp3', 'Texte de la note']);
+            [1, formattedDate, '90', 'image.jpg', 'audio.mp3', 'Texte de la note']);
 
         await database.rawInsert(
             'INSERT INTO User(nom, prenom, Identifiant, mail, num_telephone, mdp, PIN) VALUES(?, ?, ?, ?, ?, ?, ?)',

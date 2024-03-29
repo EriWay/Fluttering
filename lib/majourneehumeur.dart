@@ -21,12 +21,21 @@ class _PageHumeur extends State<PageHumeur> {
   int selectedSmileyIndex = -1;
   String? _noteText;
   SharedPreferences? prefs;
+  Color? selectedColor; // Nouvelle variable pour stocker la couleur sélectionnée
+
 
   @override
   void initState() {
     super.initState();
     requestPermission();
-    _getNoteText(); // Récupérer le texte de la note au démarrage
+    _loadPrefs(); // Charger les préférences partagées au démarrage
+    _getNoteText();
+
+  }
+
+  Future<void> _loadPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {}); // Mettre à jour l'état pour reconstruire le widget
   }
 
   Future<void> requestPermission() async {
@@ -50,6 +59,7 @@ class _PageHumeur extends State<PageHumeur> {
   void selectSmiley(int index) {
     setState(() {
       selectedSmileyIndex = index;
+      selectedColor = _getSelectedColor(index); // Mettre à jour la couleur sélectionnée
     });
     // Ajoutez ici votre logique en fonction du smiley sélectionné
   }
@@ -69,14 +79,36 @@ class _PageHumeur extends State<PageHumeur> {
       );
 
       await database.close();
-
       if (result.isNotEmpty) {
         setState(() {
           _noteText = result[0]['texte'];
+          // Récupérer la valeur de l'humeur depuis la base de données
+          String humeur = result[0]['humeur'];
+          // Convertir la valeur de l'humeur en index de smiley
+
+          selectedSmileyIndex = _getSmileyIndexFromHumeur(humeur);
         });
       }
     }
   }
+
+  int _getSmileyIndexFromHumeur(String humeur) {
+    switch (humeur) {
+      case "0":
+        return 0; // Vert
+      case "1":
+        return 1; // Orange
+      case "2":
+        return 2; // Jaune
+      case "3":
+        return 3; // Orange
+      case "4":
+        return 4; // Rouge
+      default:
+        return -1; // Retourne -1 si la valeur de l'humeur n'est pas reconnue
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -198,12 +230,18 @@ class _PageHumeur extends State<PageHumeur> {
                       if (result.isEmpty) {
                         await database.rawInsert(
                           'INSERT INTO Notes(num_utilisateur, date, humeur, image, vocal, texte) VALUES(?, ?, ?, ?, ?, ?)',
-                          [1, formattedDate, 'Humeur', '', '', ''],
+                          [1, formattedDate, selectedSmileyIndex, '', '', ''],
                         );
                         print('Nouvelle note insérée pour la date : $formattedDate');
                       } else {
                         print('Une note existe déjà pour la date : $formattedDate');
+                        await database.rawUpdate(
+                          'UPDATE Notes SET humeur = ? WHERE date = ?',
+                          [selectedSmileyIndex, formattedDate],
+                        );
+                        print('Note mise à jour pour la date : $formattedDate');
                       }
+
 
                       // Fermer la connexion à la base de données
                       await database.close();
@@ -213,6 +251,7 @@ class _PageHumeur extends State<PageHumeur> {
                   },
                   child: Text('Sauvegarder'),
                 )
+
               ],
             ),
           ),
@@ -238,7 +277,29 @@ class _PageHumeur extends State<PageHumeur> {
     }
   }
 
-
+  Color _getSelectedColor(int index) {
+    double hue = 0.0; // Noir
+    switch (index) {
+      case 0:
+        hue = 180; // Vert
+        break;
+      case 1:
+        hue = 90; // Orange
+        break;
+      case 2:
+        hue = 60.0; // Jaune
+        break;
+      case 3:
+        hue = 30.0; // Orange
+        break;
+      case 4:
+        hue = 0.0; // Rouge
+        break;
+      default:
+        hue = 0.0;
+    }
+    return HSLColor.fromAHSL(1.0, hue, 1.0, 0.5).toColor();
+  }
 }
 
 class SmileyButton extends StatelessWidget {
