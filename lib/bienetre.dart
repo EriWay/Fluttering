@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'menuv2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import 'package:intl/intl.dart';
 
 
 /*TODO : mettre une variable sur le nombre de verre, sommeil, productivité et
@@ -282,7 +285,27 @@ class VerreInfo {
     this.estPlein = false,
   });
 }
+void saveHydration(int verresPleins) async {
+  final dbPath = await getDatabasesPath();
+  final path = join(dbPath, 'my_database.db');
+  final database = await openDatabase(path);
 
+  // Ajustez ce code pour qu'il utilise l'ID de l'utilisateur connecté si nécessaire
+  const userId = 1; // Par exemple, pour un utilisateur avec un ID fixe
+
+  // Insérez ou mettez à jour le nombre de verres pleins pour la date du jour
+  await database.insert(
+    'BienEtre',
+    {
+      'num_utilisateur': userId,
+      'date': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      'eau': verresPleins,
+    },
+    conflictAlgorithm: ConflictAlgorithm.replace, // Remplacez si déjà présent
+  );
+
+  await database.close();
+}
 
 class _HydratationSwitcherState extends State<HydratationSwitcher> {
   List<VerreInfo> verres = [
@@ -302,6 +325,8 @@ class _HydratationSwitcherState extends State<HydratationSwitcher> {
       for (int i = 0; i < verres.length; i++) {
         // Si l'index de l'étoile est inférieur ou égal à l'index tapé, marquez-le comme plein
         if (i <= tappedIndex) {
+          saveHydration(tappedIndex + 1);
+
           verres[i].estPlein = true;
         } else {
           // Sinon, marquez-le comme vide
@@ -444,7 +469,28 @@ class StarSwitcher extends StatefulWidget {
   _StarSwitcherState createState() => _StarSwitcherState();
 }
 
+void saveProductivity(int stars) async {
+  final dbPath = await getDatabasesPath();
+  final path = join(dbPath, 'my_database.db');
+  final database = await openDatabase(path);
 
+  // Utilisez l'ID réel de l'utilisateur connecté
+  final userId = 1; // Exemple pour un utilisateur avec un ID fixe
+
+  // Insérez ou mettez à jour le nombre d'étoiles pour la date du jour
+  await database.insert(
+    'BienEtre',
+    {
+      'num_utilisateur': userId,
+      'date': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      'productivite': stars,
+      // Assurez-vous de mettre à jour ou d'insérer d'autres champs pertinents si nécessaire
+    },
+    conflictAlgorithm: ConflictAlgorithm.replace, // Remplacez si une entrée existe déjà
+  );
+
+  await database.close();
+}
 class ProductiviteText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -492,6 +538,7 @@ class _StarSwitcherState extends State<StarSwitcher> {
   void _handleTap(int tappedIndex) {
     setState(() {
       for (int i = 0; i < stars.length; i++) {
+        saveProductivity(tappedIndex + 1);
         // Si l'index de l'étoile est inférieur ou égal à l'index tapé, marquez-le comme plein
         if (i <= tappedIndex) {
           stars[i].estPlein = true;
