@@ -70,7 +70,7 @@ class SplashState extends State<SplashScreen> {
                 ),
                 const Text("CalmLeaf Diary"),
                 AnimatedContainer(
-                  duration: const Duration(milliseconds: 1500),
+                  duration: const Duration(seconds: 4),
                   child: Transform.rotate(
                     angle: pi,
                     child: LoadingAnimationWidget.prograssiveDots(

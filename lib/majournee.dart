@@ -2,6 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+import 'majourneehumeur.dart';
 
 class NotebookPage extends StatefulWidget {
   @override
@@ -12,6 +16,7 @@ class NotebookPageState extends State<NotebookPage> {
 
   final TextEditingController _textEditingController = TextEditingController();
   XFile? _image;
+  String? _noteText;
 
   @override
   void initState() {
@@ -36,17 +41,80 @@ class NotebookPageState extends State<NotebookPage> {
     }
   }
 
+  Future<void> _getNoteText() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? formattedDate = prefs.getString('selectedDate');
+
+    if (formattedDate != null) {
+      String databasesPath = await getDatabasesPath();
+      String path = join(databasesPath, 'my_database.db');
+      Database database = await openDatabase(path);
+
+      List<Map<String, dynamic>> result = await database.rawQuery(
+        'SELECT * FROM Notes WHERE date = ?',
+        [formattedDate],
+      );
+
+      await database.close();
+
+      if (result.isNotEmpty) {
+        setState(() {
+          _noteText = result[0]['texte'];
+        });
+      }
+    }
+  }
+
+  Future<void> postNotes(String notes) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? formattedDate = prefs.getString('selectedDate');
+    String idUser = prefs.getString('num_utilisateur') ?? '';
+    int idUserint = int.parse(idUser);
+
+    if (formattedDate != null) {
+      String databasesPath = await getDatabasesPath();
+      String path = join(databasesPath, 'my_database.db');
+      Database database = await openDatabase(path);
+    //Verif si y a une note 
+    List<Map<String, dynamic>> result = await database.rawQuery(
+      'SELECT * FROM Notes WHERE date = ?',
+      [formattedDate],
+    );
+    if (result.isEmpty) {
+      await database.rawInsert(
+        'INSERT INTO Notes(num_utilisateur, date, humeur, image, vocal, texte) VALUES(?, ?, ?, ?, ?, ?)',
+        [idUserint, formattedDate, 'Humeur', '', '', notes],
+      );
+      print('Nouvelle note insérée pour la date : $formattedDate');
+    } else {
+      print('Une note existe déjà pour la date : $formattedDate');
+      await database.rawQuery("UPDATE Notes SET texte = '$notes' WHERE num_utilisateur ='$idUser'AND date = '$formattedDate'");
+    }
+
+//num_utilisateur INTEGER, date TEXT PRIMARY KEY, humeur TEXT, image TEXT, vocal TEXT, texte TEXT
+      
+    }
+  }
+
+bool once=false;
+TextEditingController _controller = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    if(!once){
+      _getNoteText();
+      once=!once;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Journal Intime'),
-        backgroundColor: Color(0xFF755846),
+        title: const Text('Journal Intime'),
+        backgroundColor: const Color(0xFF755846),
       ),
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Color(0xFFFCEBE2),
               image: DecorationImage(
                 image: AssetImage('assets/cahier.png'),
@@ -64,20 +132,20 @@ class NotebookPageState extends State<NotebookPage> {
                 children: [
                   if (_image != null) Image.file(File(_image!.path)),
                   TextField(
-                    controller: _textEditingController,
+                    controller: _controller = TextEditingController(text: _noteText,),
                     maxLines: null,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       color: Colors.black,
                     ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Écrivez ici...",
-                      contentPadding: EdgeInsets.symmetric(vertical: 10.0)
+                      contentPadding: const EdgeInsets.symmetric(vertical: 10.0)
                           .copyWith(left: 20.0),
                       alignLabelWithHint: true,
                     ),
-                    textAlignVertical: TextAlignVertical(y: 0.2),
+                    textAlignVertical: const TextAlignVertical(y: 0.2),
                   ),
                 ],
               ),
@@ -91,28 +159,32 @@ class NotebookPageState extends State<NotebookPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FloatingActionButton(
+                    heroTag: 'Save',
                     onPressed: () async {
-                      // Action pour enregistrer
+                      await postNotes(_controller.text);
+                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => PageHumeur()),ModalRoute.withName('/calendar'));
                     },
-                    backgroundColor: Color(0xFF606134),
-                    child: Icon(Icons.save, color: Colors.white),
+                    backgroundColor: const Color(0xFF606134),
+                    child: const Icon(Icons.save, color: Colors.white),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   FloatingActionButton(
+                    heroTag: 'Edit',
                     onPressed: () {
                       // Action pour éditer
                     },
-                    backgroundColor: Color(0xFF606134),
-                    child: Icon(Icons.edit, color: Colors.white),
+                    backgroundColor: const Color(0xFF606134),
+                    child: const Icon(Icons.edit, color: Colors.white),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   FloatingActionButton(
+                    heroTag: 'add',
                     onPressed: () async {
                       await requestPermission();
                       await pickImage();
                     },
-                    backgroundColor: Color(0xFF606134),
-                    child: Icon(Icons.photo_library, color: Colors.white),
+                    backgroundColor: const Color(0xFF606134),
+                    child: const Icon(Icons.photo_library, color: Colors.white),
                   ),
                 ],
               ),
