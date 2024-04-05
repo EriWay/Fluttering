@@ -30,7 +30,7 @@ class Profile extends StatelessWidget {
                 AverageSleepTime(),
                 AverageHydrationDisplay(),
                 AverageProductivityDisplay(),
-                  // Text("Ceci est le profil"), // Peut-être retirer ceci si UserNameDisplay suffit
+                  Spacer(),
                   Menu(),
                       ],
                     ),
@@ -191,7 +191,7 @@ Future<double> getAverageProductivity() async {
   String path = join(dbPath, 'my_database.db');
   Database database = await openDatabase(path);
 
-  var sevenDaysAgo = DateTime.now().subtract(Duration(days: 7));
+  var sevenDaysAgo = DateTime.now().subtract(const Duration(days: 7));
   var formattedDate = DateFormat('yyyy-MM-dd').format(sevenDaysAgo);
 
   List<Map> list = await database.rawQuery(

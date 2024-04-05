@@ -60,11 +60,26 @@ class Jardin extends StatelessWidget{
           Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text("Blanches ${nbFleurs[0]}"),
-                  Text("Rouges ${nbFleurs[1]}"),
-                  Text("Violettes ${nbFleurs[2]}"),
+                  Row(
+                    children: [
+                      Image.asset("assets/fleurb.png",height: 25,),
+                      Text("${nbFleurs[0]}"),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Image.asset("assets/fleurr.png",height: 25,),
+                      Text("${nbFleurs[1]}"),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Image.asset("assets/fleurv.png",height: 25,),
+                      Text("${nbFleurs[2]}"),
+                    ],
+                  ),
                 ],
               ),
               const Spacer(),
@@ -112,9 +127,9 @@ class Jardin extends StatelessWidget{
                         key: _popupMenu1,
                         tooltip: "",
                         itemBuilder: (context)=>[
-                          _buildPopupMenuItem("Graine 1", 0, 1),
-                          _buildPopupMenuItem("Graine 2", 1, 1),
-                          _buildPopupMenuItem("Graine 3", 2, 1),
+                          _buildPopupMenuItem("Fleur Blanche", 0, 1),
+                          _buildPopupMenuItem("Fleur Rouge", 1, 1),
+                          _buildPopupMenuItem("Fleur Violette", 2, 1),
                         ],
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -153,9 +168,9 @@ class Jardin extends StatelessWidget{
                         key: _popupMenu2,
                         tooltip: "",
                         itemBuilder: (context)=>[
-                          _buildPopupMenuItem("Graine 1", 0, 2),
-                          _buildPopupMenuItem("Graine 2", 1, 2),
-                          _buildPopupMenuItem("Graine 3", 2, 2),
+                          _buildPopupMenuItem("Fleur Blanche", 0, 2),
+                          _buildPopupMenuItem("Fleur Rouge", 1, 2),
+                          _buildPopupMenuItem("Fleur Violette", 2, 2),
                         ],
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -194,9 +209,9 @@ class Jardin extends StatelessWidget{
                         key: _popupMenu3,
                         tooltip: "",
                         itemBuilder: (context)=>[
-                          _buildPopupMenuItem("Graine 1", 0, 3),
-                          _buildPopupMenuItem("Graine 2", 1, 3),
-                          _buildPopupMenuItem("Graine 3", 2, 3),
+                          _buildPopupMenuItem("Fleur Blanche", 0, 3),
+                          _buildPopupMenuItem("Fleur Rouge", 1, 3),
+                          _buildPopupMenuItem("Fleur Violette", 2, 3),
                         ],
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -287,9 +302,9 @@ class Jardin extends StatelessWidget{
                         key: _popupMenu4,
                         tooltip: "",
                         itemBuilder: (context)=>[
-                          _buildPopupMenuItem("Graine 1", 0, 4),
-                          _buildPopupMenuItem("Graine 2", 1, 4),
-                          _buildPopupMenuItem("Graine 3", 2, 4),
+                          _buildPopupMenuItem("Fleur Blanche", 0, 4),
+                          _buildPopupMenuItem("Fleur Rouge", 1, 4),
+                          _buildPopupMenuItem("Fleur Violette", 2, 4),
                         ],
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -328,9 +343,9 @@ class Jardin extends StatelessWidget{
                         key: _popupMenu5,
                         tooltip: "",
                         itemBuilder: (context)=>[
-                          _buildPopupMenuItem("Graine 1", 0, 5),
-                          _buildPopupMenuItem("Graine 2", 1, 5),
-                          _buildPopupMenuItem("Graine 3", 2, 5),
+                          _buildPopupMenuItem("Fleur Blanche", 0, 5),
+                          _buildPopupMenuItem("Fleur Rouge", 1, 5),
+                          _buildPopupMenuItem("Fleur Violette", 2, 5),
                         ],
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -369,9 +384,9 @@ class Jardin extends StatelessWidget{
                         key: _popupMenu6,
                         tooltip: "",
                         itemBuilder: (context)=>[
-                          _buildPopupMenuItem("Graine 1", 0, 6),
-                          _buildPopupMenuItem("Graine 2", 1, 6),
-                          _buildPopupMenuItem("Graine 3", 2, 6),
+                          _buildPopupMenuItem("Fleur Blanche", 0, 6),
+                          _buildPopupMenuItem("Fleur Rouge", 1, 6),
+                          _buildPopupMenuItem("Fleur Violette", 2, 6),
                         ],
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -461,9 +476,9 @@ class Jardin extends StatelessWidget{
                         key: _popupMenu7,
                         tooltip: "",
                         itemBuilder: (context)=>[
-                          _buildPopupMenuItem("Graine 1", 0, 7),
-                          _buildPopupMenuItem("Graine 2", 1, 7),
-                          _buildPopupMenuItem("Graine 3", 2, 7),
+                          _buildPopupMenuItem("Fleur Blanche", 0, 7),
+                          _buildPopupMenuItem("Fleur Rouge", 1, 7),
+                          _buildPopupMenuItem("Fleur Violette", 2, 7),
                         ],
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -502,9 +517,9 @@ class Jardin extends StatelessWidget{
                         key: _popupMenu8,
                         tooltip: "",
                         itemBuilder: (context)=>[
-                          _buildPopupMenuItem("Graine 1", 0, 8),
-                          _buildPopupMenuItem("Graine 2", 1, 8),
-                          _buildPopupMenuItem("Graine 3", 2, 8),
+                          _buildPopupMenuItem("Fleur Blanche", 0, 8),
+                          _buildPopupMenuItem("Fleur Rouge", 1, 8),
+                          _buildPopupMenuItem("Fleur Violette", 2, 8),
                         ],
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -542,10 +557,15 @@ class Jardin extends StatelessWidget{
                       PopupMenuButton(
                         key: _popupMenu9,
                         tooltip: "",
+                        position: PopupMenuPosition.under,
+                        color: Colors.transparent,
+                        surfaceTintColor: Colors.brown,
+                        iconColor: Colors.transparent,
+                        shadowColor: Colors.brown,
                         itemBuilder: (context)=>[
-                          _buildPopupMenuItem("Graine 1", 0, 9),
-                          _buildPopupMenuItem("Graine 2", 1, 9),
-                          _buildPopupMenuItem("Graine 3", 2, 9),
+                          _buildPopupMenuItem("Fleur Blanche", 0, 9),
+                          _buildPopupMenuItem("Fleur Rouge", 1, 9),
+                          _buildPopupMenuItem("Fleur Violette", 2, 9),
                         ],
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -559,8 +579,8 @@ class Jardin extends StatelessWidget{
                               _popupMenu9.currentState?.showButtonMenu();
                             }else if(pot9[1] != 1){
                               showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Silence !"),
-                                content: const Text("ça pousse"),
+                                title: const Text("Silence..."),
+                                content: const Text("ça pousse !"),
                                 actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
                               ));
                             }else{
@@ -570,13 +590,16 @@ class Jardin extends StatelessWidget{
                                 title: const Text("Fleur ramassée"),
                                 actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
                               ));
+                              
                               Navigator.pushReplacementNamed(context, '/jardin');
                             }
                           },
                           child: Image.asset('assets/Pot.png'),
                         ),
-                        onSelected: ([value,pot]){
+                        onSelected: ([value,pot]) async {
                           _onMenuItemSelected(value as List<int>);
+                          pot9 = await getFleur(9);
+                          Navigator.pushReplacementNamed(context, '/jardin');
                         },
                       ),
                     ],
@@ -588,7 +611,10 @@ class Jardin extends StatelessWidget{
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ElevatedButton(onPressed: (){incrementFleurs();}, child: const Text("Pousse !")),
+                  ElevatedButton(onPressed: () async {incrementFleurs();
+                  pot9 = await getFleur(9);
+                  Navigator.pushReplacementNamed(context, '/jardin');
+                  }, child: const Text("Pousse !")),
                   ElevatedButton(onPressed: (){printFleurs();}, child: const Text("BDD !")),
                   ElevatedButton(onPressed: () async {
                     pot1 = await getFleur(1);
@@ -601,10 +627,8 @@ class Jardin extends StatelessWidget{
                     pot8 = await getFleur(8);
                     pot9 = await getFleur(9);
                     nbFleurs = await getTotaux();
-                  }, child: const Text("Update")),
-                  ElevatedButton(onPressed: (){
                     Navigator.pushReplacementNamed(context, '/jardin');
-                  }, child: const Text("refresh")),
+                  }, child: const Text("Update")),
                 ],
               ),
               ElevatedButton(onPressed: (){deleteFleurs();}, child: const Text("Suppr !")),
@@ -619,7 +643,7 @@ class Jardin extends StatelessWidget{
   PopupMenuItem _buildPopupMenuItem(String title, int position, int pot) {
     return PopupMenuItem(
       value: [position,pot],
-      child: Text(title),
+      child: Text(title,selectionColor: Colors.white,style: const TextStyle(color: Colors.white),),
     );
   }
 
@@ -653,10 +677,9 @@ class Jardin extends StatelessWidget{
 
   var res = [0,0];
   res[0] = type;
-  res[1] = pousse;
+  res[1] = pousse>1&&pousse<9?1:pousse;
 
     print("Plantes fetched");
-    print(res);
     return res;
   }
 
