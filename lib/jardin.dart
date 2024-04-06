@@ -5,15 +5,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-var pot1 = [0,9];
-var pot2 = [0,9];
-var pot3 = [0,9];
-var pot4 = [0,9];
-var pot5 = [0,9];
-var pot6 = [0,9];
-var pot7 = [0,9];
-var pot8 = [0,9];
-var pot9 = [0,9];
+var pot1 = [0,0];
+var pot2 = [0,0];
+var pot3 = [0,0];
+var pot4 = [0,0];
+var pot5 = [0,0];
+var pot6 = [0,0];
+var pot7 = [0,0];
+var pot8 = [0,0];
+var pot9 = [0,0];
 
 var nbFleurs = [0,0,0];
 
@@ -39,11 +39,45 @@ class Jardin extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
+    ()async{
+      pot1 = await getFleur(1);
+      pot2 = await getFleur(2);
+      pot3 = await getFleur(3);
+      pot4 = await getFleur(4);
+      pot5 = await getFleur(5);
+      pot6 = await getFleur(6);
+      pot7 = await getFleur(7);
+      pot8 = await getFleur(8);
+      pot9 = await getFleur(9);
+      nbFleurs = await getTotaux();
+    };
+
     return  Scaffold (
       appBar: AppBar(
-        title: const Text(
-          'Mon jardin secret',
-          style: TextStyle(color: Colors.white),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(onPressed: (){}, icon: Image.asset("assets/Fleur00.png",height: 30,)),
+            const Spacer(),
+            const Text(
+              'Mon jardin secret',
+              style: TextStyle(color: Colors.white),
+            ),
+            const Spacer(),
+            IconButton(onPressed: () async {
+              pot1 = await getFleur(1);
+              pot2 = await getFleur(2);
+              pot3 = await getFleur(3);
+              pot4 = await getFleur(4);
+              pot5 = await getFleur(5);
+              pot6 = await getFleur(6);
+              pot7 = await getFleur(7);
+              pot8 = await getFleur(8);
+              pot9 = await getFleur(9);
+              nbFleurs = await getTotaux();
+              Navigator.pushReplacementNamed(context, '/jardin');
+            }, icon: Image.asset("assets/refresh.png",height: 30,))
+          ],
         ),
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFF755846),
@@ -126,6 +160,11 @@ class Jardin extends StatelessWidget{
                       PopupMenuButton(
                         key: _popupMenu1,
                         tooltip: "",
+                        position: PopupMenuPosition.under,
+                        color: Colors.transparent,
+                        surfaceTintColor: Colors.brown,
+                        iconColor: Colors.transparent,
+                        shadowColor: Colors.brown,
                         itemBuilder: (context)=>[
                           _buildPopupMenuItem("Fleur Blanche", 0, 1),
                           _buildPopupMenuItem("Fleur Rouge", 1, 1),
@@ -138,35 +177,36 @@ class Jardin extends StatelessWidget{
                             surfaceTintColor: const Color(0x00000000),
                           ),
                           onPressed: () async {
-                            if(pot1[1] == 9){
+                            if(pot1[1] == 0){
                               pot1 = await getFleur(1);
                               _popupMenu1.currentState?.showButtonMenu();
-                            }else if(pot1[1] != 1){
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Silence !"),
-                                content: const Text("ça pousse"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                            }else if(pot1[1] != 2){
+                              _notifBuilder(context, "Silence...", "ça pousse !", "OK");
                             }else{
-                              pot1 = [0,9];
-                              deleteOneFleur(1);
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Fleur ramassée"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                              pot1 = [0,0];
+                              await deleteOneFleur(1);
+                              nbFleurs = await getTotaux();
+                              await _notifBuilder(context, "Fleur ramassée","", "OK");
                               Navigator.pushReplacementNamed(context, '/jardin');
                             }
                           },
                           child: Image.asset('assets/Pot.png'),
                         ),
-                        onSelected: ([value,pot]){
+                        onSelected: ([value,pot]) async {
                           _onMenuItemSelected(value as List<int>);
+                          pot1 = await getFleur(1);
+                          Navigator.pushReplacementNamed(context, '/jardin');
                         },
                       ),
                       
                         PopupMenuButton(
                         key: _popupMenu2,
                         tooltip: "",
+                        position: PopupMenuPosition.under,
+                        color: Colors.transparent,
+                        surfaceTintColor: Colors.brown,
+                        iconColor: Colors.transparent,
+                        shadowColor: Colors.brown,
                         itemBuilder: (context)=>[
                           _buildPopupMenuItem("Fleur Blanche", 0, 2),
                           _buildPopupMenuItem("Fleur Rouge", 1, 2),
@@ -179,35 +219,36 @@ class Jardin extends StatelessWidget{
                             surfaceTintColor: const Color(0x00000000),
                           ),
                           onPressed: () async {
-                            if(pot2[1] == 9){
+                            if(pot2[1] == 0){
                               pot2 = await getFleur(2);
                               _popupMenu2.currentState?.showButtonMenu();
-                            }else if(pot2[1] != 1){
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Silence !"),
-                                content: const Text("ça pousse"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                            }else if(pot2[1] != 2){
+                              _notifBuilder(context, "Silence...", "ça pousse !", "OK");
                             }else{
-                              pot2 = [0,9];
-                              deleteOneFleur(2);
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Fleur ramassée"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                              pot2 = [0,0];
+                              await deleteOneFleur(2);
+                              nbFleurs = await getTotaux();
+                              await _notifBuilder(context, "Fleur ramassée","", "OK");
                               Navigator.pushReplacementNamed(context, '/jardin');
                             }
                           },
                           child: Image.asset('assets/Pot.png'),
                         ),
-                        onSelected: ([value,pot]){
+                        onSelected: ([value,pot]) async {
                           _onMenuItemSelected(value as List<int>);
+                          pot2 = await getFleur(2);
+                          Navigator.pushReplacementNamed(context, '/jardin');
                         },
                       ),
 
                         PopupMenuButton(
                         key: _popupMenu3,
                         tooltip: "",
+                        position: PopupMenuPosition.under,
+                        color: Colors.transparent,
+                        surfaceTintColor: Colors.brown,
+                        iconColor: Colors.transparent,
+                        shadowColor: Colors.brown,
                         itemBuilder: (context)=>[
                           _buildPopupMenuItem("Fleur Blanche", 0, 3),
                           _buildPopupMenuItem("Fleur Rouge", 1, 3),
@@ -220,29 +261,25 @@ class Jardin extends StatelessWidget{
                             surfaceTintColor: const Color(0x00000000),
                           ),
                           onPressed: () async {
-                            if(pot3[1] == 9){
+                            if(pot3[1] == 0){
                               pot3 = await getFleur(3);
                               _popupMenu3.currentState?.showButtonMenu();
-                            }else if(pot3[1] != 1){
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Silence !"),
-                                content: const Text("ça pousse"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                            }else if(pot3[1] != 2){
+                              _notifBuilder(context, "Silence...", "ça pousse !", "OK");
                             }else{
-                              pot3 = [0,9];
-                              deleteOneFleur(3);
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Fleur ramassée"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                              pot3 = [0,0];
+                              await deleteOneFleur(3);
+                              nbFleurs = await getTotaux();
+                              await _notifBuilder(context, "Fleur ramassée","", "OK");
                               Navigator.pushReplacementNamed(context, '/jardin');
                             }
                           },
                           child: Image.asset('assets/Pot.png'),
                         ),
-                        onSelected: ([value,pot]){
+                        onSelected: ([value,pot]) async {
                           _onMenuItemSelected(value as List<int>);
+                          pot3 = await getFleur(3);
+                          Navigator.pushReplacementNamed(context, '/jardin');
                         },
                       ),
                     ],
@@ -301,6 +338,11 @@ class Jardin extends StatelessWidget{
                       PopupMenuButton(
                         key: _popupMenu4,
                         tooltip: "",
+                        position: PopupMenuPosition.under,
+                        color: Colors.transparent,
+                        surfaceTintColor: Colors.brown,
+                        iconColor: Colors.transparent,
+                        shadowColor: Colors.brown,
                         itemBuilder: (context)=>[
                           _buildPopupMenuItem("Fleur Blanche", 0, 4),
                           _buildPopupMenuItem("Fleur Rouge", 1, 4),
@@ -313,35 +355,36 @@ class Jardin extends StatelessWidget{
                             surfaceTintColor: const Color(0x00000000),
                           ),
                           onPressed: () async {
-                            if(pot4[1] == 9){
+                            if(pot4[1] == 0){
                               pot4 = await getFleur(4);
-                              _popupMenu2.currentState?.showButtonMenu();
-                            }else if(pot4[1] != 1){
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Silence !"),
-                                content: const Text("ça pousse"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                              _popupMenu4.currentState?.showButtonMenu();
+                            }else if(pot4[1] != 2){
+                              _notifBuilder(context, "Silence...", "ça pousse !", "OK");
                             }else{
-                              pot4 = [0,9];
-                              deleteOneFleur(4);
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Fleur ramassée"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                              pot4 = [0,0];
+                              await deleteOneFleur(4);
+                              nbFleurs = await getTotaux();
+                              await _notifBuilder(context, "Fleur ramassée","", "OK");
                               Navigator.pushReplacementNamed(context, '/jardin');
                             }
                           },
                           child: Image.asset('assets/Pot.png'),
                         ),
-                        onSelected: ([value,pot]){
+                        onSelected: ([value,pot]) async {
                           _onMenuItemSelected(value as List<int>);
+                          pot4 = await getFleur(4);
+                          Navigator.pushReplacementNamed(context, '/jardin');
                         },
                       ),
 
                       PopupMenuButton(
                         key: _popupMenu5,
                         tooltip: "",
+                        position: PopupMenuPosition.under,
+                        color: Colors.transparent,
+                        surfaceTintColor: Colors.brown,
+                        iconColor: Colors.transparent,
+                        shadowColor: Colors.brown,
                         itemBuilder: (context)=>[
                           _buildPopupMenuItem("Fleur Blanche", 0, 5),
                           _buildPopupMenuItem("Fleur Rouge", 1, 5),
@@ -354,35 +397,36 @@ class Jardin extends StatelessWidget{
                             surfaceTintColor: const Color(0x00000000),
                           ),
                           onPressed: () async {
-                            if(pot5[1] == 9){
+                            if(pot5[1] == 0){
                               pot5 = await getFleur(5);
                               _popupMenu5.currentState?.showButtonMenu();
-                            }else if(pot5[1] != 1){
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Silence !"),
-                                content: const Text("ça pousse"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                            }else if(pot5[1] != 2){
+                              _notifBuilder(context, "Silence...", "ça pousse !", "OK");
                             }else{
-                              pot5 = [0,9];
-                              deleteOneFleur(5);
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Fleur ramassée"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                              pot5 = [0,0];
+                              await deleteOneFleur(5);
+                              nbFleurs = await getTotaux();
+                              await _notifBuilder(context, "Fleur ramassée","", "OK");
                               Navigator.pushReplacementNamed(context, '/jardin');
                             }
                           },
                           child: Image.asset('assets/Pot.png'),
                         ),
-                        onSelected: ([value,pot]){
+                        onSelected: ([value,pot]) async {
                           _onMenuItemSelected(value as List<int>);
+                          pot5 = await getFleur(5);
+                          Navigator.pushReplacementNamed(context, '/jardin');
                         },
                       ),
 
                       PopupMenuButton(
                         key: _popupMenu6,
                         tooltip: "",
+                        position: PopupMenuPosition.under,
+                        color: Colors.transparent,
+                        surfaceTintColor: Colors.brown,
+                        iconColor: Colors.transparent,
+                        shadowColor: Colors.brown,
                         itemBuilder: (context)=>[
                           _buildPopupMenuItem("Fleur Blanche", 0, 6),
                           _buildPopupMenuItem("Fleur Rouge", 1, 6),
@@ -395,29 +439,25 @@ class Jardin extends StatelessWidget{
                             surfaceTintColor: const Color(0x00000000),
                           ),
                           onPressed: () async {
-                            if(pot6[1] == 9){
+                            if(pot6[1] == 0){
                               pot6 = await getFleur(6);
                               _popupMenu6.currentState?.showButtonMenu();
-                            }else if(pot6[1] != 1){
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Silence !"),
-                                content: const Text("ça pousse"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                            }else if(pot6[1] != 2){
+                              _notifBuilder(context, "Silence...", "ça pousse !", "OK");
                             }else{
-                              pot6 = [0,9];
-                              deleteOneFleur(6);
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Fleur ramassée"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                              pot6 = [0,0];
+                              await deleteOneFleur(6);
+                              nbFleurs = await getTotaux();
+                              await _notifBuilder(context, "Fleur ramassée","", "OK");
                               Navigator.pushReplacementNamed(context, '/jardin');
                             }
                           },
                           child: Image.asset('assets/Pot.png'),
                         ),
-                        onSelected: ([value,pot]){
+                        onSelected: ([value,pot]) async {
                           _onMenuItemSelected(value as List<int>);
+                          pot6 = await getFleur(6);
+                          Navigator.pushReplacementNamed(context, '/jardin');
                         },
                       ),
                     ],
@@ -475,6 +515,11 @@ class Jardin extends StatelessWidget{
                       PopupMenuButton(
                         key: _popupMenu7,
                         tooltip: "",
+                        position: PopupMenuPosition.under,
+                        color: Colors.transparent,
+                        surfaceTintColor: Colors.brown,
+                        iconColor: Colors.transparent,
+                        shadowColor: Colors.brown,
                         itemBuilder: (context)=>[
                           _buildPopupMenuItem("Fleur Blanche", 0, 7),
                           _buildPopupMenuItem("Fleur Rouge", 1, 7),
@@ -487,35 +532,36 @@ class Jardin extends StatelessWidget{
                             surfaceTintColor: const Color(0x00000000),
                           ),
                           onPressed: () async {
-                            if(pot7[1] == 9){
+                            if(pot7[1] == 0){
                               pot7 = await getFleur(7);
                               _popupMenu7.currentState?.showButtonMenu();
-                            }else if(pot7[1] != 1){
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Silence !"),
-                                content: const Text("ça pousse"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                            }else if(pot7[1] != 2){
+                              _notifBuilder(context, "Silence...", "ça pousse !", "OK");
                             }else{
-                              pot7 = [0,9];
-                              deleteOneFleur(7);
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Fleur ramassée"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                              pot7 = [0,0];
+                              await deleteOneFleur(7);
+                              nbFleurs = await getTotaux();
+                              await _notifBuilder(context, "Fleur ramassée","", "OK");
                               Navigator.pushReplacementNamed(context, '/jardin');
                             }
                           },
                           child: Image.asset('assets/Pot.png'),
                         ),
-                        onSelected: ([value,pot]){
+                        onSelected: ([value,pot])async{
                           _onMenuItemSelected(value as List<int>);
+                          pot7 = await getFleur(7);
+                          Navigator.pushReplacementNamed(context, '/jardin');
                         },
                       ),
 
                       PopupMenuButton(
                         key: _popupMenu8,
                         tooltip: "",
+                        position: PopupMenuPosition.under,
+                        color: Colors.transparent,
+                        surfaceTintColor: Colors.brown,
+                        iconColor: Colors.transparent,
+                        shadowColor: Colors.brown,
                         itemBuilder: (context)=>[
                           _buildPopupMenuItem("Fleur Blanche", 0, 8),
                           _buildPopupMenuItem("Fleur Rouge", 1, 8),
@@ -528,29 +574,25 @@ class Jardin extends StatelessWidget{
                             surfaceTintColor: const Color(0x00000000),
                           ),
                           onPressed: () async {
-                            if(pot8[1] == 9){
+                            if(pot8[1] == 0){
                               pot8 = await getFleur(8);
                               _popupMenu8.currentState?.showButtonMenu();
-                            }else if(pot8[1] != 1){
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Silence !"),
-                                content: const Text("ça pousse"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                            }else if(pot8[1] != 2){
+                              _notifBuilder(context, "Silence...", "ça pousse !", "OK");
                             }else{
-                              pot8 = [0,9];
-                              deleteOneFleur(8);
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Fleur ramassée"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                              pot8 = [0,0];
+                              await deleteOneFleur(8);
+                              nbFleurs = await getTotaux();
+                              await _notifBuilder(context, "Fleur ramassée","", "OK");
                               Navigator.pushReplacementNamed(context, '/jardin');
                             }
                           },
                           child: Image.asset('assets/Pot.png'),
                         ),
-                        onSelected: ([value,pot]){
+                        onSelected: ([value,pot]) async {
                           _onMenuItemSelected(value as List<int>);
+                          pot8 = await getFleur(8);
+                          Navigator.pushReplacementNamed(context, '/jardin');
                         },
                       ),
 
@@ -574,23 +616,16 @@ class Jardin extends StatelessWidget{
                             surfaceTintColor: const Color(0x00000000),
                           ),
                           onPressed: () async {
-                            if(pot9[1] == 9){
+                            if(pot9[1] == 0){
                               pot9 = await getFleur(9);
                               _popupMenu9.currentState?.showButtonMenu();
-                            }else if(pot9[1] != 1){
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Silence..."),
-                                content: const Text("ça pousse !"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
+                            }else if(pot9[1] != 2){
+                              _notifBuilder(context, "Silence...", "ça pousse !", "OK");
                             }else{
-                              pot9 = [0,9];
-                              deleteOneFleur(9);
-                              showDialog(context: context,barrierDismissible: true, builder: (context)=> AlertDialog(
-                                title: const Text("Fleur ramassée"),
-                                actions: <Widget>[TextButton(onPressed: ()=> Navigator.pop(context,'Cancel'), child: const Text("OK"))],
-                              ));
-                              
+                              pot9 = [0,0];
+                              await deleteOneFleur(9);
+                              nbFleurs = await getTotaux();
+                              await _notifBuilder(context, "Fleur ramassée","", "OK");
                               Navigator.pushReplacementNamed(context, '/jardin');
                             }
                           },
@@ -607,37 +642,28 @@ class Jardin extends StatelessWidget{
                 ],
               ),
               Image.asset('assets/etagewe.png'),
-              const Spacer(flex: 2,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(onPressed: () async {incrementFleurs();
-                  pot9 = await getFleur(9);
-                  Navigator.pushReplacementNamed(context, '/jardin');
-                  }, child: const Text("Pousse !")),
-                  ElevatedButton(onPressed: (){printFleurs();}, child: const Text("BDD !")),
-                  ElevatedButton(onPressed: () async {
-                    pot1 = await getFleur(1);
-                    pot2 = await getFleur(2);
-                    pot3 = await getFleur(3);
-                    pot4 = await getFleur(4);
-                    pot5 = await getFleur(5);
-                    pot6 = await getFleur(6);
-                    pot7 = await getFleur(7);
-                    pot8 = await getFleur(8);
-                    pot9 = await getFleur(9);
-                    nbFleurs = await getTotaux();
-                    Navigator.pushReplacementNamed(context, '/jardin');
-                  }, child: const Text("Update")),
-                ],
-              ),
-              ElevatedButton(onPressed: (){deleteFleurs();}, child: const Text("Suppr !")),
+              const Spacer(flex: 3,),
               const Menu(),
             ],
           )
         ],
       ),
     );
+  }
+
+  Future<void> _notifBuilder(BuildContext context, String titre, String content, String buttonText){
+    return showDialog(context: context, builder: (BuildContext context){
+      return AlertDialog(
+        title: Text(titre),
+        content: Text(content),
+          actions: <Widget>[
+            TextButton(
+              onPressed: ()=> Navigator.pop(context,'Cancel'), 
+              child: Text(buttonText)
+            )
+          ],
+        );
+    });
   }
 
   PopupMenuItem _buildPopupMenuItem(String title, int position, int pot) {
@@ -667,7 +693,7 @@ class Jardin extends StatelessWidget{
     final List<Map<String, dynamic>> plants =  await db.rawQuery('SELECT type_fleur, pousse FROM Plantes WHERE num_utilisateur = ? AND num_pot = ?',
     [idUserint,numpot]);
     int type = 0;
-    int pousse = 9;
+    int pousse = 0;
     if (plants.isNotEmpty) {
       // Récupérer les données de l'utilisateur
       final plant = plants.first;
@@ -677,7 +703,7 @@ class Jardin extends StatelessWidget{
 
   var res = [0,0];
   res[0] = type;
-  res[1] = pousse>1&&pousse<9?1:pousse;
+  res[1] = pousse>2?2:pousse;
 
     print("Plantes fetched");
     return res;
@@ -695,7 +721,7 @@ class Jardin extends StatelessWidget{
 //num_utilisateur INTEGER, num_pot INTEGER, type_fleur INTEGER, pousse INTEGER
       await db.rawQuery(
           'INSERT INTO Plantes (num_utilisateur, num_pot, type_fleur, pousse) VALUES(?,?,?,?)',
-          [idUser, numPot, typeFleur, 0]);
+          [idUser, numPot, typeFleur, 1]);
       print("Plante insérée");
 
   }
