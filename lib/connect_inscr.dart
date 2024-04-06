@@ -25,7 +25,7 @@ class ConnInscr extends StatelessWidget {
             children: [
               const Spacer(),
               Image.asset(
-                'assets/icon/icon.png',
+                'assets/icon.png',
                 width: MediaQuery.of(context).size.width/3,
                 alignment: Alignment.center,
               ),

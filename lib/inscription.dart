@@ -34,7 +34,7 @@ class Inscription extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Image.asset(
-                      'assets/icon/icon.png',
+                      'assets/icon.png',
                       height: 300,
                       width: 300,
                     ),
