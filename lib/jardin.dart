@@ -726,20 +726,6 @@ class Jardin extends StatelessWidget{
 
   }
 
-  Future<void> incrementFleurs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String idUser = prefs.getString('num_utilisateur') ?? '';
-    int idUserint = int.parse(idUser);
-    final Future<Database> database = openDatabase(join(await getDatabasesPath(), 'my_database.db'),
-      version: 1,
-    );
-
-    final Database db = await database;
-//num_utilisateur INTEGER, num_pot INTEGER, type_fleur INTEGER, pousse INTEGER
-      await db.rawQuery('UPDATE Plantes SET pousse = pousse+1 WHERE num_utilisateur = ?',[idUserint]);
-    print("Fleur poussées");
-  }
-
   Future<void> printFleurs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String idUser = prefs.getString('num_utilisateur') ?? '';
@@ -832,3 +818,14 @@ var ret = [0,0,0];
     return ret;
   }
 }
+
+
+Future<void> incrementFleurs(Database db) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String idUser = prefs.getString('num_utilisateur') ?? '';
+    int idUserint = int.parse(idUser);
+
+//num_utilisateur INTEGER, num_pot INTEGER, type_fleur INTEGER, pousse INTEGER
+      await db.rawQuery('UPDATE Plantes SET pousse = pousse+1 WHERE num_utilisateur = ?',[idUserint]);
+    print("Fleur poussées");
+  }
