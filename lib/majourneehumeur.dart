@@ -5,10 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-import 'bdd.dart';
 import 'majournee.dart'; // Importez la classe BDD
 
 class PageHumeur extends StatefulWidget {
@@ -43,7 +41,7 @@ class _PageHumeur extends State<PageHumeur> {
         Text(
           line,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
       );
     }
@@ -133,11 +131,11 @@ class _PageHumeur extends State<PageHumeur> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Ma journée',
           textAlign: TextAlign.center, // Alignement du texte au centre
         ),
-        backgroundColor: Color(0xFF755846),
+        backgroundColor: const Color(0xFF755846),
         centerTitle: true, // Centrer le titre
       ),
       body: prefs != null ? Stack(
@@ -148,133 +146,131 @@ class _PageHumeur extends State<PageHumeur> {
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,
           ),
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    prefs!.getString('selectedDate') ?? '', // Utiliser prefs pour récupérer la date
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  prefs!.getString('selectedDate') ?? '', // Utiliser prefs pour récupérer la date
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                Expanded(
-                  child: Stack(
-                    children: [
-                      if (_image != null)
-                        Positioned(
-                          top: MediaQuery.of(context).size.height * 0.7,
-                          left: 0,
-                          right: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Image.file(File(_image!.path)),
-                          ),
-                        ),
+              ),
+              Expanded(
+                child: Stack(
+                  children: [
+                    if (_image != null)
                       Positioned(
-                        top: MediaQuery.of(context).size.height * 0.010,
+                        top: MediaQuery.of(context).size.height * 0.7,
                         left: 0,
                         right: 0,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: List.generate(
-                                  5,
-                                      (index) {
-                                    return SmileyButton(
-                                      icon: _getSmileyIcon(index),
-                                      isSelected: selectedSmileyIndex == index,
-                                      onTap: () => selectSmiley(index),
-                                      position: index,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                          padding: const EdgeInsets.all(20.0),
+                          child: Image.file(File(_image!.path)),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/cahier.png',
-                    ),
-                    if (_noteText != null)
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: _splitTextIntoLines(_noteText!),
+                    Positioned(
+                      top: MediaQuery.of(context).size.height * 0.010,
+                      left: 0,
+                      right: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: List.generate(
+                                5,
+                                    (index) {
+                                  return SmileyButton(
+                                    icon: _getSmileyIcon(index),
+                                    isSelected: selectedSmileyIndex == index,
+                                    onTap: () => selectSmiley(index),
+                                    position: index,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                    ),
                   ],
                 ),
-                Spacer(flex: 2,),
-                ElevatedButton(
-                  onPressed: () async {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => NotebookPage()));
-                  },
-                  child: Text('Editer'),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
+              ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Image.asset(
+                    'assets/cahier.png',
+                  ),
+                  if (_noteText != null)
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: _splitTextIntoLines(_noteText!),
+                    ),
+                ],
+              ),
+              const Spacer(flex: 2,),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => NotebookPage()));
+                },
+                child: const Text('Editer'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  // Vérifier si une note existe déjà pour la date sélectionnée
+                  String? formattedDate = prefs!.getString('selectedDate');
+
+                  if (formattedDate != null) {
+                    // Récupérer le chemin de la base de données
+                    String databasesPath = await getDatabasesPath();
+                    String path = join(databasesPath, 'my_database.db');
+                    Database database = await openDatabase(path);
+
                     // Vérifier si une note existe déjà pour la date sélectionnée
-                    String? formattedDate = prefs!.getString('selectedDate');
+                    List<Map<String, dynamic>> result = await database.rawQuery(
+                      'SELECT * FROM Notes WHERE date = ?',
+                      [formattedDate],
+                    );
 
-                    if (formattedDate != null) {
-                      // Récupérer le chemin de la base de données
-                      String databasesPath = await getDatabasesPath();
-                      String path = join(databasesPath, 'my_database.db');
-                      Database database = await openDatabase(path);
-
-                      // Vérifier si une note existe déjà pour la date sélectionnée
-                      List<Map<String, dynamic>> result = await database.rawQuery(
-                        'SELECT * FROM Notes WHERE date = ?',
-                        [formattedDate],
+                    // Si aucune note n'existe pour cette date, insérer une nouvelle note
+                    if (result.isEmpty) {
+                      await database.rawInsert(
+                        'INSERT INTO Notes(num_utilisateur, date, humeur, image, vocal, texte) VALUES(?, ?, ?, ?, ?, ?)',
+                        [1, formattedDate, selectedSmileyIndex, '', '', ''],
                       );
-
-                      // Si aucune note n'existe pour cette date, insérer une nouvelle note
-                      if (result.isEmpty) {
-                        await database.rawInsert(
-                          'INSERT INTO Notes(num_utilisateur, date, humeur, image, vocal, texte) VALUES(?, ?, ?, ?, ?, ?)',
-                          [1, formattedDate, selectedSmileyIndex, '', '', ''],
-                        );
-                        print('Nouvelle note insérée pour la date : $formattedDate');
-                      } else {
-                        print('Une note existe déjà pour la date : $formattedDate');
-                        await database.rawUpdate(
-                          'UPDATE Notes SET humeur = ? WHERE date = ?',
-                          [selectedSmileyIndex, formattedDate],
-                        );
-                        print('Note mise à jour pour la date : $formattedDate');
-                      }
-
-
-                      // Fermer la connexion à la base de données
-                      await database.close();
+                      print('Nouvelle note insérée pour la date : $formattedDate');
                     } else {
-                      print('Date non sélectionnée');
+                      print('Une note existe déjà pour la date : $formattedDate');
+                      await database.rawUpdate(
+                        'UPDATE Notes SET humeur = ? WHERE date = ?',
+                        [selectedSmileyIndex, formattedDate],
+                      );
+                      print('Note mise à jour pour la date : $formattedDate');
                     }
-                  },
-                  child: Text('Sauvegarder'),
-                )
 
-              ],
-            ),
+
+                    // Fermer la connexion à la base de données
+                    await database.close();
+                  } else {
+                    print('Date non sélectionnée');
+                  }
+                },
+                child: const Text('Sauvegarder'),
+              )
+
+            ],
           ),
         ],
-      ) : Center(child: CircularProgressIndicator()), // Afficher une indication de chargement si prefs est null
+      ) : const Center(child: CircularProgressIndicator()), // Afficher une indication de chargement si prefs est null
     );
   }
 

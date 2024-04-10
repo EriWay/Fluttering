@@ -49,8 +49,8 @@ class DailyMoodPageState extends State<DailyMoodPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Humeur du jour'),
-        backgroundColor: Color(0xFF755846),
+        title: const Text('Humeur du jour'),
+        backgroundColor: const Color(0xFF755846),
       ),
       body: GestureDetector(
         onTap: () {
@@ -60,7 +60,7 @@ class DailyMoodPageState extends State<DailyMoodPage> {
           );
         },
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xFFFCEBE2),
             image: DecorationImage(
               image: AssetImage('assets/cahier.png'),
@@ -75,7 +75,7 @@ class DailyMoodPageState extends State<DailyMoodPage> {
                 child: Text(
                   _getCurrentDate(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),

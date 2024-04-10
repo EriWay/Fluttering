@@ -32,7 +32,7 @@ class _PinPageState extends State<PinPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Bonjour $_prenom'),
-        backgroundColor: Color(0xFF755846),
+        backgroundColor: const Color(0xFF755846),
         centerTitle: true,
       ),
       body: Stack(
@@ -46,7 +46,7 @@ class _PinPageState extends State<PinPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-          Spacer(),
+          const Spacer(),
             Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -65,47 +65,45 @@ class _PinPageState extends State<PinPage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 0.0),
+              padding: const EdgeInsets.symmetric(horizontal: 0.0),
               child: TextField(
                 keyboardType: TextInputType.number,
                 controller: _pinController,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Color(0xFF755846),
+                  fillColor: const Color(0xFF755846),
                   hintText: 'Entrez votre PIN',
-                  hintStyle: TextStyle(color: Colors.white),
+                  hintStyle: const TextStyle(color: Colors.white),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 _verifyPin(context);
               },
-              child: const Text('Valider',
-                  style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF755846),
+                backgroundColor: const Color(0xFF755846),
               ),
+              child: const Text('Valider', style: TextStyle(color: Colors.white)),
             ),
-            SizedBox(height: 16), // Espacement avant le bouton Retour
+            const SizedBox(height: 16), // Espacement avant le bouton Retour
             ElevatedButton(
               onPressed: () {
                 _logout(context);
               },
-              child: const Text('Retour',
-                  style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF755846), // Couleur rouge pour le bouton Retour
+                backgroundColor: const Color(0xFF755846), // Couleur rouge pour le bouton Retour
               ),
+              child: const Text('Retour', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
       ),
-            Spacer(),
+            const Spacer(),
     ]
     )
     ]
@@ -129,11 +127,11 @@ class _PinPageState extends State<PinPage> {
         if (_pinController.text == storedPin) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (BuildContext context) => ConnInscr()),
+            MaterialPageRoute(builder: (BuildContext context) => const ConnInscr()),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Code PIN incorrect'),
               backgroundColor: Colors.red,
             ),
@@ -141,7 +139,7 @@ class _PinPageState extends State<PinPage> {
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Utilisateur non trouvé'),
             backgroundColor: Colors.red,
           ),
@@ -149,7 +147,7 @@ class _PinPageState extends State<PinPage> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('ID utilisateur non valide'),
           backgroundColor: Colors.red,
         ),
@@ -163,7 +161,7 @@ class _PinPageState extends State<PinPage> {
     await prefs.clear(); // Supprimer toutes les données SharedPreferences
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (BuildContext context) => Connection()), // Rediriger vers la page de connexion
+      MaterialPageRoute(builder: (BuildContext context) => const Connection()), // Rediriger vers la page de connexion
     );
   }
 }

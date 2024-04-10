@@ -674,8 +674,6 @@ class Jardin extends StatelessWidget{
   }
 
   _onMenuItemSelected(List<int> value) {
-    print(value[0]);
-    print(value[1]);
     insertFleur(value[1], value[0]);
   }
 
@@ -705,7 +703,6 @@ class Jardin extends StatelessWidget{
   res[0] = type;
   res[1] = pousse>2?2:pousse;
 
-    print("Plantes fetched");
     return res;
   }
 
@@ -722,10 +719,8 @@ class Jardin extends StatelessWidget{
       await db.rawQuery(
           'INSERT INTO Plantes (num_utilisateur, num_pot, type_fleur, pousse) VALUES(?,?,?,?)',
           [idUser, numPot, typeFleur, 1]);
-      print("Plante insérée");
-
   }
-
+/*
   Future<void> printFleurs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String idUser = prefs.getString('num_utilisateur') ?? '';
@@ -746,7 +741,7 @@ class Jardin extends StatelessWidget{
         }
       }
   }
-
+*/
   Future<void> deleteFleurs() async {
     final Future<Database> database = openDatabase(join(await getDatabasesPath(), 'my_database.db'),
       version: 1,
@@ -756,7 +751,6 @@ class Jardin extends StatelessWidget{
 //num_utilisateur INTEGER, num_pot INTEGER, type_fleur INTEGER, pousse INTEGER
     await db.rawQuery('DELETE FROM Plantes');
     await db.rawQuery('DELETE FROM TotalPlantes');
-    print("Plantes supprimées");
   }
 
   Future<void> deleteOneFleur(numpot) async {
@@ -827,5 +821,4 @@ Future<void> incrementFleurs(Database db) async {
 
 //num_utilisateur INTEGER, num_pot INTEGER, type_fleur INTEGER, pousse INTEGER
       await db.rawQuery('UPDATE Plantes SET pousse = pousse+1 WHERE num_utilisateur = ?',[idUserint]);
-    print("Fleur poussées");
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
@@ -13,10 +12,10 @@ class Inscription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Center(
+          title: const Center(
             child: Text('Inscription', style: TextStyle(color: Colors.white)), // Texte en blanc
           ),
-          backgroundColor: Color(0xFF755846), // Couleur mocha (marron clair)
+          backgroundColor: const Color(0xFF755846), // Couleur mocha (marron clair)
         ),
         body: Stack(
           children: [
@@ -32,7 +31,7 @@ class Inscription extends StatelessWidget {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Image.asset(
                       'assets/icon.png',
                       height: 300,
@@ -70,7 +69,7 @@ class _SignUpFormState extends State<SignUpForm> {
     removeUserId();
     BDD.initializeDatabase();
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Form(
         key: _formKey,
         child: Column(
@@ -107,7 +106,7 @@ class _SignUpFormState extends State<SignUpForm> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(left: 12.0, bottom: 8.0), // Ajustement du padding
                   child: Text(
                     'N° de téléphone', // Ajout du titre ici
@@ -119,22 +118,22 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0.0), // Ajustement du padding
+                  padding: const EdgeInsets.symmetric(horizontal: 0.0), // Ajustement du padding
                   child: TextField(
                     keyboardType: TextInputType.phone,
                     controller: _phoneController, // Lier à la variable _pinController
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFF755846),
+                      fillColor: const Color(0xFF755846),
                       hintText: 'N° de téléphone',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: const TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
               ],
             ),
 
@@ -148,7 +147,7 @@ class _SignUpFormState extends State<SignUpForm> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(left: 12.0, bottom: 8.0), // Ajustement du padding
                   child: Text(
                     'Code PIN (4 chiffres)', // Ajout du titre ici
@@ -160,22 +159,22 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0.0), // Ajustement du padding
+                  padding: const EdgeInsets.symmetric(horizontal: 0.0), // Ajustement du padding
                   child: TextField(
                     keyboardType: TextInputType.number,
                     controller: _pinController, // Lier à la variable _pinController
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Color(0xFF755846),
+                      fillColor: const Color(0xFF755846),
                       hintText: 'Entrez votre PIN',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: const TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
               ],
             ),
 
@@ -185,24 +184,24 @@ class _SignUpFormState extends State<SignUpForm> {
                   _saveUser(context);
                 }
               },
-              child: Text('S\'inscrire', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF755846),
+                backgroundColor: const Color(0xFF755846),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)),
               ),
+              child: const Text('S\'inscrire', style: TextStyle(color: Colors.white)),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (BuildContext context) => ConnInscr()), // Rediriger vers la page de connexion
-                );              },
-              child: const Text('Retour',
-                  style: TextStyle(color: Colors.white)),
+                  MaterialPageRoute(builder: (BuildContext context) => const ConnInscr()), // Rediriger vers la page de connexion
+                );
+              },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF755846), // Couleur rouge pour le bouton Retour
+                backgroundColor: const Color(0xFF755846), // Couleur rouge pour le bouton Retour
               ),
+              child: const Text('Retour', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -251,7 +250,7 @@ class _SignUpFormState extends State<SignUpForm> {
     String phone = _phoneController.text;
 
     if (_validateEmail(mail) != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Veuillez entrer une adresse e-mail valide'),
         backgroundColor: Colors.red,
       ));
@@ -259,7 +258,7 @@ class _SignUpFormState extends State<SignUpForm> {
     }
 
     if (_validatePhoneNumber(phone) != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Veuillez entrer un numéro de téléphone valide'),
         backgroundColor: Colors.red,
       ));
@@ -272,8 +271,8 @@ class _SignUpFormState extends State<SignUpForm> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Inscription réussie'),
-          content: Text('Vous êtes bien inscrit !'),
+          title: const Text('Inscription réussie'),
+          content: const Text('Vous êtes bien inscrit !'),
           actions: [
             TextButton(
               onPressed: () {
@@ -299,26 +298,26 @@ class _SignUpFormState extends State<SignUpForm> {
       children: [
         Text(
           title,
-          style: TextStyle(fontSize: 16,
+          style: const TextStyle(fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Color(0xFF706F45)),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         TextFormField(
           controller: controller,
           obscureText: obscureText,
           validator: validator,
           decoration: InputDecoration(
             filled: true,
-            fillColor: Color(0xFF755846),
+            fillColor: const Color(0xFF755846),
             hintText: 'Entrez votre $title',
-            hintStyle: TextStyle(color: Colors.white),
+            hintStyle: const TextStyle(color: Colors.white),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
       ],
     );
   }

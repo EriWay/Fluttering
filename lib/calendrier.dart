@@ -191,9 +191,9 @@ class EditPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Page d\'édition'),
+        title: const Text('Page d\'édition'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Page d\'édition'),
       ),
     );

@@ -104,7 +104,7 @@ Future<double> getAverageSleepTime() async {
   Database database = await openDatabase(path);
 
   // Calcul de la date il y a 7 jours.
-  var sevenDaysAgo = DateTime.now().subtract(Duration(days: 7));
+  var sevenDaysAgo = DateTime.now().subtract(const Duration(days: 7));
 
   // Formatage de la date pour correspondre au format stocké dans la base de données.
   var formattedDate = DateFormat('yyyy-MM-dd').format(sevenDaysAgo);
@@ -150,7 +150,7 @@ Future<double> getAverageHydration() async {
   String path = join(dbPath, 'my_database.db');
   Database database = await openDatabase(path);
 
-  var sevenDaysAgo = DateTime.now().subtract(Duration(days: 7));
+  var sevenDaysAgo = DateTime.now().subtract(const Duration(days: 7));
   var formattedDate = DateFormat('yyyy-MM-dd').format(sevenDaysAgo);
 
   List<Map> list = await database.rawQuery(
