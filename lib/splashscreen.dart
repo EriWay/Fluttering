@@ -20,7 +20,7 @@ class SplashState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    checkIfLoggedIn(); // Vérifiez si l'utilisateur est déjà connecté lors de l'initialisation
+    //checkIfLoggedIn(); // Vérifiez si l'utilisateur est déjà connecté lors de l'initialisation
     startTime();
   }
 
@@ -64,7 +64,7 @@ class SplashState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/img.png',
+                  'assets/icon.png',
                   width: MediaQuery.of(context).size.width / 3,
                   alignment: Alignment.center,
                 ),

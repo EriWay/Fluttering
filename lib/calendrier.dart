@@ -173,7 +173,8 @@ class _CalendrierPageState extends State<CalendrierPage> {
                       }
                     },
                   ),
-                  Menu(),
+                  const SizedBox(height: 120,),
+                  const Menu(),
                 ],
               ),
             ),

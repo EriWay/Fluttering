@@ -32,6 +32,25 @@ class _PageHumeur extends State<PageHumeur> {
     _getNoteText();
 
   }
+  List<Widget> _splitTextIntoLines(String text) {
+    List<Widget> textWidgets = [];
+
+    List<String> words = text.split(' ');
+    for (int i = 0; i < words.length; i += 7) {
+      int end = (i + 7 < words.length) ? i + 7 : words.length;
+      String line = words.sublist(i, end).join(' ');
+      textWidgets.add(
+        Text(
+          line,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    }
+
+    return textWidgets;
+  }
+
 
   Future<void> _loadPrefs() async {
     prefs = await SharedPreferences.getInstance();
@@ -195,10 +214,9 @@ class _PageHumeur extends State<PageHumeur> {
                       'assets/cahier.png',
                     ),
                     if (_noteText != null)
-                      Text(
-                        _noteText!,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: _splitTextIntoLines(_noteText!),
                       ),
                   ],
                 ),

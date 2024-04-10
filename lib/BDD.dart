@@ -1,4 +1,4 @@
-import 'dart:io';
+ import 'dart:io';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -23,7 +23,7 @@ class BDD {
               await db.execute(
                   'CREATE TABLE Notes (num_utilisateur INTEGER, date TEXT PRIMARY KEY, humeur TEXT, image TEXT, vocal TEXT, texte TEXT)');
               await db.execute(
-                  'CREATE TABLE BienEtre (id INTEGER PRIMARY KEY, num_utilisateur INTEGER, date TEXT, eau INTEGER, dodo INTEGER, activite INTEGER, productivite INTEGER)');
+                  'CREATE TABLE BienEtre (num_utilisateur INTEGER, date TEXT, eau INTEGER, dodo INTEGER, activite INTEGER, productivite INTEGER)');
               await db.execute(
                   'CREATE TABLE Plantes (num_utilisateur INTEGER, num_pot INTEGER, type_fleur INTEGER, pousse INTEGER)');
               await db.execute(
@@ -34,7 +34,7 @@ class BDD {
         String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
         await database.rawInsert(
             'INSERT OR REPLACE INTO Notes(num_utilisateur, date, humeur, image, vocal, texte) VALUES(?, ?, ?, ?, ?, ?)',
-            [1, formattedDate, '90', 'image.jpg', 'audio.mp3', 'Texte de la note']);
+            [1, formattedDate, '3', 'image.jpg', 'audio.mp3', 'Aujourd hui je suis allé en cours et j ai eu une interro de graphes']);
 
         await database.rawInsert(
             'INSERT INTO User(nom, prenom, Identifiant, mail, num_telephone, mdp, PIN) VALUES(?, ?, ?, ?, ?, ?, ?)',
