@@ -472,7 +472,7 @@ class ActivityTextField extends StatelessWidget {
             keyboardType: TextInputType.multiline,
             maxLines: null, // Permet au TextField de prendre plusieurs lignes
             decoration: InputDecoration(
-              hintText: 'Quelle activité faite aujourd\'hui vous rend fier?',
+              hintText: 'Quelle est ta fierté du jour ?',
               hintStyle: const TextStyle( // Personnaliser le style du label/hint
                 color: Color(0x7F606134), // Couleur du texte du label
                 fontSize: 14.0, // Taille de la police

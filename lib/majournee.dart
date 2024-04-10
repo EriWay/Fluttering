@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'majourneehumeur.dart';
+import 'jardin.dart';
 
 class NotebookPage extends StatefulWidget {
   @override
@@ -81,6 +82,7 @@ class NotebookPageState extends State<NotebookPage> {
       [formattedDate],
     );
     if (result.isEmpty) {
+      await incrementFleurs(database);
       await database.rawInsert(
         'INSERT INTO Notes(num_utilisateur, date, humeur, image, vocal, texte) VALUES(?, ?, ?, ?, ?, ?)',
         [idUserint, formattedDate, 'Humeur', '', '', notes],
