@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'menuv2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sqflite/sqflite.dart';
@@ -103,45 +104,48 @@ class Wellness extends StatelessWidget {
 }
 
 Future<void> saveSleepTime(int sleepHours) async {
-  final dbPath = await getDatabasesPath();
-  final path = join(dbPath, 'my_database.db');
-  final database = await openDatabase(path);
+  var prefs = await SharedPreferences.getInstance();
 
-  // Utilisez l'ID réel de l'utilisateur connecté
-  const userId = 1; // Exemple pour un utilisateur avec un ID fixe
+  var now = new DateTime.now();
+  var formatter = new DateFormat('yyyy-MM-dd');
+  String formattedDate = formatter.format(now);
+  String? userId = prefs!.getString('num_utilisateur'); // Récupérer l'identifiant de l'utilisateur connecté
+  print(userId);
 
-  // La date devrait être passée correctement en fonction de la manière dont votre application gère les dates
-  String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  if (formattedDate != null && userId != null) {
+    // Récupérer le chemin de la base de données
+    String databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'my_database.db');
+    Database database = await openDatabase(path);
 
-  // Vérifiez d'abord si une entrée existe déjà pour la date actuelle
-  final existingData = await database.query(
-    'BienEtre',
-    where: 'num_utilisateur = ? AND date = ?',
-    whereArgs: [userId, currentDate],
-  );
-
-  if (existingData.isNotEmpty) {
-    // Mise à jour de l'entrée existante
-    await database.update(
-      'BienEtre',
-      {'dodo': sleepHours},
-      where: 'num_utilisateur = ? AND date = ?',
-      whereArgs: [userId, currentDate],
+    // Vérifier si une note existe déjà pour la date sélectionnée
+    List<Map<String, dynamic>> result = await database.rawQuery(
+      'SELECT * FROM BienEtre WHERE date = ? AND num_utilisateur = ?',
+      [formattedDate, userId.toString()],
     );
+
+    if (result.isEmpty) {
+      await database.rawInsert(
+        'INSERT INTO BienEtre(id , date , eau , dodo , activite , productivite ) VALUES(?, ?, ?, ?, ?, ?)',
+        [userId.toString(), formattedDate, '', sleepHours, '', ''],
+      );
+
+      print('bien etre insérée pour la date : $formattedDate');
+    } else {
+
+      print('bien etre existe déjà pour la date : $formattedDate');
+      await database.rawUpdate(
+        'UPDATE BienEtre SET dodo = ? WHERE date = ? AND num_utilisateur = ?',
+        [sleepHours, formattedDate, userId.toString()],
+      );
+      print('bien etre mise à jour pour la date : $formattedDate');
+    }
+
+    await database.close();
   } else {
-    // Création d'une nouvelle entrée
-    await database.insert(
-      'BienEtre',
-      {
-        'num_utilisateur': userId,
-        'date': currentDate,
-        'dodo': sleepHours,
-        // Autres champs ici...
-      },
-    );
+    print('Date ou utilisateur non sélectionné');
   }
 
-  await database.close();
 }
 
 class ButtonTimeContainer extends StatefulWidget {
@@ -331,25 +335,48 @@ class VerreInfo {
   });
 }
 void saveHydration(int verresPleins) async {
-  final dbPath = await getDatabasesPath();
-  final path = join(dbPath, 'my_database.db');
-  final database = await openDatabase(path);
+  var prefs = await SharedPreferences.getInstance();
 
-  // Ajustez ce code pour qu'il utilise l'ID de l'utilisateur connecté si nécessaire
-  const userId = 1; // Par exemple, pour un utilisateur avec un ID fixe
+  var now = new DateTime.now();
+  var formatter = new DateFormat('yyyy-MM-dd');
+  String formattedDate = formatter.format(now);
+  String? userId = prefs!.getString('num_utilisateur'); // Récupérer l'identifiant de l'utilisateur connecté
+  print(userId);
 
-  // Insérez ou mettez à jour le nombre de verres pleins pour la date du jour
-  await database.insert(
-    'BienEtre',
-    {
-      'num_utilisateur': userId,
-      'date': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      'eau': verresPleins,
-    },
-    conflictAlgorithm: ConflictAlgorithm.replace, // Remplacez si déjà présent
-  );
+  if (formattedDate != null && userId != null) {
+    // Récupérer le chemin de la base de données
+    String databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'my_database.db');
+    Database database = await openDatabase(path);
 
-  await database.close();
+    // Vérifier si une note existe déjà pour la date sélectionnée
+    List<Map<String, dynamic>> result = await database.rawQuery(
+      'SELECT * FROM BienEtre WHERE date = ? AND num_utilisateur = ?',
+      [formattedDate, userId.toString()],
+    );
+
+    if (result.isEmpty) {
+      await database.rawInsert(
+        'INSERT INTO BienEtre(id , date , eau , dodo , activite , productivite ) VALUES(?, ?, ?, ?, ?, ?)',
+        [userId.toString(), formattedDate, verresPleins, '', '', ''],
+      );
+
+      print('bien etre insérée pour la date : $formattedDate');
+    } else {
+
+      print('bien etre existe déjà pour la date : $formattedDate');
+      await database.rawUpdate(
+        'UPDATE BienEtre SET eau = ? WHERE date = ? AND num_utilisateur = ?',
+        [verresPleins, formattedDate, userId.toString()],
+      );
+      print('bien etre mise à jour pour la date : $formattedDate');
+    }
+
+    await database.close();
+  } else {
+    print('Date ou utilisateur non sélectionné');
+  }
+
 }
 
 class _HydratationSwitcherState extends State<HydratationSwitcher> {
@@ -515,26 +542,47 @@ class StarSwitcher extends StatefulWidget {
 }
 
 void saveProductivity(int stars) async {
-  final dbPath = await getDatabasesPath();
-  final path = join(dbPath, 'my_database.db');
-  final database = await openDatabase(path);
+  var prefs = await SharedPreferences.getInstance();
 
-  // Utilisez l'ID réel de l'utilisateur connecté
-  final userId = 1; // Exemple pour un utilisateur avec un ID fixe
+  var now = new DateTime.now();
+  var formatter = new DateFormat('yyyy-MM-dd');
+  String formattedDate = formatter.format(now);
+  String? userId = prefs!.getString('num_utilisateur'); // Récupérer l'identifiant de l'utilisateur connecté
 
-  // Insérez ou mettez à jour le nombre d'étoiles pour la date du jour
-  await database.insert(
-    'BienEtre',
-    {
-      'num_utilisateur': userId,
-      'date': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      'productivite': stars,
-      // Assurez-vous de mettre à jour ou d'insérer d'autres champs pertinents si nécessaire
-    },
-    conflictAlgorithm: ConflictAlgorithm.replace, // Remplacez si une entrée existe déjà
-  );
+  if (formattedDate != null && userId != null) {
+    // Récupérer le chemin de la base de données
+    String databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'my_database.db');
+    Database database = await openDatabase(path);
 
-  await database.close();
+    // Vérifier si une note existe déjà pour la date sélectionnée
+    List<Map<String, dynamic>> result = await database.rawQuery(
+      'SELECT * FROM BienEtre WHERE date = ? AND num_utilisateur = ?',
+      [formattedDate, userId.toString()],
+    );
+
+    if (result.isEmpty) {
+      await database.rawInsert(
+        'INSERT INTO BienEtre(id , date , eau , dodo , activite , productivite ) VALUES(?, ?, ?, ?, ?, ?)',
+        [userId.toString(), formattedDate, '', '', '', stars],
+      );
+
+      print('bien etre insérée pour la date : $formattedDate');
+    } else {
+
+      print('bien etre existe déjà pour la date : $formattedDate');
+      await database.rawUpdate(
+        'UPDATE BienEtre SET productivite = ? WHERE date = ? AND num_utilisateur = ?',
+        [stars, formattedDate, userId.toString()],
+      );
+      print('Note mise à jour pour la date : $formattedDate');
+    }
+
+    await database.close();
+  } else {
+    print('Date ou utilisateur non sélectionné');
+  }
+
 }
 class ProductiviteText extends StatelessWidget {
   @override
@@ -583,6 +631,7 @@ class _StarSwitcherState extends State<StarSwitcher> {
   void _handleTap(int tappedIndex) {
     setState(() {
       for (int i = 0; i < stars.length; i++) {
+        print("ok");
         saveProductivity(tappedIndex + 1);
         // Si l'index de l'étoile est inférieur ou égal à l'index tapé, marquez-le comme plein
         if (i <= tappedIndex) {
@@ -594,6 +643,7 @@ class _StarSwitcherState extends State<StarSwitcher> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -617,5 +667,6 @@ class _StarSwitcherState extends State<StarSwitcher> {
         }),
       ),
     );
+
   }
 }
