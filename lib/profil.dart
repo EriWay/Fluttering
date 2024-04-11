@@ -29,7 +29,6 @@ class Profile extends StatelessWidget {
                   UserNameDisplay(),
                 AverageSleepTime(),
                 AverageHydrationDisplay(),
-                AverageProductivityDisplay(),
                   Spacer(),
                   Menu(),
                       ],
@@ -186,42 +185,3 @@ class AverageHydrationDisplay extends StatelessWidget {
 }
 
 
-Future<double> getAverageProductivity() async {
-  var dbPath = await getDatabasesPath();
-  String path = join(dbPath, 'my_database.db');
-  Database database = await openDatabase(path);
-
-  var sevenDaysAgo = DateTime.now().subtract(const Duration(days: 7));
-  var formattedDate = DateFormat('yyyy-MM-dd').format(sevenDaysAgo);
-
-  List<Map> list = await database.rawQuery(
-    'SELECT productivite FROM BienEtre WHERE date >= ?',
-    [formattedDate],
-  );
-
-  await database.close();
-
-  double sum = list.fold(0, (previousValue, element) => previousValue + (element['productivite'] as int));
-  return list.isNotEmpty ? sum / list.length : 0.0;
-}
-
-class AverageProductivityDisplay extends StatelessWidget {
-  const AverageProductivityDisplay({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<double>(
-      future: getAverageProductivity(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Erreur: ${snapshot.error}');
-        } else {
-          var averageProductivity = snapshot.data?.toStringAsFixed(1) ?? '0.0';
-          return Text('Moyenne de productivité : $averageProductivity étoiles par jour');
-        }
-      },
-    );
-  }
-}
