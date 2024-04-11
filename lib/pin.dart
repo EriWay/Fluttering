@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+import 'accueil.dart';
 import 'connection.dart'; // Import de la page de connexion
 import 'connect_inscr.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -127,7 +128,7 @@ class _PinPageState extends State<PinPage> {
         if (_pinController.text == storedPin) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (BuildContext context) => const ConnInscr()),
+            MaterialPageRoute(builder: (BuildContext context) => AccueilPage()),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

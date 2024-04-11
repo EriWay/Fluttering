@@ -7,7 +7,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-import 'majournee.dart'; // Importez la classe BDD
+import 'majournee.dart';
+import 'package:intl/intl.dart';
+// Importez la classe BDD
 
 class PageHumeur extends StatefulWidget {
   @override
@@ -152,7 +154,7 @@ class _PageHumeur extends State<PageHumeur> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
-                  prefs!.getString('selectedDate') ?? '', // Utiliser prefs pour récupérer la date
+                  DateFormat('dd/MM/yyyy').format(DateTime.parse(prefs!.getString('selectedDate')!)), // Utilisation de DateFormat
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 18,
@@ -228,8 +230,9 @@ class _PageHumeur extends State<PageHumeur> {
                 onPressed: () async {
                   // Vérifier si une note existe déjà pour la date sélectionnée
                   String? formattedDate = prefs!.getString('selectedDate');
+                  String? userId = prefs!.getString('num_utilisateur'); // Récupérer l'identifiant de l'utilisateur connecté
 
-                  if (formattedDate != null) {
+                  if (formattedDate != null && userId != null) {
                     // Récupérer le chemin de la base de données
                     String databasesPath = await getDatabasesPath();
                     String path = join(databasesPath, 'my_database.db');
@@ -237,33 +240,33 @@ class _PageHumeur extends State<PageHumeur> {
 
                     // Vérifier si une note existe déjà pour la date sélectionnée
                     List<Map<String, dynamic>> result = await database.rawQuery(
-                      'SELECT * FROM Notes WHERE date = ?',
-                      [formattedDate],
+                      'SELECT * FROM Notes WHERE date = ? AND num_utilisateur = ?',
+                      [formattedDate, userId.toString()],
                     );
 
                     // Si aucune note n'existe pour cette date, insérer une nouvelle note
                     if (result.isEmpty) {
                       await database.rawInsert(
                         'INSERT INTO Notes(num_utilisateur, date, humeur, image, vocal, texte) VALUES(?, ?, ?, ?, ?, ?)',
-                        [1, formattedDate, selectedSmileyIndex, '', '', ''],
+                        [userId.toString(), formattedDate, selectedSmileyIndex, '', '', ''],
                       );
                       print('Nouvelle note insérée pour la date : $formattedDate');
                     } else {
                       print('Une note existe déjà pour la date : $formattedDate');
                       await database.rawUpdate(
-                        'UPDATE Notes SET humeur = ? WHERE date = ?',
-                        [selectedSmileyIndex, formattedDate],
+                        'UPDATE Notes SET humeur = ? WHERE date = ? AND num_utilisateur = ?',
+                        [selectedSmileyIndex, formattedDate, userId.toString()],
                       );
                       print('Note mise à jour pour la date : $formattedDate');
                     }
 
-
                     // Fermer la connexion à la base de données
                     await database.close();
                   } else {
-                    print('Date non sélectionnée');
+                    print('Date ou utilisateur non sélectionné');
                   }
                 },
+
                 child: const Text('Sauvegarder'),
               )
 
