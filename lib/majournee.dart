@@ -18,10 +18,112 @@ class NotebookPageState extends State<NotebookPage> {
   final TextEditingController _textEditingController = TextEditingController();
   XFile? _image;
   String? _noteText;
+  String? _savedText; // Variable pour stocker le texte
 
   @override
   void initState() {
     super.initState();
+    _savedText = ""; // Initialiser la variable de texte sauvegardé
+    _getNoteText(); // Récupérer le texte déjà enregistré au démarrage de la page
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Journal Intime'),
+        backgroundColor: const Color(0xFF755846),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height - kToolbarHeight,
+          child: Stack(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xFFFCEBE2),
+                  image: DecorationImage(
+                    image: AssetImage('assets/cahier.png'),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.2,
+                left: MediaQuery.of(context).size.width * 0.1,
+                right: MediaQuery.of(context).size.width * 0.1,
+                bottom: MediaQuery.of(context).size.height * 0.2,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      if (_image != null) Image.file(File(_image!.path)),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: TextField(
+                          controller: _textEditingController,
+                          maxLines: null,
+                          onChanged: (text) {
+                            _savedText = text; // Mettre à jour le texte sauvegardé
+                          },
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: _noteText ?? "Écrivez ici...", // Utiliser le texte enregistré s'il existe
+                            contentPadding: const EdgeInsets.symmetric(vertical: 10.0)
+                                .copyWith(left: 20.0),
+                            alignLabelWithHint: true,
+                          ),
+                          textAlignVertical: const TextAlignVertical(y: 0.2),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FloatingActionButton(
+                        heroTag: 'Save',
+                        onPressed: () async {
+                          await saveNotes();
+                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => PageHumeur()),ModalRoute.withName('/calendar'));
+                        },
+                        backgroundColor: const Color(0xFF606134),
+                        child: const Icon(Icons.save, color: Colors.white),
+                      ),
+                      const SizedBox(height: 16),
+                      FloatingActionButton(
+                        heroTag: 'add',
+                        onPressed: () async {
+                          await requestPermission();
+                          await pickImage();
+                        },
+                        backgroundColor: const Color(0xFF606134),
+                        child: const Icon(Icons.photo_library, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> requestPermission() async {
@@ -61,12 +163,14 @@ class NotebookPageState extends State<NotebookPage> {
       if (result.isNotEmpty) {
         setState(() {
           _noteText = result[0]['texte'];
+          _textEditingController.text = _noteText ?? ""; // Mettre à jour le texte dans le champ de texte
+          _savedText = _noteText; // Mettre à jour le texte sauvegardé
         });
       }
     }
   }
 
-  Future<void> postNotes(String notes) async{
+  Future<void> saveNotes() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? formattedDate = prefs.getString('selectedDate');
     String idUser = prefs.getString('num_utilisateur') ?? '';
@@ -76,124 +180,24 @@ class NotebookPageState extends State<NotebookPage> {
       String databasesPath = await getDatabasesPath();
       String path = join(databasesPath, 'my_database.db');
       Database database = await openDatabase(path);
-    //Verif si y a une note 
-    List<Map<String, dynamic>> result = await database.rawQuery(
-      'SELECT * FROM Notes WHERE date = ?',
-      [formattedDate],
-    );
-    if (result.isEmpty) {
-      await incrementFleurs(database);
-      await database.rawInsert(
-        'INSERT INTO Notes(num_utilisateur, date, humeur, image, vocal, texte) VALUES(?, ?, ?, ?, ?, ?)',
-        [idUserint, formattedDate, 'Humeur', '', '', notes],
+
+      // Check if a note exists
+      List<Map<String, dynamic>> result = await database.rawQuery(
+        'SELECT * FROM Notes WHERE date = ?',
+        [formattedDate],
       );
-      print('Nouvelle note insérée pour la date : $formattedDate');
-    } else {
-      print('Une note existe déjà pour la date : $formattedDate');
-      await database.rawQuery("UPDATE Notes SET texte = '$notes' WHERE num_utilisateur ='$idUser'AND date = '$formattedDate'");
+
+      if (result.isEmpty) {
+        await incrementFleurs(database);
+        await database.rawInsert(
+          'INSERT INTO Notes(num_utilisateur, date, humeur, image, vocal, texte) VALUES(?, ?, ?, ?, ?, ?)',
+          [idUserint, formattedDate, 'Humeur', '', '', _savedText],
+        );
+        print('Nouvelle note insérée pour la date : $formattedDate');
+      } else {
+        print('Une note existe déjà pour la date : $formattedDate');
+        await database.rawQuery("UPDATE Notes SET texte = '$_savedText' WHERE num_utilisateur ='$idUser'AND date = '$formattedDate'");
+      }
     }
-
-//num_utilisateur INTEGER, date TEXT PRIMARY KEY, humeur TEXT, image TEXT, vocal TEXT, texte TEXT
-      
-    }
-  }
-
-bool once=false;
-TextEditingController _controller = new TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    if(!once){
-      _getNoteText();
-      once=!once;
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Journal Intime'),
-        backgroundColor: const Color(0xFF755846),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFFFCEBE2),
-              image: DecorationImage(
-                image: AssetImage('assets/cahier.png'),
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.2,
-            left: MediaQuery.of(context).size.width * 0.1,
-            right: MediaQuery.of(context).size.width * 0.1,
-            bottom: MediaQuery.of(context).size.height * 0.2,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  if (_image != null) Image.file(File(_image!.path)),
-                  TextField(
-                    controller: _controller = TextEditingController(text: _noteText,),
-                    maxLines: null,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Écrivez ici...",
-                      contentPadding: const EdgeInsets.symmetric(vertical: 10.0)
-                          .copyWith(left: 20.0),
-                      alignLabelWithHint: true,
-                    ),
-                    textAlignVertical: const TextAlignVertical(y: 0.2),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FloatingActionButton(
-                    heroTag: 'Save',
-                    onPressed: () async {
-                      await postNotes(_controller.text);
-                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => PageHumeur()),ModalRoute.withName('/calendar'));
-                    },
-                    backgroundColor: const Color(0xFF606134),
-                    child: const Icon(Icons.save, color: Colors.white),
-                  ),
-                  const SizedBox(height: 16),
-                  FloatingActionButton(
-                    heroTag: 'Edit',
-                    onPressed: () {
-                      // Action pour éditer
-                    },
-                    backgroundColor: const Color(0xFF606134),
-                    child: const Icon(Icons.edit, color: Colors.white),
-                  ),
-                  const SizedBox(height: 16),
-                  FloatingActionButton(
-                    heroTag: 'add',
-                    onPressed: () async {
-                      await requestPermission();
-                      await pickImage();
-                    },
-                    backgroundColor: const Color(0xFF606134),
-                    child: const Icon(Icons.photo_library, color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
