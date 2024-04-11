@@ -8,7 +8,7 @@ import 'majourneehumeur.dart';
 import 'menuv2.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // 1. Importez les SharedPreferences
+import 'package:shared_preferences/shared_preferences.dart'; // Importez les SharedPreferences
 
 class CalendrierPage extends StatefulWidget {
   @override
@@ -20,6 +20,7 @@ class _CalendrierPageState extends State<CalendrierPage> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  String _selectedUserId = ''; // Modifié en String pour gérer l'identifiant de l'utilisateur
 
   @override
   void initState() {
@@ -34,7 +35,7 @@ class _CalendrierPageState extends State<CalendrierPage> {
     super.dispose();
   }
 
-  Future<List<Map<String, dynamic>>> _getEventsForDay(DateTime date) async {
+  Future<List<Map<String, dynamic>>> _getEventsForDayAndUser(DateTime date, String userId) async {
     try {
       String databasesPath = await getDatabasesPath();
       String path = join(databasesPath, 'my_database.db');
@@ -43,21 +44,29 @@ class _CalendrierPageState extends State<CalendrierPage> {
       String formattedDate = DateFormat('yyyy-MM-dd').format(date);
 
       List<Map<String, dynamic>> result = await database.rawQuery(
-          'SELECT * FROM Notes WHERE date = ?', [formattedDate]);
+          'SELECT * FROM Notes WHERE date = ? AND num_utilisateur = ?', [formattedDate, userId]);
 
       await database.close();
 
       return result;
     } catch (e) {
-      print('Error fetching events for date $date: $e');
+      print('Error fetching events for date $date and user $userId: $e');
       return [];
     }
   }
 
-  // 2. Ajoutez une fonction pour stocker la date dans les SharedPreferences
+
+
+  Future<String?> _getSelectedUserIdFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Convertir le résultat en String
+    return prefs.getString('num_utilisateur') ?? ''; // Renvoyer une chaîne vide si la clé n'est pas trouvée
+  }
+
+
   Future<void> _storeDateInSharedPreferences(DateTime date) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('selectedDate', DateFormat('yyyy-MM-dd').format(date));
+    await prefs.setString('selectedDate', DateFormat('yyyy-MM-dd').format(date));
   }
 
   @override
@@ -100,13 +109,18 @@ class _CalendrierPageState extends State<CalendrierPage> {
                         setState(() {
                           _selectedDay = selectedDay;
                           _focusedDay = focusedDay;
-                          _getEventsForDay(selectedDay).then((events) {
-                            setState(() {
-                              _selectedEvents.value = events;
-                              if (events.isEmpty) {
-                                print('No events for selected day');
-                              }
-                            });
+                          _getSelectedUserIdFromSharedPreferences().then((userId) {
+                            if (userId != null) {
+                              _selectedUserId = userId;
+                              _getEventsForDayAndUser(selectedDay, userId).then((events) {
+                                setState(() {
+                                  _selectedEvents.value = events;
+                                  if (events.isEmpty) {
+                                    print('No events for selected day');
+                                  }
+                                });
+                              });
+                            }
                           });
                         });
                       }
@@ -123,7 +137,7 @@ class _CalendrierPageState extends State<CalendrierPage> {
                     },
                   ),
                   FutureBuilder<List<Map<String, dynamic>>>(
-                    future: _getEventsForDay(_selectedDay ?? DateTime.now()),
+                    future: _getEventsForDayAndUser(_selectedDay ?? DateTime.now(), _selectedUserId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
@@ -158,9 +172,7 @@ class _CalendrierPageState extends State<CalendrierPage> {
                                   ),
                                   ElevatedButton(
                                     onPressed: () async {
-                                      // 2. Stockez la date dans les SharedPreferences
                                       await _storeDateInSharedPreferences(_selectedDay ?? DateTime.now());
-                                      // 3. Naviguez vers une autre page en .dart
                                       Navigator.push(context, MaterialPageRoute(builder: (context) => PageHumeur()));
                                     },
                                     child: Text('Editer'),
@@ -185,7 +197,6 @@ class _CalendrierPageState extends State<CalendrierPage> {
   }
 }
 
-// 3. Créez une autre page en .dart pour l'édition
 class EditPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
