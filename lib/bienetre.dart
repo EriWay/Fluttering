@@ -126,7 +126,7 @@ Future<void> saveSleepTime(int sleepHours) async {
 
     if (result.isEmpty) {
       await database.rawInsert(
-        'INSERT INTO BienEtre(id , date , eau , dodo , activite , productivite ) VALUES(?, ?, ?, ?, ?, ?)',
+        'INSERT INTO BienEtre(num_utilisateur , date , eau , dodo , activite , productivite ) VALUES(?, ?, ?, ?, ?, ?)',
         [userId.toString(), formattedDate, '', sleepHours, '', ''],
       );
 
@@ -357,7 +357,7 @@ void saveHydration(int verresPleins) async {
 
     if (result.isEmpty) {
       await database.rawInsert(
-        'INSERT INTO BienEtre(id , date , eau , dodo , activite , productivite ) VALUES(?, ?, ?, ?, ?, ?)',
+        'INSERT INTO BienEtre(num_utilisateur , date , eau , dodo , activite , productivite ) VALUES(?, ?, ?, ?, ?, ?)',
         [userId.toString(), formattedDate, verresPleins, '', '', ''],
       );
 
@@ -483,6 +483,9 @@ class ActivityTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Définir un contrôleur pour le TextField
+    TextEditingController controller = TextEditingController();
+
     // Utilisation d'un GestureDetector pour détecter les touchers en dehors du TextField
     return GestureDetector(
       onTap: () {
@@ -492,49 +495,114 @@ class ActivityTextField extends StatelessWidget {
       // Utilisation d'un comportement opaque pour s'assurer que le GestureDetector capture le toucher
       behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.only(left :20.0, right : 20),
-        child: SingleChildScrollView(
-          reverse: true,
-          child: TextField(
-            keyboardType: TextInputType.multiline,
-            maxLines: null, // Permet au TextField de prendre plusieurs lignes
-            decoration: InputDecoration(
-              hintText: 'Quelle est ta fierté du jour ?',
-              hintStyle: const TextStyle( // Personnaliser le style du label/hint
-                color: Color(0x7F606134), // Couleur du texte du label
-                fontSize: 14.0, // Taille de la police
-                fontStyle: FontStyle.italic, // Style de la police
+        padding: const EdgeInsets.only(left: 20.0, right: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SingleChildScrollView(
+              reverse: true,
+              child: TextField(
+                controller: controller, // Ajouter le contrôleur au TextField
+                keyboardType: TextInputType.multiline,
+                maxLines: null, // Permet au TextField de prendre plusieurs lignes
+                decoration: InputDecoration(
+                  hintText: 'Quelle est ta fierté du jour ?',
+                  hintStyle: const TextStyle(
+                    // Personnaliser le style du label/hint
+                    color: Color(0x7F606134), // Couleur du texte du label
+                    fontSize: 14.0, // Taille de la police
+                    fontStyle: FontStyle.italic, // Style de la police
+                  ),
+                  fillColor: const Color(0xFFFFDCC7),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    // Bordure appliquée en tous temps
+                    borderRadius: BorderRadius.circular(8.0), // Bords arrondis
+                    borderSide: BorderSide.none, // Aucune ligne/bordure
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    // Bordure en état normal
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    // Bordure quand le TextField est en focus
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    // Bordure en cas d'erreur
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    // Bordure en focus lorsqu'il y a une erreur
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  // Active le remplissage
+                ),
               ),
-              fillColor: const Color(0xFFFFDCC7),
-              filled: true,
-
-              border: OutlineInputBorder( // Bordure appliquée en tous temps
-                borderRadius: BorderRadius.circular(8.0), // Bords arrondis
-                borderSide: BorderSide.none, // Aucune ligne/bordure
-              ),
-              enabledBorder: OutlineInputBorder( // Bordure en état normal
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder( // Bordure quand le TextField est en focus
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide.none,
-              ),
-              errorBorder: OutlineInputBorder( // Bordure en cas d'erreur
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide.none,
-              ),
-              focusedErrorBorder: OutlineInputBorder( // Bordure en focus lorsqu'il y a une erreur
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide.none,
-              ),// Active le remplissage
             ),
-          ),
+            ElevatedButton(
+              onPressed: () {
+                String activity = controller.text; // Récupérer le texte du TextField
+                saveActivityToDatabase(activity, context);
+              },
+              child: Text('Enregistrer activité'),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+
+void saveActivityToDatabase(String activity, BuildContext context) async {
+  var prefs = await SharedPreferences.getInstance();
+
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
+  String formattedDate = formatter.format(now);
+  String? userId = prefs.getString('num_utilisateur'); // Récupérer l'identifiant de l'utilisateur connecté
+
+  if (formattedDate != null && userId != null) {
+    // Récupérer le chemin de la base de données
+    String databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'my_database.db');
+    Database database = await openDatabase(path);
+
+    // Vérifier si une note existe déjà pour la date sélectionnée
+    List<Map<String, dynamic>> result = await database.rawQuery(
+      'SELECT * FROM BienEtre WHERE date = ? AND num_utilisateur = ?',
+      [formattedDate, userId.toString()],
+    );
+
+    if (result.isEmpty) {
+      await database.rawInsert(
+        'INSERT INTO BienEtre(id , date , eau , dodo , activite , productivite ) VALUES(?, ?, ?, ?, ?, ?)',
+        [userId.toString(), formattedDate, '', '', activity, ''],
+      );
+
+      print('bien-être inséré pour la date : $formattedDate');
+    } else {
+      print('bien-être existe déjà pour la date : $formattedDate');
+      await database.rawUpdate(
+        'UPDATE BienEtre SET activite = ? WHERE date = ? AND num_utilisateur = ?',
+        [activity, formattedDate, userId.toString()],
+      );
+      print('bien-être mis à jour pour la date : $formattedDate');
+    }
+
+    await database.close();
+  } else {
+    print('Date ou utilisateur non sélectionné');
+  }
+}
+
+
+
 
 class StarSwitcher extends StatefulWidget {
   @override
@@ -563,7 +631,7 @@ void saveProductivity(int stars) async {
 
     if (result.isEmpty) {
       await database.rawInsert(
-        'INSERT INTO BienEtre(id , date , eau , dodo , activite , productivite ) VALUES(?, ?, ?, ?, ?, ?)',
+        'INSERT INTO BienEtre(num_utilisateur, date , eau , dodo , activite , productivite ) VALUES(?, ?, ?, ?, ?, ?)',
         [userId.toString(), formattedDate, '', '', '', stars],
       );
 
